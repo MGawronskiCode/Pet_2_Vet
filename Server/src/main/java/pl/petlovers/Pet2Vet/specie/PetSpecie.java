@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public enum Specie /*(Class of pet)*/ {
+public enum PetSpecie {
 
   MAMMAL, BIRD, REPTILE, AMPHIBIAN;
 
@@ -14,7 +14,4 @@ public enum Specie /*(Class of pet)*/ {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  Specie() {
-
-  }
 }
