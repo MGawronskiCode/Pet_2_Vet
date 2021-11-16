@@ -14,4 +14,7 @@ public enum Specie /*(Class of pet)*/ {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  Specie() {
+
+  }
 }
