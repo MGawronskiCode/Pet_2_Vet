@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.vaccine;
+package pl.petlovers.Pet2Vet.specie;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class VaccineNotFoundAdvice {
+public class SpecieNotFoundAdvice {
 
   @ResponseBody
-  @ExceptionHandler(VaccineNotFoundException.class)
+  @ExceptionHandler(SpecieNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  String vaccineNotFoundHandler(VaccineNotFoundException exception) {
+  String kindNotFoundHandler(SpecieNotFoundException exception) {
     return exception.getMessage();
   }
 
