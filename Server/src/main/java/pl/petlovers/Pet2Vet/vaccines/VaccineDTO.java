@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class VaccineDTO {
 
-  private long id;
+  private Long id;
   private String name;
   //  private Pet pet;
   private LocalDateTime dateTime;
