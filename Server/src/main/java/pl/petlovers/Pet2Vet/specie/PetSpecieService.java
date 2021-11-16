@@ -19,12 +19,6 @@ public class PetSpecieService {
     return petSpecieRepository.findAll();
   }
 
-//  @Enumerated(EnumType.ORDINAL)
-  public PetSpecie get(long kindId) {
-//    return petSpecieRepository.findById(kindId).orElseThrow(() -> new PetSpecieNotFoundException(kindId)); //todo solve the problem with exception thrown
-    return null;
-  }
-
   public PetSpecie create(PetSpecie petSpecie) {
     petSpecieRepository.save(petSpecie);
     return petSpecie;
@@ -36,6 +30,12 @@ public class PetSpecieService {
     petSpecieFromDB = petSpecieNewData;
 
     return (PetSpecie) petSpecieRepository.save(petSpecieFromDB);
+  }
+
+  //  @Enumerated(EnumType.ORDINAL)
+  public PetSpecie get(long kindId) {
+//    return petSpecieRepository.findById(kindId).orElseThrow(() -> new PetSpecieNotFoundException(kindId)); //todo solve the problem with exception thrown
+    return null;
   }
 
   public void delete(long specieId) {

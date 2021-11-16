@@ -19,7 +19,7 @@ class VaccineDTO {
 
   public static VaccineDTO of(Vaccine vaccine) {
     return new VaccineDTO(
-          vaccine.getId()
+        vaccine.getId()
         , vaccine.getName()
 //        ,vaccine.getPet()
         , vaccine.getDateTime());
