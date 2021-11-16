@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.vaccines;
+package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
 
@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Vaccine {
 
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -21,6 +20,11 @@ public class Vaccine {
 
 //  private Pet pet;
 
-  LocalDateTime dateTime;
+  private String dateTime;
+
+  @PrePersist
+  protected void onCreate() {
+    dateTime = LocalDateTime.now().toString();
+  } //todo set the time provided by user
 
 }

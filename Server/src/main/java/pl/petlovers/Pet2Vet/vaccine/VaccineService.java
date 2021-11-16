@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.vaccines;
+package pl.petlovers.Pet2Vet.vaccine;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class VaccineService {
   }
 
   public Vaccine get(long vaccineId) {
-    return vaccineRepository.findById(vaccineId).orElseThrow();
+    return vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
   }
 
   public Vaccine create(Vaccine vaccine) {
