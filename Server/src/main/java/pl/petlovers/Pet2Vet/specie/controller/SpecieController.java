@@ -10,37 +10,40 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/species")
-class SpieceController {
+class SpecieController {
 
   private final PetSpecieService petSpecieService;
 
   @Autowired
-  public SpieceController(PetSpecieService petSpecieService) {
+  public SpecieController(PetSpecieService petSpecieService) {
     this.petSpecieService = petSpecieService;
   }
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping
-  public List<PetSpecie> get() {
-    return petSpecieService.getAll();
+  public List<PetSpecieDTO> get() {
+    return petSpecieService.getAll()
+        .stream()
+        .map(PetSpecieDTO::of)
+        .toList();
   }
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{specieId}")
-  public PetSpecie get(@PathVariable long specieId) {
-    return petSpecieService.get(specieId);
+  public PetSpecieDTO get(@PathVariable long specieId) {
+    return PetSpecieDTO.of(petSpecieService.get(specieId));
   }
 
-  @ResponseStatus(HttpStatus.ACCEPTED)
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public PetSpecie create(@RequestBody PetSpecie petSpecie) {
-    return petSpecieService.create(petSpecie);
+  public PetSpecieDTO create(@RequestBody PetSpecie petSpecie) {
+    return PetSpecieDTO.of(petSpecieService.create(petSpecie));
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping
-  public PetSpecie update(@PathVariable long specieId, @RequestBody PetSpecie petSpecieNewData) {
-    return petSpecieService.update(specieId, petSpecieNewData);
+  public PetSpecieDTO update(@PathVariable long specieId, @RequestBody PetSpecie petSpecieNewData) {
+    return PetSpecieDTO.of(petSpecieService.update(specieId, petSpecieNewData));
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

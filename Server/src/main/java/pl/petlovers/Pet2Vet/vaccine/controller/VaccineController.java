@@ -33,7 +33,7 @@ class VaccineController {
     return VaccineDTO.of(vaccineService.get(vaccineId));
   }
 
-  @ResponseStatus(HttpStatus.ACCEPTED)
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public VaccineDTO create(@RequestBody VaccineDTO vaccineDTO) {
     return VaccineDTO.of(vaccineService.create(vaccineDTO.toVaccine()));

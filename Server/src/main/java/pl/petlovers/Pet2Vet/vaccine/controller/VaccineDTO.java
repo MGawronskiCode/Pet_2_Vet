@@ -17,10 +17,11 @@ class VaccineDTO {
   private String dateTime;
 
   public static VaccineDTO of(Vaccine vaccine) {
-    return new VaccineDTO(
-        vaccine.getName()
-//        ,vaccine.getPet()
-        , vaccine.getDateTime());
+    return VaccineDTO.builder()
+        .name(vaccine.getName())
+        .dateTime(vaccine.getDateTime())
+//        .pet(vaccine.getPet())
+        .build();
   }
 
   public Vaccine toVaccine() {
