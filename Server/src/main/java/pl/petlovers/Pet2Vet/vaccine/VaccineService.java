@@ -19,10 +19,6 @@ public class VaccineService {
     return vaccineRepository.findAll();
   }
 
-  public Vaccine get(long vaccineId) {
-    return vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
-  }
-
   public Vaccine create(Vaccine vaccine) {
     vaccineRepository.save(vaccine);
     return vaccine;
@@ -38,7 +34,11 @@ public class VaccineService {
     return vaccineRepository.save(vaccineFromDB);
   }
 
-  public void delete(long vaccineId){
+  public Vaccine get(long vaccineId) {
+    return vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
+  }
+
+  public void delete(long vaccineId) {
     vaccineRepository.delete(get(vaccineId));
   }
 
