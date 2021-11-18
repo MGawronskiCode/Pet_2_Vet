@@ -19,8 +19,13 @@ public class VaccineService {
     return vaccineRepository.findAll();
   }
 
+  public Vaccine get(long vaccineId) {
+    return vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
+  }
+
   public Vaccine create(Vaccine vaccine) {
     vaccineRepository.save(vaccine);
+
     return vaccine;
   }
 
@@ -32,10 +37,6 @@ public class VaccineService {
     vaccineFromDB.setDateTime(vaccineNewData.getDateTime());
 
     return vaccineRepository.save(vaccineFromDB);
-  }
-
-  public Vaccine get(long vaccineId) {
-    return vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
   }
 
   public void delete(long vaccineId) {
