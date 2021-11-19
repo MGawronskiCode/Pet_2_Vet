@@ -18,7 +18,8 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private AppUser appUser;
 
     @ManyToOne(cascade = CascadeType.ALL)

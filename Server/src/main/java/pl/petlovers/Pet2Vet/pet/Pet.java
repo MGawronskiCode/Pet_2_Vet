@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.specie.PetSpecie;
 import pl.petlovers.Pet2Vet.vaccine.Vaccine;
@@ -39,5 +40,9 @@ public class Pet {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   @JoinColumn(name = "pet_id")
   List<Note> notes;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private AppUser appUser;
 
 }
