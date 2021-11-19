@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.note;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
@@ -16,6 +17,12 @@ public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private AppUser appUser;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Pet pet;
 
     private String title;
     private String content;
