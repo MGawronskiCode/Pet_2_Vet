@@ -1,11 +1,9 @@
 package pl.petlovers.Pet2Vet.note;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.pet.Pet;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data

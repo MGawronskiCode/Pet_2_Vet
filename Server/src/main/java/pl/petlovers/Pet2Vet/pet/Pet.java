@@ -26,19 +26,18 @@ public class Pet {
 
   private LocalDateTime birthday;
 
-  @OneToOne
-  @JoinColumn(name = "specie")
+  @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
   private PetSpecie specie;
 
-  @OneToMany
-  @JoinColumn(name = "vaccines_id")
-  List<Vaccine> vaccines;
+  @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+  private List<Vaccine> vaccines;
 
-//  @OneToMany
-//@JoinColumn(name = "meals_id")
+  //  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//  @JoinColumn(name = "pet_id")
 //  List <Meal> meals;
 
-  @OneToMany
-  @JoinColumn(name = "notes_id")
-  List <Note> notes;
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "pet_id")
+  List<Note> notes;
+
 }
