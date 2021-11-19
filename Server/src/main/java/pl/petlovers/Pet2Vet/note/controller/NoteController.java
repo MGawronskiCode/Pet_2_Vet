@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/note")
+@RequestMapping("/note")// todo change to plural
 public class NoteController {
 
     private final NoteService noteService;
