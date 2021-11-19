@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/note")// todo change to plural
+@RequestMapping("/notes")
 public class NoteController {
 
     private final NoteService noteService;
@@ -29,9 +29,9 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{noteTd}")
-    public NoteDTO get(@PathVariable long noteTd) {
-        return NoteDTO.of(noteService.get(noteTd));
+    @GetMapping("/{noteId}")
+    public NoteDTO get(@PathVariable long noteId) {
+        return NoteDTO.of(noteService.get(noteId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
