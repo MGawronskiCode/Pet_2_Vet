@@ -46,27 +46,48 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{noteId}")
-    public NoteDTO get(@PathVariable long noteId) {
-        return NoteDTO.of(noteService.get(noteId));
+    @GetMapping("/users/{userId}/notes/{noteId}")
+    public NoteDTO getUserNote(@PathVariable long userId, @PathVariable long noteId) {
+        return NoteDTO.of(noteService.getUserNote(userId, noteId));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public NoteDTO create(@RequestBody NoteDTO noteDTO) {
-        return NoteDTO.of(noteService.create(noteDTO.toNote()));
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/pets/{petId}/notes/{noteId}")
+    public NoteDTO getPetNote(@PathVariable long petId, @PathVariable long noteId) {
+        return NoteDTO.of(noteService.getPetNote(petId, noteId));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping("/{noteId}")
-    public NoteDTO update(@PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
-        return NoteDTO.of(noteService.update(noteId, noteDTO.toNote()));
-    }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{noteId}")
-    public void delete(@PathVariable long noteId) {
-        noteService.delete(noteId);
-    }
+
+
+
+
+
+
+
+
+
+    /*
+        In Progress
+     */
+
+
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @PostMapping
+//    public NoteDTO create(@RequestBody NoteDTO noteDTO) {
+//        return NoteDTO.of(noteService.create(noteDTO.toNote()));
+//    }
+//
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @PutMapping("/{noteId}")
+//    public NoteDTO update(@PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
+//        return NoteDTO.of(noteService.update(noteId, noteDTO.toNote()));
+//    }
+//
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    @DeleteMapping("/{noteId}")
+//    public void delete(@PathVariable long noteId) {
+//        noteService.delete(noteId);
+//    }
 
 }

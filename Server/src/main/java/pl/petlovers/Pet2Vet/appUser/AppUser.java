@@ -6,6 +6,7 @@ import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,7 +36,7 @@ public class AppUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "pet_id")
     )
-    private List<Pet> pets;
+    private List<Pet> pets = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "appUser",
@@ -43,7 +44,7 @@ public class AppUser {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private List<Note> notes;
+    private List<Note> notes = new ArrayList<>();
 
     //    TODO: check if data exist
     public void modify(AppUser user) {
@@ -51,9 +52,7 @@ public class AppUser {
         setSex(user.getSex());
         setLogin(user.getLogin());
         setPassword(user.getPassword());
-
-        // TODO: discus this
-//        setPets(user.getPets());
-//        setNotes(user.getNotes());
+        setPets(user.getPets());
+        setNotes(user.getNotes());
     }
 }
