@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "User")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -19,16 +20,20 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String sex;
+    @Column(nullable = false, unique = true)
     private String login;
+    @Column(nullable = false)
     private String password;
 
-    @OneToMany(
-            mappedBy = "appUser",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
+    @ManyToMany
+    @JoinTable(
+            name = "Users_pets",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "pet_id")
     )
     private List<Pet> pets;
 
@@ -40,6 +45,7 @@ public class AppUser {
     )
     private List<Note> notes;
 
+    //    TODO: check if data exist
     public void modify(AppUser user) {
         setName(user.getName());
         setSex(user.getSex());

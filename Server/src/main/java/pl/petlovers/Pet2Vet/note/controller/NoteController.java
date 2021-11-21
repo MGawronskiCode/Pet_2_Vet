@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/notes")
 public class NoteController {
 
     private final NoteService noteService;
@@ -20,9 +19,27 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public List<NoteDTO> getAll() {
-        return noteService.getAll()
+    @GetMapping("/users/{userId}/notes")
+    public List<NoteDTO> getAllUserNotes(@PathVariable long userId) {
+        return noteService.getAllUserNotes(userId)
+                .stream()
+                .map(NoteDTO::of)
+                .collect(Collectors.toList());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("users/{userId}/pets/notes")
+    public List<NoteDTO> getAllUserPetsNotes(@PathVariable long userId) {
+        return noteService.getAllUserPetsNotes(userId)
+                .stream()
+                .map(NoteDTO::of)
+                .collect(Collectors.toList());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/pets/{petId}/notes")
+    public List<NoteDTO> getAllPetNotes(@PathVariable long petId) {
+        return noteService.getAllPetNotes(petId)
                 .stream()
                 .map(NoteDTO::of)
                 .collect(Collectors.toList());

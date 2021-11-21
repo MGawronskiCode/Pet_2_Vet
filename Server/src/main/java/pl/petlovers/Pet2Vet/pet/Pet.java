@@ -41,8 +41,7 @@ public class Pet {
   @JoinColumn(name = "pet_id")
   List<Note> notes;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private AppUser appUser;
+  @ManyToMany(mappedBy = "pets")
+  private List<AppUser> appUsers;
 
 }
