@@ -41,8 +41,14 @@ public class Pet {
   @JoinColumn(name = "pet_id")
   List<Note> notes;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private AppUser appUser;
+  @ManyToMany(mappedBy = "pets")
+  private List<AppUser> appUsers;
 
+  public void addNote(Note note) {
+    note.setCreated(LocalDateTime.now());
+    note.setModified(null);
+    note.setAppUser(null);
+    note.setPet(this);
+    this.notes.add(note);
+  }
 }

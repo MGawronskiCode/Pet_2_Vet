@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/notes")
 public class NoteController {
 
     private final NoteService noteService;
@@ -20,36 +19,77 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public List<NoteDTO> getAll() {
-        return noteService.getAll()
+    @GetMapping("/users/{userId}/notes")
+    public List<NoteDTO> getAllUserNotes(@PathVariable long userId) {
+        return noteService.getAllUserNotes(userId)
                 .stream()
                 .map(NoteDTO::of)
                 .collect(Collectors.toList());
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{noteId}")
-    public NoteDTO get(@PathVariable long noteId) {
-        return NoteDTO.of(noteService.get(noteId));
+    @GetMapping("users/{userId}/pets/notes")
+    public List<NoteDTO> getAllUserPetsNotes(@PathVariable long userId) {
+        return noteService.getAllUserPetsNotes(userId)
+                .stream()
+                .map(NoteDTO::of)
+                .collect(Collectors.toList());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/pets/{petId}/notes")
+    public List<NoteDTO> getAllPetNotes(@PathVariable long petId) {
+        return noteService.getAllPetNotes(petId)
+                .stream()
+                .map(NoteDTO::of)
+                .collect(Collectors.toList());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/users/{userId}/notes/{noteId}")
+    public NoteDTO getUserNote(@PathVariable long userId, @PathVariable long noteId) {
+        return NoteDTO.of(noteService.getUserNote(userId, noteId));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/pets/{petId}/notes/{noteId}")
+    public NoteDTO getPetNote(@PathVariable long petId, @PathVariable long noteId) {
+        return NoteDTO.of(noteService.getPetNote(petId, noteId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public NoteDTO create(@RequestBody NoteDTO noteDTO) {
-        return NoteDTO.of(noteService.create(noteDTO.toNote()));
+    @PostMapping("/users/{userId}/notes")
+    public NoteDTO createUserNote(@PathVariable long userId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.createUserNote(userId, noteDTO.toNote()));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping("/{noteId}")
-    public NoteDTO update(@PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
-        return NoteDTO.of(noteService.update(noteId, noteDTO.toNote()));
+    @PostMapping("/pets/{petId}/notes")
+    public NoteDTO createPetNote(@PathVariable long petId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.createPetNote(petId, noteDTO.toNote()));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/users/{userId}/notes/{noteId}")
+    public NoteDTO updateUserNote(@PathVariable long userId, @PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.updateUserNote(userId, noteId, noteDTO.toNote()));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/pets/{petId}/notes/{noteId}")
+    public NoteDTO updatePetNote(@PathVariable long petId, @PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.updatePetNote(petId, noteId, noteDTO.toNote()));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{noteId}")
-    public void delete(@PathVariable long noteId) {
-        noteService.delete(noteId);
+    @DeleteMapping("/users/{userId}/notes/{noteId}")
+    public void deleteUserNote(@PathVariable long userId, @PathVariable long noteId) {
+        noteService.deleteUserNote(userId, noteId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/pets/{petId}/notes/{noteId}")
+    public void deletePetNote(@PathVariable long petId, @PathVariable long noteId) {
+        noteService.deletePetNote(petId, noteId);
+    }
 }

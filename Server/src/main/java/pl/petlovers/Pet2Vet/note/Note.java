@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.note;
 
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
@@ -31,8 +32,13 @@ public class Note {
     private LocalDateTime modified; //OffsetDateTime / ZonedDateTime
 
     protected void modify(Note note) {
-        setTitle(note.getTitle());
-        setContent(note.getContent());
-        setModified(LocalDateTime.now());
+        if (StringUtils.isNoneBlank(note.getTitle())) {
+            this.setTitle(note.getTitle());
+            setModified(LocalDateTime.now());
+        }
+        if (StringUtils.isNoneBlank(note.getContent())) {
+            this.setContent(note.getContent());
+            setModified(LocalDateTime.now());
+        }
     }
 }
