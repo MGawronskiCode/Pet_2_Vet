@@ -69,11 +69,17 @@ public class NoteController {
         return NoteDTO.of(noteService.createPetNote(petId, noteDTO.toNote()));
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/users/{userId}/notes/{noteId}")
+    public NoteDTO updateUserNote(@PathVariable long userId, @PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.updateUserNote(userId, noteId, noteDTO.toNote()));
+    }
 
-
-
-
-
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/pets/{petId}/notes/{noteId}")
+    public NoteDTO updatePetNote(@PathVariable long petId, @PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.updatePetNote(petId, noteId, noteDTO.toNote()));
+    }
 
 
 
@@ -83,12 +89,6 @@ public class NoteController {
      */
 
 
-//
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PutMapping("/{noteId}")
-//    public NoteDTO update(@PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
-//        return NoteDTO.of(noteService.update(noteId, noteDTO.toNote()));
-//    }
 //
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
 //    @DeleteMapping("/{noteId}")

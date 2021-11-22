@@ -101,10 +101,32 @@ public class NoteService {
 
     private Pet getPet(long petId) {
         Optional<Pet> petOptional = petRepository.findById(petId);
-        if (petOptional.isEmpty()){
+        if (petOptional.isEmpty()) {
             throw new PetNotFoundException(petId);
         }
         return petOptional.get();
+    }
+
+    public Note updateUserNote(long userId, long noteId, Note newData) {
+        Note noteFromDb = getNote(noteId);
+        if (noteFromDb.getAppUser().getId() != userId) {
+            throw new IllegalArgumentException("Wrong user ID");
+        }
+        return getNote(newData, noteFromDb);
+    }
+
+    private Note getNote(Note newData, Note noteFromDb) {
+        noteFromDb.modify(newData);
+        noteRepository.save(noteFromDb);
+        return noteFromDb;
+    }
+
+    public Note updatePetNote(long petId, long noteId, Note newData) {
+        Note noteFromDb = getNote(noteId);
+        if (noteFromDb.getPet().getId() != petId) {
+            throw new IllegalArgumentException("Wrong pet ID");
+        }
+        return getNote(newData, noteFromDb);
     }
 
 
