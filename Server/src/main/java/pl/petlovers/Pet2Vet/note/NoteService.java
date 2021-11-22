@@ -11,7 +11,6 @@ import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,33 +54,33 @@ public class NoteService {
     }
 
     public List<Note> getAllPetNotes(long petId) {
+        return getPet(petId).getNotes();
+    }
+
+    private Pet getPet(long petId) {
         return petRepository.findById(petId)
-                .orElseThrow(() -> new PetNotFoundException(petId))
-                .getNotes();
+                .orElseThrow(() -> new PetNotFoundException(petId));
     }
 
     public Note getUserNote(long userId, long noteId) {
         Note note = getNote(noteId);
         if (note.getAppUser().getId() != userId) {
-            throw new AppUserNotFoundException(userId);
-        }
-        return note;
-    }
-
-    public Note getPetNote(long petId, long noteId) {
-        Note note = getNote(noteId);
-        if (note.getPet().getId() != petId) {
-            throw new PetNotFoundException(petId);
+            throw new IllegalArgumentException("Wrong user ID");
         }
         return note;
     }
 
     private Note getNote(long noteId) {
-        Optional<Note> noteOptional = noteRepository.findById(noteId);
-        if (noteOptional.isEmpty()) {
-            throw new NoteNotFoundException(noteId);
+        return noteRepository.findById(noteId)
+                .orElseThrow(() -> new NoteNotFoundException(noteId));
+    }
+
+    public Note getPetNote(long petId, long noteId) {
+        Note note = getNote(noteId);
+        if (note.getPet().getId() != petId) {
+            throw new IllegalArgumentException("Wrong pet ID");
         }
-        return noteOptional.get();
+        return note;
     }
 
     public Note createUserNote(long userId, Note note) {
@@ -98,19 +97,8 @@ public class NoteService {
         return note;
     }
 
-    private Pet getPet(long petId) {
-        Optional<Pet> petOptional = petRepository.findById(petId);
-        if (petOptional.isEmpty()) {
-            throw new PetNotFoundException(petId);
-        }
-        return petOptional.get();
-    }
-
     public Note updateUserNote(long userId, long noteId, Note newData) {
-        Note noteFromDb = getNote(noteId);
-        if (noteFromDb.getAppUser().getId() != userId) {
-            throw new IllegalArgumentException("Wrong user ID");
-        }
+        Note noteFromDb = getUserNote(userId, noteId);
         return getModifiedNote(newData, noteFromDb);
     }
 
@@ -121,26 +109,17 @@ public class NoteService {
     }
 
     public Note updatePetNote(long petId, long noteId, Note newData) {
-        Note noteFromDb = getNote(noteId);
-        if (noteFromDb.getPet().getId() != petId) {
-            throw new IllegalArgumentException("Wrong pet ID");
-        }
+        Note noteFromDb = getPetNote(petId, noteId);
         return getModifiedNote(newData, noteFromDb);
     }
 
     public void deleteUserNote(long userId, long noteId) {
-        Note noteFromDb = getNote(noteId);
-        if (noteFromDb.getAppUser().getId() != userId) {
-            throw new IllegalArgumentException("Wrong user ID");
-        }
+        Note noteFromDb = getUserNote(userId, noteId);
         noteRepository.delete(noteFromDb);
     }
 
     public void deletePetNote(long petId, long noteId) {
-        Note noteFromDb = getNote(noteId);
-        if (noteFromDb.getPet().getId() != petId) {
-            throw new IllegalArgumentException("Wrong pet ID");
-        }
+        Note noteFromDb = getPetNote(petId, noteId);
         noteRepository.delete(noteFromDb);
     }
 }
