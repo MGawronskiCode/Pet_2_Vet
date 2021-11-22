@@ -44,4 +44,11 @@ public class Pet {
   @ManyToMany(mappedBy = "pets")
   private List<AppUser> appUsers;
 
+  public void addNote(Note note) {
+    note.setCreated(LocalDateTime.now());
+    note.setModified(null);
+    note.setAppUser(null);
+    note.setPet(this);
+    this.notes.add(note);
+  }
 }

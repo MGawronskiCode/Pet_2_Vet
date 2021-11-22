@@ -6,6 +6,7 @@ import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,14 @@ public class AppUser {
             fetch = FetchType.LAZY
     )
     private List<Note> notes = new ArrayList<>();
+
+    public void addNote(Note note){
+        note.setCreated(LocalDateTime.now());
+        note.setModified(null);
+        note.setPet(null);
+        note.setAppUser(this);
+        this.notes.add(note);
+    }
 
     //    TODO: check if data exist
     public void modify(AppUser user) {

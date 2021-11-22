@@ -57,6 +57,17 @@ public class NoteController {
         return NoteDTO.of(noteService.getPetNote(petId, noteId));
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/users/{userId}/notes")
+    public NoteDTO createUserNote(@PathVariable long userId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.createUserNote(userId, noteDTO.toNote()));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/pets/{petId}/notes")
+    public NoteDTO createPetNote(@PathVariable long petId, @RequestBody NoteDTO noteDTO) {
+        return NoteDTO.of(noteService.createPetNote(petId, noteDTO.toNote()));
+    }
 
 
 
@@ -72,11 +83,6 @@ public class NoteController {
      */
 
 
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping
-//    public NoteDTO create(@RequestBody NoteDTO noteDTO) {
-//        return NoteDTO.of(noteService.create(noteDTO.toNote()));
-//    }
 //
 //    @ResponseStatus(HttpStatus.CREATED)
 //    @PutMapping("/{noteId}")

@@ -47,9 +47,9 @@ public class NoteService {
                 .collect(Collectors.toList());
     }
 
-    private List<Pet> getPets(AppUser user){
+    private List<Pet> getPets(AppUser user) {
         List<Pet> pets = user.getPets();
-        if (pets.size() == 0){
+        if (pets.size() == 0) {
             throw new IllegalStateException("No pet was found.");
         }
         return pets;
@@ -85,20 +85,33 @@ public class NoteService {
         return noteOptional.get();
     }
 
+    public Note createUserNote(long userId, Note note) {
+        AppUser user = getUser(userId);
+        user.addNote(note);
+        noteRepository.save(note);
+        return note;
+    }
+
+    public Note createPetNote(long petId, Note note) {
+        Pet pet = getPet(petId);
+        pet.addNote(note);
+        noteRepository.save(note);
+        return note;
+    }
+
+    private Pet getPet(long petId) {
+        Optional<Pet> petOptional = petRepository.findById(petId);
+        if (petOptional.isEmpty()){
+            throw new PetNotFoundException(petId);
+        }
+        return petOptional.get();
+    }
+
 
     /*
         In Progress
      */
 
-//    public Note get(long noteId) {
-//        return noteRepository.findById(noteId)
-//                .orElseThrow(() -> new NoteNotFoundException(noteId));
-//    }
-
-//    public Note create(Note note) {
-//        note.setCreated(LocalDateTime.now());
-//        return noteRepository.save(note);
-//    }
 
 //    public Note update(long id, Note note) {
 //        Note noteFromDb = get(userId, id);
