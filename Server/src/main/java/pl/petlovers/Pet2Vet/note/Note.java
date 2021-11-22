@@ -32,11 +32,11 @@ public class Note {
     private LocalDateTime modified; //OffsetDateTime / ZonedDateTime
 
     protected void modify(Note note) {
-        if (StringUtils.isNoneBlank(note.getTitle())){
+        if (StringUtils.isNoneBlank(note.getTitle())) {
             this.setTitle(note.getTitle());
             setModified(LocalDateTime.now());
         }
-        if (StringUtils.isNoneBlank(note.getContent())){
+        if (StringUtils.isNoneBlank(note.getContent())) {
             this.setContent(note.getContent());
             setModified(LocalDateTime.now());
         }

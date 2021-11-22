@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.appUser;
 
 
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
@@ -47,7 +48,7 @@ public class AppUser {
     )
     private List<Note> notes = new ArrayList<>();
 
-    public void addNote(Note note){
+    public void addNote(Note note) {
         note.setCreated(LocalDateTime.now());
         note.setModified(null);
         note.setPet(null);
@@ -55,13 +56,18 @@ public class AppUser {
         this.notes.add(note);
     }
 
-    //    TODO: check if data exist
     public void modify(AppUser user) {
-        setName(user.getName());
-        setSex(user.getSex());
-        setLogin(user.getLogin());
-        setPassword(user.getPassword());
-        setPets(user.getPets());
-        setNotes(user.getNotes());
+        if (StringUtils.isNoneBlank(user.getName())) {
+            this.setName(user.getName());
+        }
+        if (StringUtils.isNoneBlank(user.getSex())) {
+            this.setSex(user.getSex());
+        }
+        if (StringUtils.isNoneBlank(user.getLogin())) {
+            this.setLogin(user.getLogin());
+        }
+        if (StringUtils.isNoneBlank(user.getPassword())) {
+            this.setPassword(user.getPassword());
+        }
     }
 }

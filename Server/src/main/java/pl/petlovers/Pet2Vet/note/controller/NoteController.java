@@ -81,19 +81,15 @@ public class NoteController {
         return NoteDTO.of(noteService.updatePetNote(petId, noteId, noteDTO.toNote()));
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/users/{userId}/notes/{noteId}")
+    public void deleteUserNote(@PathVariable long userId, @PathVariable long noteId) {
+        noteService.deleteUserNote(userId, noteId);
+    }
 
-
-
-    /*
-        In Progress
-     */
-
-
-//
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @DeleteMapping("/{noteId}")
-//    public void delete(@PathVariable long noteId) {
-//        noteService.delete(noteId);
-//    }
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/pets/{petId}/notes/{noteId}")
+    public void deletePetNote(@PathVariable long petId, @PathVariable long noteId) {
+        noteService.deletePetNote(petId, noteId);
+    }
 }
