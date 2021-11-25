@@ -18,4 +18,8 @@ public class PetSpecie {
 
   private String name;
 
+  public void modify(PetSpecie newData){
+    this.setName(newData.getName());
+  }
+
 }

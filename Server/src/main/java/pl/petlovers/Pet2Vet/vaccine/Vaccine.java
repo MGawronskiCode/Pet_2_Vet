@@ -28,4 +28,10 @@ public class Vaccine {
     dateTime = LocalDateTime.now().toString();
   } //todo set the time provided by user
 
+
+  public void modify(Vaccine newData){
+    this.setName(newData.getName());
+//    this.setPet(newData.getPet());
+    this.setDateTime(newData.getDateTime());
+  }
 }

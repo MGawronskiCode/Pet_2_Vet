@@ -25,11 +25,10 @@ public class PetSpecieService {
   }
 
   public PetSpecie update(long specieId, PetSpecie petSpecieNewData) {
-    PetSpecie petSpecieFromDB = get(specieId);
+    PetSpecie petSpecieFromDB = petSpecieRepository.getById(specieId);
+    petSpecieFromDB.modify(petSpecieNewData);
 
-    petSpecieFromDB = petSpecieNewData;
-
-    return (PetSpecie) petSpecieRepository.save(petSpecieFromDB);
+    return petSpecieRepository.save(petSpecieFromDB);
   }
 
   public PetSpecie get(long kindId) {

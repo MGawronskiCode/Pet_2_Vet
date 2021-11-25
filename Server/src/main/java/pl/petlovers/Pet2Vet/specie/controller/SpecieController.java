@@ -3,14 +3,13 @@ package pl.petlovers.Pet2Vet.specie.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.petlovers.Pet2Vet.specie.PetSpecie;
 import pl.petlovers.Pet2Vet.specie.PetSpecieService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/species")
-class SpecieController {
+public class SpecieController {
 
   private final PetSpecieService petSpecieService;
 
@@ -36,14 +35,14 @@ class SpecieController {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public PetSpecieDTO create(@RequestBody PetSpecie petSpecie) {
-    return PetSpecieDTO.of(petSpecieService.create(petSpecie));
+  public PetSpecieDTO create(@RequestBody PetSpecieDTO petSpecieDTO) {
+    return PetSpecieDTO.of(petSpecieService.create(petSpecieDTO.toPetSpecie()));
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @PutMapping
-  public PetSpecieDTO update(@PathVariable long specieId, @RequestBody PetSpecie petSpecieNewData) {
-    return PetSpecieDTO.of(petSpecieService.update(specieId, petSpecieNewData));
+  @PutMapping("/{specieId}")
+  public PetSpecieDTO update(@PathVariable long specieId, @RequestBody PetSpecieDTO petSpecieNewDataDTO) {
+    return PetSpecieDTO.of(petSpecieService.update(specieId, petSpecieNewDataDTO.toPetSpecie()));
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -2,9 +2,6 @@ package pl.petlovers.Pet2Vet.pet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
-import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.List;
 
@@ -22,31 +19,24 @@ public class PetService {
     return petRepository.findAll();
   }
 
-  public Pet get(long petId){
-    return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
-  }
-
-  public Pet create(Pet pet){
+  public Pet create(Pet pet) {
     petRepository.save(pet);
 
     return pet;
   }
 
-  public Pet update(long petId, Pet petNewData){
-    Pet petFromDB = get(petId);
-
-    petFromDB.setName(petNewData.getName());
-    petFromDB.setSex(petNewData.getSex());
-    petFromDB.setBirthday(petNewData.getBirthday());
-    petFromDB.setSpecie(petNewData.getSpecie());
-    petFromDB.setVaccines(petNewData.getVaccines());
-//    petFromDB.setMeal(petNewData.getMeal()); todo add when Meal ready
-    petFromDB.setNotes(petNewData.getNotes());
+  public Pet update(long petId, Pet petNewData) {
+    Pet petFromDB = petRepository.getById(petId);
+    petFromDB.modify(petNewData);
 
     return petRepository.save(petFromDB);
   }
 
-  public void delete(long petId){
+  public void delete(long petId) {
     petRepository.delete(get(petId));
+  }
+
+  public Pet get(long petId) {
+    return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
   }
 }
