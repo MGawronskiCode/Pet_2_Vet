@@ -21,9 +21,6 @@ public class Vaccine {
 
   private String name;
 
-  @OneToMany//todo
-  private List<Pet> pets;
-
   private String dateTime;
 
   @PrePersist
@@ -34,7 +31,6 @@ public class Vaccine {
 
   public void modify(Vaccine newData){
     this.setName(newData.getName());
-//    this.setPet(newData.getPet());
     this.setDateTime(newData.getDateTime());
   }
 }

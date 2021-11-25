@@ -20,7 +20,8 @@ public class PetSpecie {
 
   private String name;
 
-  @OneToMany//todo
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "specie_id")
   private List<Pet> pets;
 
   public void modify(PetSpecie newData){
