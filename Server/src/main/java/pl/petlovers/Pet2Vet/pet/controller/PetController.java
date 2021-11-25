@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pets")
-class PetController {
+public class PetController {
 
   private final PetService petService;
 

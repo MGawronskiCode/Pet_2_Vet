@@ -33,7 +33,7 @@ public class VaccineService {
     Vaccine vaccineFromDB = get(vaccineId);
 
     vaccineFromDB.setName(vaccineNewData.getName());
-//    vaccineFromDB.setPet(vaccineNewData.getPet());
+    vaccineFromDB.setPets(vaccineNewData.getPets());
     vaccineFromDB.setDateTime(vaccineNewData.getDateTime());
 
     return vaccineRepository.save(vaccineFromDB);

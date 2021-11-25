@@ -10,7 +10,7 @@ import pl.petlovers.Pet2Vet.specie.PetSpecie;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class PetSpecieDTO {
+public class PetSpecieDTO {
 
   private String name;
 

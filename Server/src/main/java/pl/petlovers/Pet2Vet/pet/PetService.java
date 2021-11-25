@@ -40,7 +40,7 @@ public class PetService {
     petFromDB.setBirthday(petNewData.getBirthday());
     petFromDB.setSpecie(petNewData.getSpecie());
     petFromDB.setVaccines(petNewData.getVaccines());
-//    petFromDB.setMeal(petNewData.getMeal()); todo add when Meal ready
+    petFromDB.setMeal(petNewData.getMeal());
     petFromDB.setNotes(petNewData.getNotes());
 
     return petRepository.save(petFromDB);

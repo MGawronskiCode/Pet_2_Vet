@@ -1,8 +1,10 @@
 package pl.petlovers.Pet2Vet.specie;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,4 +20,11 @@ public class PetSpecie {
 
   private String name;
 
+  @OneToMany
+  private List<Pet> pets;
+
+  public void modify(PetSpecie newData){
+    this.setName(newData.getName());
+    this.setPets(newData.getPets());
+  }
 }
