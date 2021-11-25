@@ -45,16 +45,6 @@ public class PetSpecieService {
     return new ArrayList<>(userPetsSpecies);
   }
 
-  private List<Pet> getUsersPets(long userId) {
-    AppUser user = getUser(userId);
-
-    return user.getPets();
-  }
-
-  private AppUser getUser(long userId) {
-    return appUserRepository.findById(userId).orElseThrow();
-  }
-
   public void delete(long specieId) {
     petSpecieRepository.delete(get(specieId));
   }
@@ -71,6 +61,16 @@ public class PetSpecieService {
           .getSpecie();
     }
     throw new PetSpecieNotFoundException(petId);
+  }
+
+  private AppUser getUser(long userId) {
+    return appUserRepository.findById(userId).orElseThrow();
+  }
+
+  private List<Pet> getUsersPets(long userId) {
+    AppUser user = getUser(userId);
+
+    return user.getPets();
   }
 
   private Optional<Pet> getUserPetById(long userId, long petId){
