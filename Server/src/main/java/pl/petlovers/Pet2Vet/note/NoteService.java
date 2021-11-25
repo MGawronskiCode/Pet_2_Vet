@@ -47,7 +47,7 @@ public class NoteService {
 
     private List<Pet> getPets(AppUser user) {
         List<Pet> pets = user.getPets();
-        if (pets.size() == 0) {
+        if (pets.isEmpty()) {
             throw new IllegalStateException("No pet was found.");
         }
         return pets;
@@ -64,10 +64,14 @@ public class NoteService {
 
     public Note getUserNote(long userId, long noteId) {
         Note note = getNote(noteId);
-        if (note.getAppUser().getId() != userId) {
-            throw new IllegalArgumentException("Wrong user ID");
+        try {
+            if (note.getAppUser().getId() != userId) {
+                throw new IllegalArgumentException("Wrong user ID");
+            }
+            return note;
+        } catch (NullPointerException error) {
+            throw new NullPointerException("Wrong note ID"); // not User's note but Pet's
         }
-        return note;
     }
 
     private Note getNote(long noteId) {
@@ -77,10 +81,14 @@ public class NoteService {
 
     public Note getPetNote(long petId, long noteId) {
         Note note = getNote(noteId);
-        if (note.getPet().getId() != petId) {
-            throw new IllegalArgumentException("Wrong pet ID");
+        try {
+            if (note.getPet().getId() != petId) {
+                throw new IllegalArgumentException("Wrong pet ID");
+            }
+            return note;
+        } catch (NullPointerException error) {
+            throw new NullPointerException("Wrong note ID"); // not Pet's note but User's
         }
-        return note;
     }
 
     public Note createUserNote(long userId, Note note) {
@@ -113,9 +121,27 @@ public class NoteService {
         return getModifiedNote(newData, noteFromDb);
     }
 
+    public void deleteUserNotes(long userId) {
+        AppUser user = getUser(userId);
+        if (user.getNotes().isEmpty()) {
+            throw new IllegalStateException("No note was found.");
+        }
+        user.getNotes().clear();
+        userRepository.save(user);
+    }
+
     public void deleteUserNote(long userId, long noteId) {
         Note noteFromDb = getUserNote(userId, noteId);
         noteRepository.delete(noteFromDb);
+    }
+
+    public void deletePetNotes(long petId) {
+        Pet pet = getPet(petId);
+        if (pet.getNotes().isEmpty()) {
+            throw new IllegalStateException("No note was found.");
+        }
+        pet.getNotes().clear();
+        petRepository.save(pet);
     }
 
     public void deletePetNote(long petId, long noteId) {

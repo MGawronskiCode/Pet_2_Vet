@@ -82,9 +82,21 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/users/{userId}/notes")
+    public void deleteUserNotes(@PathVariable long userId) {
+        noteService.deleteUserNotes(userId);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/users/{userId}/notes/{noteId}")
     public void deleteUserNote(@PathVariable long userId, @PathVariable long noteId) {
         noteService.deleteUserNote(userId, noteId);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/pets/{petId}/notes")
+    public void deletePetNotes(@PathVariable long petId) {
+        noteService.deletePetNotes(petId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
