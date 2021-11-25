@@ -38,8 +38,12 @@ public class Pet {
     @JoinColumn(name = "pet_id")
     List<Meal> meals;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id")
+    @OneToMany(
+            mappedBy = "pet",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     List<Note> notes;
 
     @ManyToMany(mappedBy = "pets")

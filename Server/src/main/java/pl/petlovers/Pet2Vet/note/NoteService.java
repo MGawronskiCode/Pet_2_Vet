@@ -2,7 +2,6 @@ package pl.petlovers.Pet2Vet.note;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
@@ -122,9 +121,27 @@ public class NoteService {
         return getModifiedNote(newData, noteFromDb);
     }
 
+    public void deleteUserNotes(long userId) {
+        AppUser user = getUser(userId);
+        if (user.getNotes().isEmpty()) {
+            throw new IllegalStateException("No note was found.");
+        }
+        user.getNotes().clear();
+        userRepository.save(user);
+    }
+
     public void deleteUserNote(long userId, long noteId) {
         Note noteFromDb = getUserNote(userId, noteId);
         noteRepository.delete(noteFromDb);
+    }
+
+    public void deletePetNotes(long petId) {
+        Pet pet = getPet(petId);
+        if (pet.getNotes().isEmpty()) {
+            throw new IllegalStateException("No note was found.");
+        }
+        pet.getNotes().clear();
+        petRepository.save(pet);
     }
 
     public void deletePetNote(long petId, long noteId) {

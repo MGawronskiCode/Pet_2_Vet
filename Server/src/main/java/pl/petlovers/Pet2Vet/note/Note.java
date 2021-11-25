@@ -23,7 +23,8 @@ public class Note {
     @JoinColumn(name = "user_id")
     private AppUser appUser;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
     private Pet pet;
 
     private String title;

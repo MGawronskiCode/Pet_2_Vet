@@ -31,4 +31,11 @@ public class NoteNotFoundAdvice {
         return exception.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String illegalStateHandler(IllegalStateException exception) {
+        return exception.getMessage();
+    }
+
 }
