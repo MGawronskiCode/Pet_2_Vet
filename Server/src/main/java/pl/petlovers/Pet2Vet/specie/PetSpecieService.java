@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
 import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
 
 import java.util.*;
 
@@ -51,7 +52,7 @@ public class PetSpecieService {
   }
 
   private AppUser getUser(long userId) {
-    return appUserRepository.findById(userId).orElseThrow(/*new AppUserNotFound(userId)*/);
+    return appUserRepository.findById(userId).orElseThrow();
   }
 
   public void delete(long specieId) {
@@ -62,17 +63,17 @@ public class PetSpecieService {
     return petSpecieRepository.findById(kindId).orElseThrow(() -> new PetSpecieNotFoundException(kindId));
   }
 
-  public PetSpecie getUserPetSpecie(long userId, long petId) {
+  public PetSpecie getUserPetSpecie(long userId, long petId){
     Optional<Pet> wantedPet = getUserPetById(userId, petId);
     if (wantedPet.isPresent()) {
       return wantedPet
           .get()
           .getSpecie();
     }
-    throw new IllegalArgumentException("Specie not found, please check if the user and pet id are correct.");
+    throw new PetSpecieNotFoundException(petId);
   }
 
-  private Optional<Pet> getUserPetById(long userId, long petId) {
+  private Optional<Pet> getUserPetById(long userId, long petId){
     List<Pet> userPets = getUsersPets(userId);
 
     for (Pet pet : userPets) {
@@ -81,6 +82,6 @@ public class PetSpecieService {
       }
     }
 
-    return Optional.empty();
+    throw new PetNotFoundException(petId);
   }
 }
