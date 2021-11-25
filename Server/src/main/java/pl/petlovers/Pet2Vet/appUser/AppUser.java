@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.appUser;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import pl.petlovers.Pet2Vet.note.Note;
@@ -31,6 +32,7 @@ public class AppUser {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "Users_pets",
@@ -39,6 +41,7 @@ public class AppUser {
     )
     private List<Pet> pets = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "appUser",
             cascade = CascadeType.ALL,
