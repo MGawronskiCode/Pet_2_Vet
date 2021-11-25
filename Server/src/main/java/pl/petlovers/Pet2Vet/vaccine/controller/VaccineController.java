@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vaccines")
-class VaccineController {
+public class VaccineController {
 
   private final VaccineService vaccineService;
 

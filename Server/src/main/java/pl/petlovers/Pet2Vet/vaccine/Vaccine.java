@@ -1,9 +1,11 @@
 package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,7 +21,8 @@ public class Vaccine {
 
   private String name;
 
-//  private Pet pet;
+  @OneToMany//todo
+  private List<Pet> pets;
 
   private String dateTime;
 
@@ -28,4 +31,10 @@ public class Vaccine {
     dateTime = LocalDateTime.now().toString();
   } //todo set the time provided by user
 
+
+  public void modify(Vaccine newData){
+    this.setName(newData.getName());
+//    this.setPet(newData.getPet());
+    this.setDateTime(newData.getDateTime());
+  }
 }

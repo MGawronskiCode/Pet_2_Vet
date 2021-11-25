@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.petlovers.Pet2Vet.meal.Meal;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.specie.PetSpecie;
@@ -16,14 +17,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class PetDTO {
+public class PetDTO {
 
   List<Note> notes;
   private String name;
   private String sex;
   private LocalDateTime birthday;
   private PetSpecie specie;
-//  private List <Meal> meals; todo add when Meal ready
+  private List <Meal> meals;
   private List<Vaccine> vaccines;
 
   public static PetDTO of(Pet pet) {
@@ -33,7 +34,7 @@ class PetDTO {
         .birthday(pet.getBirthday())
         .specie(pet.getSpecie())
         .vaccines(pet.getVaccines())
-//        .meals(pet.getMeals()) todo add when Meal ready
+        .meals(pet.getMeals())
         .notes(pet.getNotes())
         .build();
   }
@@ -45,7 +46,7 @@ class PetDTO {
         .birthday(birthday)
         .specie(specie)
         .vaccines(vaccines)
-//        .meals(meals) todo add when Meal ready
+        .meals(meals)
         .notes(notes)
         .build();
   }

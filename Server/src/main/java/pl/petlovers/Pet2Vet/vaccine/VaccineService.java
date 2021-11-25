@@ -30,11 +30,8 @@ public class VaccineService {
   }
 
   public Vaccine update(long vaccineId, Vaccine vaccineNewData) {
-    Vaccine vaccineFromDB = get(vaccineId);
-
-    vaccineFromDB.setName(vaccineNewData.getName());
-//    vaccineFromDB.setPet(vaccineNewData.getPet());
-    vaccineFromDB.setDateTime(vaccineNewData.getDateTime());
+    Vaccine vaccineFromDB = vaccineRepository.getById(vaccineId);
+    vaccineFromDB.modify(vaccineNewData);
 
     return vaccineRepository.save(vaccineFromDB);
   }
