@@ -1,11 +1,9 @@
 package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
-import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity

@@ -43,7 +43,7 @@ public class VaccineController {
   @PostMapping("users/{userId}/pets/{petId}/vaccines")
   public VaccineDTO createVaccineInUserPet(
       @PathVariable long userId,
-      @PathVariable String petId,
+      @PathVariable long petId,
       @RequestBody VaccineDTO vaccineDTO) {
 
     return VaccineDTO.of(vaccineService.createVaccineInUserPet(userId, petId, vaccineDTO.toVaccine()));
