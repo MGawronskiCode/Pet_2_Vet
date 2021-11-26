@@ -6,7 +6,6 @@ import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
-import pl.petlovers.Pet2Vet.specie.PetSpecieNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -67,12 +66,12 @@ public class VaccineService {
           .orElseThrow();
     }
 
-    throw new PetSpecieNotFoundException(petId);
+    throw new IllegalArgumentException();
   }
 
   public Vaccine createVaccineInUserPet(long userId, long petId, Vaccine newVaccineData) {
-    Optional<Pet> wantedPet = getUserPetById(userId, petId);
     AppUser user = appUserRepository.getById(userId);
+    Optional<Pet> wantedPet = getUserPetById(userId, petId);
     if (wantedPet.isPresent()) {
       Pet tmpPet = wantedPet.get();
       List<Vaccine> tmpPetVaccines = tmpPet.getVaccines();
@@ -83,9 +82,44 @@ public class VaccineService {
       addPetToUserPetsList(user, tmpPet, tmpUser, tmpPets);
 
       appUserRepository.save(user);
+      return newVaccineData;
     }
 
-    throw new PetSpecieNotFoundException(petId);  }
+    throw new IllegalArgumentException();
+  }
+
+  public Vaccine updateUserPetVaccine(long userId, long petId, long vaccineId, Vaccine newVaccineData) {
+    Optional<Pet> wantedPet = getUserPetById(userId, petId);
+    AppUser wantedUser = appUserRepository.getById(userId);
+
+    if (wantedPet.isPresent()) {
+      updateVaccineInPetVaccines(vaccineId, newVaccineData, wantedPet);
+      updateUserPetInPetList(petId, wantedUser);
+
+      return newVaccineData;
+    }
+
+    throw new IllegalArgumentException();  }
+
+  private void updateVaccineInPetVaccines(long vaccineId, Vaccine newVaccineData, Optional<Pet> wantedPet) {
+    Pet tmpPet = wantedPet.get();
+    List<Vaccine> TmpPetVaccines= tmpPet.getVaccines();
+    TmpPetVaccines.removeIf(vaccine -> vaccine.getId() == vaccineId);
+    TmpPetVaccines.add(newVaccineData);
+    wantedPet.get().modify(tmpPet);
+  }
+
+  private void updateUserPetInPetList(long petId, AppUser user) {
+    AppUser tmpUser = user;
+    tmpUser.getPets().removeIf(pet -> pet.getId().equals(petId));
+    user.modify(tmpUser);
+  }
+
+
+  public void deleteUserPetVaccine(long userId, long petId, long vaccineId) {
+//    Optional<Pet> wantedPet = getUserPetById(userId, petId);todo
+//if (wantedPet.isPresent()) {}
+    throw new IllegalArgumentException();  }
 
   private void addPetToUserPetsList(AppUser user, Pet tmpPet, AppUser tmpUser, List<Pet> tmpPets) {
     tmpPets.add(tmpPet);
@@ -96,21 +130,11 @@ public class VaccineService {
   private void addVaccineToPetVaccinesList(Vaccine newVaccineData, Optional<Pet> wantedPet, Pet tmpPet, List<Vaccine> tmpPetVaccines) {
     tmpPetVaccines.add(newVaccineData);
     tmpPet.setVaccines(tmpPetVaccines);
-
     wantedPet.orElseThrow().modify(tmpPet);
   }
 
-  public Vaccine updateUserPetVaccine(long userId, long petId, long vaccineId, Vaccine toVaccine) {
-//    Optional<Pet> wantedPet = getUserPetById(userId, petId);
-//if (wantedPet.isPresent()) {}
-    throw new PetSpecieNotFoundException(petId);  }
-
-  public void deleteUserPetVaccine(long userId, long petId, long vaccineId) {
-//    Optional<Pet> wantedPet = getUserPetById(userId, petId);
-//if (wantedPet.isPresent()) {}
-    throw new PetSpecieNotFoundException(petId);  }
-
   private AppUser getUser(long userId) {
+
     return appUserRepository.findById(userId).orElseThrow();
   }
 
@@ -131,7 +155,5 @@ public class VaccineService {
 
     throw new PetNotFoundException(petId);
   }
-
-
 
 }
