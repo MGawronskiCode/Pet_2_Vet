@@ -70,23 +70,45 @@ public class VaccineService {
     throw new PetSpecieNotFoundException(petId);
   }
 
-  public Vaccine createVaccineInUserPet(long userId, String petId, Vaccine toVaccine) {
-//    Optional<Pet>
+  public Vaccine createVaccineInUserPet(long userId, long petId, Vaccine newVaccineData) {
+    Optional<Pet> wantedPet = getUserPetById(userId, petId);
+    AppUser user = appUserRepository.getById(userId);
+    if (wantedPet.isPresent()) {
+      Pet tmpPet = wantedPet.get();
+      List<Vaccine> tmpPetVaccines = tmpPet.getVaccines();
+      addVaccineToPetVaccinesList(newVaccineData, wantedPet, tmpPet, tmpPetVaccines);
 
-    return null;//todo
+      AppUser tmpUser = appUserRepository.getById(userId);
+      List<Pet> tmpPets = tmpUser.getPets();
+      addPetToUserPetsList(user, tmpPet, tmpUser, tmpPets);
+
+      appUserRepository.save(user);
+    }
+
+    throw new PetSpecieNotFoundException(petId);  }
+
+  private void addPetToUserPetsList(AppUser user, Pet tmpPet, AppUser tmpUser, List<Pet> tmpPets) {
+    tmpPets.add(tmpPet);
+    tmpUser.setPets(tmpPets);
+    user.modify(tmpUser);
+  }
+
+  private void addVaccineToPetVaccinesList(Vaccine newVaccineData, Optional<Pet> wantedPet, Pet tmpPet, List<Vaccine> tmpPetVaccines) {
+    tmpPetVaccines.add(newVaccineData);
+    tmpPet.setVaccines(tmpPetVaccines);
+
+    wantedPet.orElseThrow().modify(tmpPet);
   }
 
   public Vaccine updateUserPetVaccine(long userId, long petId, long vaccineId, Vaccine toVaccine) {
-//    Optional<Pet>
-
-    return null;//todo
-  }
+//    Optional<Pet> wantedPet = getUserPetById(userId, petId);
+//if (wantedPet.isPresent()) {}
+    throw new PetSpecieNotFoundException(petId);  }
 
   public void deleteUserPetVaccine(long userId, long petId, long vaccineId) {
-//    Optional<Pet>
-
-//todo
-  }
+//    Optional<Pet> wantedPet = getUserPetById(userId, petId);
+//if (wantedPet.isPresent()) {}
+    throw new PetSpecieNotFoundException(petId);  }
 
   private AppUser getUser(long userId) {
     return appUserRepository.findById(userId).orElseThrow();
