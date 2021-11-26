@@ -117,9 +117,22 @@ public class VaccineService {
 
 
   public void deleteUserPetVaccine(long userId, long petId, long vaccineId) {
-//    Optional<Pet> wantedPet = getUserPetById(userId, petId);todo
-//if (wantedPet.isPresent()) {}
+    Optional<Pet> wantedPet = getUserPetById(userId, petId);
+    AppUser wantedUser = appUserRepository.getById(userId);
+
+    if (wantedPet.isPresent()) {
+      deleteVaccineFromPetVaccinesList(vaccineId, wantedPet);
+      updateUserPetInPetList(petId, wantedUser);
+    }
+
     throw new IllegalArgumentException();  }
+
+  private void deleteVaccineFromPetVaccinesList(long vaccineId, Optional<Pet> wantedPet) {
+    Pet tmpPet = wantedPet.get();
+    List<Vaccine> TmpPetVaccines= tmpPet.getVaccines();
+    TmpPetVaccines.removeIf(vaccine -> vaccine.getId() == vaccineId);
+    wantedPet.get().modify(tmpPet);
+  }
 
   private void addPetToUserPetsList(AppUser user, Pet tmpPet, AppUser tmpUser, List<Pet> tmpPets) {
     tmpPets.add(tmpPet);
