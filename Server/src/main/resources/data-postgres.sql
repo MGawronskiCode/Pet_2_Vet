@@ -8,8 +8,7 @@ INSERT INTO public.app_user(name, sex, login, password) VALUES ('Caroline', 'Wom
 INSERT INTO public.app_user(name, sex, login, password) VALUES ('Lara', 'Woman', 'lara@gmail.com', 'larapassword');
 
 -- Specie
-INSERT INTO public.specie(name) VALUES ('Dog');
-INSERT INTO public.specie(name) VALUES ('Cat');
+INSERT INTO public.specie(name) VALUES ('Mammal');
 INSERT INTO public.specie(name) VALUES ('Bird');
 INSERT INTO public.specie(name) VALUES ('Rodent');
 INSERT INTO public.specie(name) VALUES ('Reptile');
@@ -20,7 +19,7 @@ INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Kitana', 'Female
 INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Neo', 'Male', '2021-05-11', 1); --        Dog #3
 INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Audrey', 'Female', '2021-06-26', 3); --  Bird #4
 INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Rudolph', 'Male', '2020-12-15', 4); -- Rodent #5
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Grinch', 'Male', '2020-09-09', 5); -- Reptile #6
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Grinch', 'Male', '2020-09-09', 1); -- Reptile #6
 INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Dizzy', 'Female', '2021-02-13', 4); -- Rodent #7
 INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Simba', 'Male', '2018-05-03', 2); --      Cat #8
 INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Tiara', 'Female', '2020-10-29', 3); --   Bird #9
@@ -51,7 +50,7 @@ INSERT INTO public.meal(actual_feeding_time, expected_feeding_time, food, food_a
 INSERT INTO public.meal(actual_feeding_time, expected_feeding_time, food, food_amount, pet_id) VALUES ('2021-11-23T09:05:00', '2021-11-23T09:00:00', 'Wet food', 150, 10);
 
 -- Note
-INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Wizard smiled to me=)', '2021-11-23T11:38:00', null, 'New', 2, null);
+INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Wizard smiled to me =)', '2021-11-23T11:38:00', null, 'New', 2, null);
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Buy food', '2021-11-19T09:17:00', '2021-11-23T12:45:00', 'Important', 4, null);
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Buy a new lanyard for Neo', '2021-11-23T08:31:00', null, 'In spare time', null, 3);
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Buy food', '2021-11-23T10:16:00', null, 'Important', null, 4);

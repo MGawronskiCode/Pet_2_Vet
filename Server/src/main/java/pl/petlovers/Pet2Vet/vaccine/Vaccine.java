@@ -21,12 +21,6 @@ public class Vaccine {
 
   private String dateTime;
 
-  @PrePersist
-  protected void onCreate() {
-    dateTime = LocalDateTime.now().toString();
-  } //todo set the time provided by user
-
-
   public void modify(Vaccine newData){
     this.setName(newData.getName());
     this.setDateTime(newData.getDateTime());
