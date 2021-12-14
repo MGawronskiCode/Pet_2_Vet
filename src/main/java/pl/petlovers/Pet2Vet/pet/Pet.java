@@ -47,7 +47,7 @@ public class Pet {
     )
     List<Note> notes;
 
-    @ManyToMany(mappedBy = "pets")
+    @ManyToMany(mappedBy = "pets", cascade = CascadeType.ALL)
     private List<AppUser> appUsers;
 
     public void addNote(Note note) {
@@ -71,5 +71,15 @@ public class Pet {
         this.setMeals(newData.getMeals());
         this.setNotes(newData.getNotes());
         this.setAppUsers(newData.getAppUsers());
+    }
+
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", birthday=" + birthday +
+                '}';
     }
 }

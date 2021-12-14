@@ -42,4 +42,15 @@ public class Note {
             setModified(LocalDateTime.now());
         }
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", created=" + created +
+                ", modified=" + modified +
+                '}';
+    }
 }

@@ -72,4 +72,14 @@ public class AppUser {
             this.setPassword(user.getPassword());
         }
     }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", login='" + login + '\'' +
+                '}';
+    }
 }
