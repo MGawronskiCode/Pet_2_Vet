@@ -3,6 +3,7 @@ package pl.petlovers.Pet2Vet.pet.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.petlovers.Pet2Vet.exceptions.unautorized_exceptions.PetUnauthorizedAttemptException;
 import pl.petlovers.Pet2Vet.pet.PetService;
 
 import java.util.List;
@@ -60,4 +61,23 @@ public class PetController {
   public void cancel(@PathVariable long petId) {
     petService.delete(petId);
   }
+
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping("users/{userId}/pets/{petId}")
+  public PetDTO get(@PathVariable long userId, @PathVariable long petId) {
+    if (userHasPetWithId(userId, petId)) {
+
+      return PetDTO.of(petService.get(petId));
+    } else {
+      throw new PetUnauthorizedAttemptException(userId, petId);
+    }
   }
+
+
+
+
+
+  private boolean userHasPetWithId(long userId, long petId) {
+    return true; //todo!!!
+  }
+}
