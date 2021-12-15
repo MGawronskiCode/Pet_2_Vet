@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.meal.Meal;
 import pl.petlovers.Pet2Vet.note.Note;
@@ -25,7 +26,8 @@ public class Pet {
 
     private String name;
 
-    private String sex;
+    @Enumerated
+    private Sex sex;
 
     private LocalDate birthday;
 
