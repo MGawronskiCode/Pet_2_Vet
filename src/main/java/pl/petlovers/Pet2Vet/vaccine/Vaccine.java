@@ -3,7 +3,6 @@ package pl.petlovers.Pet2Vet.vaccine;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
