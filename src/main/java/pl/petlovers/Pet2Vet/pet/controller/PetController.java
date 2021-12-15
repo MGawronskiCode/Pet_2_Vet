@@ -69,7 +69,16 @@ public class PetController {
   }
 
 //  todo create (@PathVariable long userId, @PathVariable long petId)
-//  todo update (@PathVariable long userId, @PathVariable long petId)
+
+  @ResponseStatus(HttpStatus.ACCEPTED)//todo repair, some reference to meals, update doesnt work
+  @PutMapping("/users/{userId}/pets/{petId}")
+  public PetDTO update(@PathVariable long userId, @PathVariable long petId, @RequestBody PetDTO petDTO) {
+    if (userHasPetWithId(userId, petId)) {
+      return PetDTO.of(petService.update(petId, petDTO.toPet()));
+    } else {
+      throw new PetUnauthorizedAttemptException(userId, petId);
+    }
+  }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("users/{userId}/pets/{petId}")
@@ -80,7 +89,6 @@ public class PetController {
       throw new PetUnauthorizedAttemptException(userId, petId);
     }
   }
-
 
   private boolean userHasPetWithId(long userId, long petId) {
     AppUser user = appUserService.get(userId);
