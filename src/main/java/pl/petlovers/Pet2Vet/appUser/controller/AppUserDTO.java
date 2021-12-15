@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 
 @Data
@@ -13,7 +14,7 @@ import pl.petlovers.Pet2Vet.appUser.AppUser;
 public class AppUserDTO {
 
     private String name;
-    private String sex;
+    private Sex sex;
 
     public static AppUserDTO of(AppUser appUser) {
         return AppUserDTO.builder()
