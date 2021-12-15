@@ -3,7 +3,10 @@ package pl.petlovers.Pet2Vet.appUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.AppUserNotFoundException;
+import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
+
 
 import java.util.List;
 
@@ -29,12 +32,12 @@ public class AppUserService {
                 .orElseThrow(() -> new AppUserNotFoundException(id));
     }
 
-    public AppUser create(AppUser user){
-        log.info("Creating " + user.toString());
-        return appUserRepository.save(user);
+    public AppUser create(AppUserDTO userDTO){
+        log.info("Creating " + userDTO.toString());
+        return appUserRepository.save(userDTO.toAppUser());
     }
 
-    public AppUser update(long id, AppUser user){
+    public AppUser update(long id, AppUserDTO user){
         AppUser userFromDb = get(id);
         log.info("Updating of " + userFromDb.toString() + " to " + user.toString());
         userFromDb.modify(user);

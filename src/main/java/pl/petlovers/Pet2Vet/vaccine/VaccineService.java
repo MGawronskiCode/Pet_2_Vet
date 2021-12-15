@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
+
 import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.VaccineNotFoundException;
+import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
+
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.PetNotFoundException;
 
@@ -116,7 +119,9 @@ public class VaccineService {
 
   private void updateVaccineInPetVaccines(long vaccineId, Vaccine newVaccineData, Optional<Pet> wantedPet) {
     Pet tmpPet = wantedPet.get();
-    log.info(FETCHING_VACCINE + vaccineId);
+//     log.info(FETCHING_VACCINE + vaccineId);
+    log.info("Fetching vaccine with id = " + vaccineId);
+
     List<Vaccine> tmpPetVaccines= tmpPet.getVaccines();
     log.info("Updating of " + tmpPetVaccines.toString() + " to " + newVaccineData.toString());
     tmpPetVaccines.removeIf(vaccine -> vaccine.getId() == vaccineId);
@@ -127,7 +132,7 @@ public class VaccineService {
   private void updateUserPetInPetList(long petId, AppUser user) {
     AppUser tmpUser = user;
     tmpUser.getPets().removeIf(pet -> pet.getId().equals(petId));
-    user.modify(tmpUser);
+    user.modify(AppUserDTO.of(tmpUser));
   }
 
 
@@ -152,7 +157,7 @@ public class VaccineService {
   private void addPetToUserPetsList(AppUser user, Pet tmpPet, AppUser tmpUser, List<Pet> tmpPets) {
     tmpPets.add(tmpPet);
     tmpUser.setPets(tmpPets);
-    user.modify(tmpUser);
+    user.modify(AppUserDTO.of(tmpUser));
   }
 
   private void addVaccineToPetVaccinesList(Vaccine newVaccineData, Optional<Pet> wantedPet, Pet tmpPet, List<Vaccine> tmpPetVaccines) {
