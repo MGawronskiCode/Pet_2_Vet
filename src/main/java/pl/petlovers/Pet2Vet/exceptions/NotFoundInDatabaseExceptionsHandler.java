@@ -29,7 +29,7 @@ public class NotFoundInDatabaseExceptionsHandler {
   @ResponseBody
   @ExceptionHandler(NoteNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  String appUserNotFoundHandler(NoteNotFoundException exception) {
+  String noteNotFoundHandler(NoteNotFoundException exception) {
     return exception.getMessage();
   }
 
@@ -43,7 +43,7 @@ public class NotFoundInDatabaseExceptionsHandler {
   @ResponseBody
   @ExceptionHandler(PetSpecieNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  String kindNotFoundHandler(PetSpecieNotFoundException exception) {
+  String petSpecieNotFoundHandler(PetSpecieNotFoundException exception) {
     return exception.getMessage();
   }
 
