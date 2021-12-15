@@ -14,16 +14,16 @@ INSERT INTO public.specie(name) VALUES ('Rodent');
 INSERT INTO public.specie(name) VALUES ('Reptile');
 
 -- Pet
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Wizard', 'Male', '2021-01-05', 1); --     Dog #1
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Kitana', 'Female', '2019-02-05', 2); --   Cat #2
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Neo', 'Male', '2021-05-11', 1); --        Dog #3
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Audrey', 'Female', '2021-06-26', 3); --  Bird #4
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Rudolph', 'Male', '2020-12-15', 4); -- Rodent #5
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Grinch', 'Male', '2020-09-09', 1); -- Reptile #6
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Dizzy', 'Female', '2021-02-13', 4); -- Rodent #7
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Simba', 'Male', '2018-05-03', 2); --      Cat #8
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Tiara', 'Female', '2020-10-29', 3); --   Bird #9
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Merlin', 'Male', '2015-04-30', 1); --     Dog #10
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Wizard', 0, '2021-01-05', 1); --     Dog #1
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Kitana', 1, '2019-02-05', 2); --   Cat #2
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Neo', 0, '2021-05-11', 1); --        Dog #3
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Audrey', 1, '2021-06-26', 3); --  Bird #4
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Rudolph', 0, '2020-12-15', 4); -- Rodent #5
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Grinch', 0, '2020-09-09', 1); -- Reptile #6
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Dizzy', 1, '2021-02-13', 4); -- Rodent #7
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Simba', 0, '2018-05-03', 2); --      Cat #8
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Tiara', 1, '2020-10-29', 3); --   Bird #9
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Merlin', 0, '2015-04-30', 1); --     Dog #10
 
 -- Users pets
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 2);
