@@ -24,25 +24,12 @@ public class PetDTO {
   private String name;
   private String sex;
   private LocalDate birthday;
-//  private PetSpecie specieObject;
-//  private List <Meal> meals;
-//  private List <Vaccine> vaccines;
-//  private List<Note> notes;
-
-  private String specie;
-  private List <Long> mealsIDs;
-  private List <Long> vaccinesIDs;
-  private List <Long> notesIDs;
 
   public static PetDTO of(Pet pet) {
     return PetDTO.builder()
         .name(pet.getName())
         .sex(pet.getSex())
         .birthday(pet.getBirthday())
-        .specie(pet.getSpecie().getName())
-        .vaccinesIDs(pet.getVaccines().stream().map(Vaccine::getId).toList())
-        .mealsIDs(pet.getMeals().stream().map(Meal::getId).toList())
-        .notesIDs(pet.getNotes().stream().map(Note::getId).toList())
         .build();
   }
 
@@ -51,12 +38,6 @@ public class PetDTO {
         .name(name)
         .sex(sex)
         .birthday(birthday)
-//        todo jak zmienić te IDiki na obiekty
-//        .specie(specieObject)
-//        .vaccines(vaccines)
-//        .meals(meals)
-//        .notes(notes)
         .build();
   }
-
 }

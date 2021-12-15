@@ -37,13 +37,13 @@ public class AppUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AppUserDTO create(@RequestBody AppUser appUser) {//todo dto?
+    public AppUserDTO create(@RequestBody AppUser appUser) {
         return AppUserDTO.of(appUserService.create(appUser));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/{userId}")
-    public AppUserDTO update(@PathVariable long userId, @RequestBody AppUser user) {//todo dto?
+    public AppUserDTO update(@PathVariable long userId, @RequestBody AppUser user) {
         return AppUserDTO.of(appUserService.update(userId, user));
     }
 

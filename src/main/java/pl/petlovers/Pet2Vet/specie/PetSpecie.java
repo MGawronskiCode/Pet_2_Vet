@@ -26,6 +26,15 @@ public class PetSpecie {
 
   public void modify(PetSpecie newData){
     this.setName(newData.getName());
-    this.setPets(newData.getPets());
+    // TODO: line below make doesn't allow to modify the Pet's specie (PUT method in PetSpecieController)
+//    this.setPets(newData.getPets());
+  }
+
+  @Override
+  public String toString() {
+    return "PetSpecie{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            '}';
   }
 }

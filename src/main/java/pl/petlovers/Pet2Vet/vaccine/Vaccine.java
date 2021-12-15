@@ -25,4 +25,13 @@ public class Vaccine {
     this.setName(newData.getName());
     this.setDateTime(newData.getDateTime());
   }
+
+  @Override
+  public String toString() {
+    return "Vaccine{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", dateTime='" + dateTime + '\'' +
+            '}';
+  }
 }

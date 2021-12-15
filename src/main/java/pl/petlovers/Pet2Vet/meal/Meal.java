@@ -27,4 +27,15 @@ public class Meal {
         setExpectedFeedingTime(meal.getExpectedFeedingTime());
         setActualFeedingTime(meal.getActualFeedingTime());
     }
+
+    @Override
+    public String toString() {
+        return "Meal{" +
+                "id=" + id +
+                ", food='" + food + '\'' +
+                ", foodAmount=" + foodAmount +
+                ", expectedFeedingTime=" + expectedFeedingTime +
+                ", actualFeedingTime=" + actualFeedingTime +
+                '}';
+    }
 }

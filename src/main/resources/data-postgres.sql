@@ -53,6 +53,7 @@ INSERT INTO public.meal(actual_feeding_time, expected_feeding_time, food, food_a
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Wizard smiled to me =)', '2021-11-23T11:38:00', null, 'New', 2, null);
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Buy food', '2021-11-19T09:17:00', '2021-11-23T12:45:00', 'Important', 4, null);
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Buy a new lanyard for Neo', '2021-11-23T08:31:00', null, 'In spare time', null, 3);
+INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Make a new photo', '2021-11-23T08:31:00', null, 'Important', null, 3);
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Buy food', '2021-11-23T10:16:00', null, 'Important', null, 4);
 INSERT INTO public.note(content, created, modified, title, user_id, pet_id) VALUES ('Call dr. Henry!', '2021-11-23T05:08:00', null, 'Important', null, 10);
 
