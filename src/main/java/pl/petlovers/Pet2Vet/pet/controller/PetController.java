@@ -68,10 +68,24 @@ public class PetController {
     }
   }
 
+//  todo create (@PathVariable long userId, @PathVariable long petId)
+//  todo update (@PathVariable long userId, @PathVariable long petId)
+
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("users/{userId}/pets/{petId}")
+  public void cancel(@PathVariable long userId, @PathVariable long petId) {
+    if (userHasPetWithId(userId, petId)) {
+      petService.delete(petId);
+    } else {
+      throw new PetUnauthorizedAttemptException(userId, petId);
+    }
+  }
+
+
   private boolean userHasPetWithId(long userId, long petId) {
     AppUser user = appUserService.get(userId);
-    for (Pet pet : user.getPets()){
-      if (pet.getId() == petId){
+    for (Pet pet : user.getPets()) {
+      if (pet.getId() == petId) {
         return true;
       }
     }
