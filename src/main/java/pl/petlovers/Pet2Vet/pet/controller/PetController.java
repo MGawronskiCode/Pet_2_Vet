@@ -27,6 +27,7 @@ public class PetController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/pets")
   public List<PetDTO> get() {
+
     return petService.getAll()
         .stream()
         .map(PetDTO::of)
@@ -36,18 +37,21 @@ public class PetController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/pets/{petId}")
   public PetDTO get(@PathVariable long petId) {
+
     return PetDTO.of(petService.get(petId));
   }
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/pets")
   public PetDTO create(@RequestBody PetDTO petDTO) {
+
     return PetDTO.of(petService.create(petDTO.toPet()));
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/pets/{petId}")
   public PetDTO update(@PathVariable long petId, @RequestBody PetDTO petDTO) {
+
     return PetDTO.of(petService.update(petId, petDTO.toPet()));
   }
 
@@ -74,6 +78,7 @@ public class PetController {
   @PutMapping("/users/{userId}/pets/{petId}")
   public PetDTO update(@PathVariable long userId, @PathVariable long petId, @RequestBody PetDTO petDTO) {
     if (userHasPetWithId(userId, petId)) {
+
       return PetDTO.of(petService.update(petId, petDTO.toPet()));
     } else {
       throw new PetUnauthorizedAttemptException(userId, petId);
@@ -94,6 +99,7 @@ public class PetController {
     AppUser user = appUserService.get(userId);
     for (Pet pet : user.getPets()) {
       if (pet.getId() == petId) {
+
         return true;
       }
     }
