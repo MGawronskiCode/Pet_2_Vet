@@ -4,11 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.AppUserNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.NoteNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.NoteNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.Collection;

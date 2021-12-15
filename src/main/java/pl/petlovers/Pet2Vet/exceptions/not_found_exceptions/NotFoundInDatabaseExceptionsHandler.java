@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.exceptions;
+package pl.petlovers.Pet2Vet.exceptions.not_found_exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.*;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.*;
 
 @Slf4j
 @ControllerAdvice
