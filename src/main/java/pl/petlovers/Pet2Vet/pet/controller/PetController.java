@@ -51,5 +51,4 @@ public class PetController {
   public void cancel(@PathVariable long petId) {
     petService.delete(petId);
   }
-
-}
+  }

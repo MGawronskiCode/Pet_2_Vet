@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Slf4j
 @ResponseStatus(value = HttpStatus.FORBIDDEN)
-public class ForbiddenExceptionsHandler extends RuntimeException{
-
-  protected ForbiddenExceptionsHandler(String message) {
+public abstract class ForbiddenAccessException extends RuntimeException{
+//todo all forbidden exceptions
+  protected ForbiddenAccessException(String message) {
     super(message);
     log.error("---Error: " + message);
   }
