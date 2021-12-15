@@ -3,6 +3,7 @@ package pl.petlovers.Pet2Vet.pet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.PetNotFoundException;
 
 import java.util.List;
 
