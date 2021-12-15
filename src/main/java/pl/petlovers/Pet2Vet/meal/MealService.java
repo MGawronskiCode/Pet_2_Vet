@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.List;
@@ -21,18 +22,39 @@ public class MealService {
         this.mealRepository = mealRepository;
     }
 
-    public List<Meal> getAll(long petId) {
+    public List<Meal> getAllMeals(long petId) {
         log.info("Fetching meals for the pet with id = " + petId);
-        return petRepository.getById(petId).getMeals();
+        Pet pet = getPet(petId);
+        try {
+            if (pet.getId() != petId) {
+                throw new PetNotFoundException(petId);
+            }
+            return petRepository.getById(petId).getMeals();
+        } catch (NullPointerException error) {
+            throw new NullPointerException("There is no pet with id " + petId);
+        }
     }
 
-    public Meal get(long petId, long mealId) {
+    public Meal getMeal(long mealId) {
         log.info("Fetching meal with id = " + mealId);
         return mealRepository.findById(mealId)
                 .orElseThrow(() -> new MealNotFoundException(mealId));
     }
 
-    public Meal create(long petId, Meal meal) {
+    public Meal getPetMeal(long petId, long mealId) {
+        log.info("Fetching pet's meal");
+        Meal meal = getMeal(mealId);
+        try {
+            if (meal.getPet().getId() != petId) {
+                throw new MealNotFoundException(mealId);
+            }
+            return meal;
+        } catch (NullPointerException error) {
+            throw new NullPointerException("There is no pet with id " + petId);
+        }
+    }
+
+    public Meal createMeal(long petId, Meal meal) {
         log.info("Fetching pet with id = " + petId);
         Pet pet = petRepository.getById(petId);
         log.info("Creating " + meal.toString());
@@ -41,16 +63,24 @@ public class MealService {
         return meal;
     }
 
-    public Meal update(long petId, long id, Meal meal) {
+    public Meal updateMeal(long petId, long id, Meal meal) {
         log.info("Fetching meal with id = " + id);
-        Meal mealFromDb = get(petId, id);
+        Meal mealFromDb = getPetMeal(petId, id);
         log.info("Updating of " + mealFromDb.toString() + " to " + meal.toString());
         mealFromDb.modify(meal);
         return mealRepository.save(mealFromDb);
     }
 
-    public void delete(long petId, long id) {
-        mealRepository.delete(get(petId, id));
+    public void deleteMeal(long petId, long id) {
+        mealRepository.delete(getPetMeal(petId, id));
         log.info("Deleting meal with id = " + id);
     }
+
+    private Pet getPet(long petId) {
+        log.info("Fetching pet with id = " + petId);
+        return petRepository.findById(petId)
+                .orElseThrow(() -> new PetNotFoundException(petId));
+
+    }
+
 }
