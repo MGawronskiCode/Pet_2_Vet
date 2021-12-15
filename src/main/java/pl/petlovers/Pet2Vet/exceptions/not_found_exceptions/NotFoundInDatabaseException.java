@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.exceptions;
+package pl.petlovers.Pet2Vet.exceptions.not_found_exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,6 @@ public abstract class NotFoundInDatabaseException extends RuntimeException {
 
   protected NotFoundInDatabaseException(String message) {
     super(message);
-    log.error("Error: " + message);
+    log.error("---Error: " + message);
   }
 }

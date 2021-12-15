@@ -77,10 +77,9 @@ public class OtherExceptionsHandler {
   @ResponseBody
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.FORBIDDEN)
-  String otherException() {
-    final String message = "unknown error";
-    log.error(ERROR + message);
-    return message;
+  String otherException(Exception exception) {
+    log.error(ERROR + exception.toString());
+    return exception.toString();
   }
 
 }

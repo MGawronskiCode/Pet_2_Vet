@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
 
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.VaccineNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.VaccineNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 
 import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 
 import java.util.List;
 import java.util.Optional;

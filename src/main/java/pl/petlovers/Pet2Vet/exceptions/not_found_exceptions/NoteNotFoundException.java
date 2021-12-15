@@ -1,6 +1,4 @@
-package pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions;
-
-import pl.petlovers.Pet2Vet.exceptions.NotFoundInDatabaseException;
+package pl.petlovers.Pet2Vet.exceptions.not_found_exceptions;
 
 // Exception used to indicate when a note is looked up but not found.
 // thrown, this extra tidbit of Spring MVC configuration is used to render an HTTP 404
