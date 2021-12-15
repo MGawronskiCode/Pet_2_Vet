@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.petlovers.Pet2Vet.Sex;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.Enumerated;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,11 +25,14 @@ public class PetDTO {
 
   private LocalDate birthday;
 
+  private List<Long> owners;
+
   public static PetDTO of(Pet pet) {
     return PetDTO.builder()
         .name(pet.getName())
         .sex(pet.getSex())
         .birthday(pet.getBirthday())
+        .owners(pet.getAppUsers().stream().map(AppUser::getId).toList())
         .build();
   }
 
