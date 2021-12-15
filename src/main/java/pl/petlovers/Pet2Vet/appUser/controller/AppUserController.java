@@ -3,7 +3,6 @@ package pl.petlovers.Pet2Vet.appUser.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserService;
 
 import java.util.List;
@@ -37,14 +36,14 @@ public class AppUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AppUserDTO create(@RequestBody AppUser appUser) {
-        return AppUserDTO.of(appUserService.create(appUser));
+    public AppUserDTO create(@RequestBody AppUserDTO appUserDTO) {
+        return AppUserDTO.of(appUserService.create(appUserDTO));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/{userId}")
-    public AppUserDTO update(@PathVariable long userId, @RequestBody AppUser user) {
-        return AppUserDTO.of(appUserService.update(userId, user));
+    public AppUserDTO update(@PathVariable long userId, @RequestBody AppUserDTO appUserDTO) {
+        return AppUserDTO.of(appUserService.update(userId, appUserDTO));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
