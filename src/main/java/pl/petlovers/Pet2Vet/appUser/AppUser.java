@@ -4,7 +4,7 @@ package pl.petlovers.Pet2Vet.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import pl.petlovers.Pet2Vet.Sex;
+import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
@@ -27,8 +27,7 @@ public class AppUser {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    @Enumerated
-    private Sex sex;
+    private String sex;
     @Column(nullable = false, unique = true)
     private String login;
     @Column(nullable = false)
@@ -60,18 +59,12 @@ public class AppUser {
         this.notes.add(note);
     }
 
-    public void modify(AppUser user) {
+    public void modify(AppUserDTO user) {
         if (StringUtils.isNoneBlank(user.getName())) {
             this.setName(user.getName());
         }
-        if (StringUtils.isNoneBlank(user.getSex().toString())) {
+        if (StringUtils.isNoneBlank(user.getSex())) {
             this.setSex(user.getSex());
-        }
-        if (StringUtils.isNoneBlank(user.getLogin())) {
-            this.setLogin(user.getLogin());
-        }
-        if (StringUtils.isNoneBlank(user.getPassword())) {
-            this.setPassword(user.getPassword());
         }
     }
 

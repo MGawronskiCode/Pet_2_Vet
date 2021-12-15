@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.VaccineNotFoundException;
+import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.exceptions.precise_not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +15,9 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class VaccineService {
+
   private final AppUserRepository appUserRepository;
   private final VaccineRepository vaccineRepository;
-
-  static final String FETCHING_VACCINE = "Fetching vaccine with id = ";
 
   @Autowired
   public VaccineService(AppUserRepository appUserRepository, VaccineRepository vaccineRepository) {
@@ -32,7 +31,7 @@ public class VaccineService {
   }
 
   public Vaccine get(long vaccineId) {
-    log.info(FETCHING_VACCINE + vaccineId);
+    log.info("Fetching vaccine with id = " + vaccineId);
     return vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
   }
 
@@ -44,7 +43,7 @@ public class VaccineService {
   }
 
   public Vaccine update(long vaccineId, Vaccine vaccineNewData) {
-    log.info(FETCHING_VACCINE + vaccineId);
+    log.info("Fetching vaccine with id = " + vaccineId);
     Vaccine vaccineFromDB = vaccineRepository.getById(vaccineId);
     log.info("Updating of " + vaccineFromDB + " to " + vaccineNewData.toString());
     vaccineFromDB.modify(vaccineNewData);
@@ -70,7 +69,7 @@ public class VaccineService {
 
   public Vaccine getUserPetsVaccine(long userId, long petId, long vaccineId) {
     Optional<Pet> wantedPet = getUserPetById(userId, petId);
-    log.info(FETCHING_VACCINE + vaccineId);
+    log.info("Fetching vaccine with id = " + vaccineId);
     if (wantedPet.isPresent()) {
       return wantedPet.get().getVaccines().stream()
           .filter(vaccine -> vaccine.getId() == vaccineId)
@@ -116,7 +115,7 @@ public class VaccineService {
 
   private void updateVaccineInPetVaccines(long vaccineId, Vaccine newVaccineData, Optional<Pet> wantedPet) {
     Pet tmpPet = wantedPet.get();
-    log.info(FETCHING_VACCINE + vaccineId);
+    log.info("Fetching vaccine with id = " + vaccineId);
     List<Vaccine> tmpPetVaccines= tmpPet.getVaccines();
     log.info("Updating of " + tmpPetVaccines.toString() + " to " + newVaccineData.toString());
     tmpPetVaccines.removeIf(vaccine -> vaccine.getId() == vaccineId);
@@ -127,7 +126,7 @@ public class VaccineService {
   private void updateUserPetInPetList(long petId, AppUser user) {
     AppUser tmpUser = user;
     tmpUser.getPets().removeIf(pet -> pet.getId().equals(petId));
-    user.modify(tmpUser);
+    user.modify(AppUserDTO.of(tmpUser));
   }
 
 
@@ -152,7 +151,7 @@ public class VaccineService {
   private void addPetToUserPetsList(AppUser user, Pet tmpPet, AppUser tmpUser, List<Pet> tmpPets) {
     tmpPets.add(tmpPet);
     tmpUser.setPets(tmpPets);
-    user.modify(tmpUser);
+    user.modify(AppUserDTO.of(tmpUser));
   }
 
   private void addVaccineToPetVaccinesList(Vaccine newVaccineData, Optional<Pet> wantedPet, Pet tmpPet, List<Vaccine> tmpPetVaccines) {
@@ -162,7 +161,7 @@ public class VaccineService {
   }
 
   private AppUser getUser(long userId) {
-    log.info(FETCHING_VACCINE + userId);
+    log.info("Fetching user with id = " + userId);
     return appUserRepository.findById(userId).orElseThrow();
   }
 
@@ -174,7 +173,7 @@ public class VaccineService {
 
   private Optional<Pet> getUserPetById(long userId, long petId){
     List<Pet> userPets = getUsersPets(userId);
-    log.info(FETCHING_VACCINE + petId);
+    log.info("Fetching pet with id = " + petId);
     for (Pet pet : userPets) {
       if (pet.getId() == petId) {
         return Optional.of(pet);
