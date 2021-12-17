@@ -68,6 +68,10 @@ public class AppUser {
         }
     }
 
+    public void addPetToPetsList(Pet pet){
+        this.pets.add(pet);
+    }
+
     @Override
     public String toString() {
         return "AppUser{" +
