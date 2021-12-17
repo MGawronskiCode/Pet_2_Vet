@@ -3,6 +3,7 @@ package pl.petlovers.Pet2Vet.exceptions;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -72,6 +73,14 @@ public class OtherExceptionsHandler {
   String constraintViolationException(ConstraintViolationException exception) {
     log.error(ERROR + exception.toString());
     return exception.getMessage();
+  }
+
+  @ResponseBody
+  @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+  @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+  String invalidDataAccessApiUsageException(InvalidDataAccessApiUsageException exception) {
+    log.error(ERROR + exception.toString());
+    return exception.toString();
   }
 
   @ResponseBody
