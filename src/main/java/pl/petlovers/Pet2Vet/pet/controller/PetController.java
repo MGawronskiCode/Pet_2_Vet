@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserService;
+import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.exceptions.unautorized_exceptions.PetUnauthorizedAttemptException;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetService;
@@ -72,7 +73,17 @@ public class PetController {
     }
   }
 
-//  todo create (@PathVariable long userId, @PathVariable long petId)
+
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping("users/{userId}/pets")
+  public PetDTO create(@PathVariable long userId, @RequestBody PetDTO petDTO) {
+    AppUser user = appUserService.get(userId);
+    user.addPetToPetsList(petDTO.toPet());
+    appUserService.update(userId, AppUserDTO.of(user));
+
+    return PetDTO.of(petService.create(petDTO.toPet()));
+  }
+
 
   @ResponseStatus(HttpStatus.ACCEPTED)//todo repair, some reference to meals, update doesnt work
   @PutMapping("/users/{userId}/pets/{petId}")
