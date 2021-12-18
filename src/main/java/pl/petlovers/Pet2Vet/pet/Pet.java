@@ -7,10 +7,12 @@ import pl.petlovers.Pet2Vet.meal.Meal;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.specie.PetSpecie;
 import pl.petlovers.Pet2Vet.vaccine.Vaccine;
+import pl.petlovers.Pet2Vet.visit.Visit;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -41,16 +43,14 @@ public class Pet {
     @JoinColumn(name = "pet_id")
     List<Meal> meals;
 
-    @OneToMany(
-            mappedBy = "pet",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<Note> notes;
 
     @ManyToMany(mappedBy = "pets", cascade = CascadeType.ALL)
     private List<AppUser> appUsers;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Visit> visits = new ArrayList<>();
 
     public void addNote(Note note) {
         note.setCreated(LocalDateTime.now());
@@ -62,6 +62,10 @@ public class Pet {
 
     public void addMeal(Meal meal) {
         this.meals.add(meal);
+    }
+
+    public void addVisit(Visit visit) {
+        this.visits.add(visit);
     }
 
     public void modify(Pet newData){
