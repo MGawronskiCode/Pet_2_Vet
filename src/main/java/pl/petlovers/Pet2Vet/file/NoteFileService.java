@@ -22,7 +22,7 @@ public class NoteFileService {
   public List<File> getAll(long noteId) { return noteRepository.getById(noteId).getFiles();}
 
   public File get(long fileId) {
-    return fileRepository.getById(fileId);
+    return fileRepository.getById(fileId) ;
   }
 
   public File create(long noteId, File file) {
