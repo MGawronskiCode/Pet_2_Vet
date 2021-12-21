@@ -3,6 +3,8 @@ package pl.petlovers.Pet2Vet.pet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
+import pl.petlovers.Pet2Vet.appUser.AppUserService;
 
 import java.util.List;
 
@@ -11,10 +13,12 @@ import java.util.List;
 public class PetService {
 
   private final PetRepository petRepository;
+  private final AppUserService appUserService;
 
   @Autowired
-  public PetService(PetRepository petRepository) {
+  public PetService(PetRepository petRepository, AppUserService appUserService) {
     this.petRepository = petRepository;
+    this.appUserService = appUserService;
   }
 
   public List<Pet> getAll() {
@@ -47,4 +51,10 @@ public class PetService {
     log.info("Fetching pet with id = " + petId);
     return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
   }
+
+    public List<Pet> getUserPets(long userId) {
+      AppUser user = appUserService.get(userId);
+      log.info("Fetching all user's pets");
+      return user.getPets();
+    }
 }

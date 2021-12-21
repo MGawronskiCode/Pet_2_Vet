@@ -8,7 +8,7 @@ import pl.petlovers.Pet2Vet.pet.PetService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pets")
+//@RequestMapping("/pets")
 @CrossOrigin
 public class PetController {
 
@@ -20,7 +20,7 @@ public class PetController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping
+  @GetMapping("/pets")
   public List<PetDTO> get() {
     return petService.getAll()
         .stream()
@@ -29,25 +29,34 @@ public class PetController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping("/{petId}")
+  @GetMapping("/{userId}/pets")
+  public List<PetDTO> getUserPets(@PathVariable long userId) {
+    return petService.getUserPets(userId)
+            .stream()
+            .map(PetDTO::of)
+            .toList();
+  }
+
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/pets/{petId}")
   public PetDTO get(@PathVariable long petId) {
     return PetDTO.of(petService.get(petId));
   }
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping
+  @PostMapping("/pets")
   public PetDTO create(@RequestBody PetDTO petDTO) {
     return PetDTO.of(petService.create(petDTO.toPet()));
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @PutMapping("/{petId}")
+  @PutMapping("/pets/{petId}")
   public PetDTO update(@PathVariable long petId, @RequestBody PetDTO petDTO) {
     return PetDTO.of(petService.update(petId, petDTO.toPet()));
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("/{petId}")
+  @DeleteMapping("/pets/{petId}")
   public void cancel(@PathVariable long petId) {
     petService.delete(petId);
   }
