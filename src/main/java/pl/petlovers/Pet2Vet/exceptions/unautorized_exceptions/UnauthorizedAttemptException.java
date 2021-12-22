@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 public abstract class UnauthorizedAttemptException extends RuntimeException {
-//todo all unauthorized exceptions
   protected UnauthorizedAttemptException(String message) {
     super(message);
     log.error("---Error: " + message);
