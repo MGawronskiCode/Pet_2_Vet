@@ -25,14 +25,14 @@ public class PetDTO {
 
   private LocalDate birthday;
 
-  private List<Long> owners;
+//  private List<Long> owners;
 
   public static PetDTO of(Pet pet) {
     return PetDTO.builder()
         .name(pet.getName())
         .sex(pet.getSex())
         .birthday(pet.getBirthday())
-        .owners(pet.getAppUsers().stream().map(AppUser::getId).toList())
+//        .owners(pet.getAppUsers().stream().map(AppUser::getId).toList())
         .build();
   }
 
