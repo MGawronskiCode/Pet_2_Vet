@@ -26,7 +26,7 @@ public class PetDTO {
 
   private LocalDate birthday;
 
-  private List<Long> owners;
+//  private List<Long> owners;
 
   public static PetDTO of(Pet pet) {
     return PetDTO.builder()
