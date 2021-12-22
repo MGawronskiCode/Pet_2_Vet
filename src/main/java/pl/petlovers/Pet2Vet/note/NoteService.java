@@ -85,7 +85,7 @@ public class NoteService {
         }
     }
 
-    private Note getNote(long noteId) {
+    public Note getNote(long noteId) {
         log.info("Fetching note with id = " + noteId);
         return noteRepository.findById(noteId)
                 .orElseThrow(() -> new NoteNotFoundException(noteId));
