@@ -3,10 +3,11 @@ package pl.petlovers.Pet2Vet.specie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.appUser.AppUserNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetSpecieNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 
 import java.util.*;
 
