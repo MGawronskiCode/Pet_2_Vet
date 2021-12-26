@@ -23,7 +23,7 @@ public class AppUserDTO {
                 .build();
     }
 
-    public AppUser toAppUser() {//todo unused?
+    public AppUser toAppUser() {
         return AppUser.builder()
                 .name(name)
                 .sex(sex)
