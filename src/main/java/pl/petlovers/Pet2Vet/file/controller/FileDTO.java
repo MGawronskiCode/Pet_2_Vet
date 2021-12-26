@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class FileDTO {
 
-//  private Long id;
+  private Long id;
   private String name;
   private String url;
   private LocalDateTime created;
@@ -22,7 +22,7 @@ public class FileDTO {
 
   public static FileDTO of(File file) {
     return FileDTO.builder()
-//      .id(file.getId())
+      .id(file.getId())
       .name(file.getName())
       .url(file.getUrl())
       .created(file.getCreated())
@@ -32,7 +32,7 @@ public class FileDTO {
 
   public File toFile() {
     return File.builder()
-//      .id(id)
+      .id(id)
       .name(name)
       .url(url)
       .created(created)
