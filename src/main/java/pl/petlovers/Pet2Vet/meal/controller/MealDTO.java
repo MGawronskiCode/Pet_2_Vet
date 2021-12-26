@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MealDTO {
+
+    private Long id;
     private String food;
     private double foodAmount;
     private LocalDateTime expectedFeedingTime;
@@ -20,6 +22,7 @@ public class MealDTO {
 
     public static MealDTO of(Meal meal) {
         return MealDTO.builder()
+                .id(meal.getId())
                 .food(meal.getFood())
                 .foodAmount(meal.getFoodAmount())
                 .expectedFeedingTime(meal.getExpectedFeedingTime())
@@ -29,6 +32,7 @@ public class MealDTO {
 
     public Meal toMeal() {
         return Meal.builder()
+                .id(id)
                 .food(food)
                 .foodAmount(foodAmount)
                 .expectedFeedingTime(expectedFeedingTime)
