@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
 
 import java.util.List;
 
@@ -23,18 +24,18 @@ public class PetService {
     return petRepository.findAll();
   }
 
-  public Pet create(Pet pet) {
-    log.info("Creating " + pet.toString());
-    petRepository.save(pet);
+  public PetDTO create(PetDTO newPetData) {
+    log.info("Creating " + newPetData.toString());
+    petRepository.save(newPetData.toPet());
 
-    return pet;
+    return newPetData;
   }
 
-  public Pet update(long petId, Pet petNewData) {
+  public Pet update(long petId, PetDTO petNewData) {
     log.info("Fetching pet with id = " + petId);
     Pet petFromDB = petRepository.getById(petId);
     log.info("Updating of " + petFromDB + " to " + petNewData.toString());
-    petFromDB.modify(petNewData);
+    petFromDB.modify(petNewData.toPet());
 
     return petRepository.save(petFromDB);
   }

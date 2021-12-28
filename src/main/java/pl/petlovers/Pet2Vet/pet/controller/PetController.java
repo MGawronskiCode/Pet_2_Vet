@@ -3,7 +3,6 @@ package pl.petlovers.Pet2Vet.pet.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.petlovers.Pet2Vet.appUser.AppUserService;
 import pl.petlovers.Pet2Vet.pet.PetService;
 
 import java.util.List;
@@ -40,14 +39,14 @@ public class PetController {
   @PostMapping("/pets")
   public PetDTO create(@RequestBody PetDTO petDTO) {
 
-    return PetDTO.of(petService.create(petDTO.toPet()));
+    return petService.create(petDTO);
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/pets/{petId}")
   public PetDTO update(@PathVariable long petId, @RequestBody PetDTO petDTO) {
 
-    return PetDTO.of(petService.update(petId, petDTO.toPet()));
+    return PetDTO.of(petService.update(petId, petDTO));
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

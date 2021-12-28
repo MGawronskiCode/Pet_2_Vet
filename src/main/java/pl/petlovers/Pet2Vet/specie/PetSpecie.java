@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.specie;
 
 import lombok.*;
 import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,10 +25,10 @@ public class PetSpecie {
   @JoinColumn(name = "specie_id")
   private List<Pet> pets;
 
-  public void modify(PetSpecie newData){
-    this.setName(newData.getName());
-    // TODO: line below make doesn't allow to modify the Pet's specie (PUT method in PetSpecieController)
-//    this.setPets(newData.getPets());
+  public void modify(PetSpecieDTO newData){
+    if (newData.getName() != null) {
+      this.setName(newData.getName());
+    }
   }
 
   @Override
