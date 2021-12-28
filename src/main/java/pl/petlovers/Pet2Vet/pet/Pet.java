@@ -1,10 +1,12 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.meal.Meal;
 import pl.petlovers.Pet2Vet.note.Note;
+import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
 import pl.petlovers.Pet2Vet.specie.PetSpecie;
 import pl.petlovers.Pet2Vet.vaccine.Vaccine;
 import pl.petlovers.Pet2Vet.visit.Visit;
@@ -69,14 +71,15 @@ public class Pet {
     }
 
     public void modify(Pet newData){
-        this.setName(newData.getName());
-        this.setSex(newData.getSex());
-        this.setBirthday(newData.getBirthday());
-        this.setSpecie(newData.getSpecie());
-        this.setVaccines(newData.getVaccines());
-        this.setMeals(newData.getMeals());
-        this.setNotes(newData.getNotes());
-        this.setAppUsers(newData.getAppUsers());
+        if (newData.getName() != null) {
+            this.setName(newData.getName());
+        }
+        if (newData.getSex() != null) {
+            this.setSex(newData.getSex());
+        }
+        if (newData.getBirthday() != null) {
+            this.setBirthday(newData.getBirthday());
+        }
     }
 
     @Override

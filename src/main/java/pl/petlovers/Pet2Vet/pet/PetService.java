@@ -3,10 +3,8 @@ package pl.petlovers.Pet2Vet.pet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.appUser.AppUserService;
-import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
 
 import java.util.List;
 
@@ -15,12 +13,10 @@ import java.util.List;
 public class PetService {
 
   private final PetRepository petRepository;
-  private final AppUserService appUserService;
 
   @Autowired
-  public PetService(PetRepository petRepository, AppUserService appUserService) {
+  public PetService(PetRepository petRepository) {
     this.petRepository = petRepository;
-    this.appUserService = appUserService;
   }
 
   public List<Pet> getAll() {
@@ -28,23 +24,18 @@ public class PetService {
     return petRepository.findAll();
   }
 
-  public Pet create(long userId, Pet pet) {
-    log.info("Creating " + pet.toString());
-    petRepository.save(pet);
-    AppUser user = appUserService.get(userId);
-    List<Pet> pets = user.getPets();
-    pets.add(pet);
-    AppUserDTO appUserDTO = AppUserDTO.of(user);
-    appUserService.update(userId, appUserDTO);
+  public PetDTO create(PetDTO newPetData) {
+    log.info("Creating " + newPetData.toString());
+    petRepository.save(newPetData.toPet());
 
-    return pet;
+    return newPetData;
   }
 
-  public Pet update(long petId, Pet petNewData) {
+  public Pet update(long petId, PetDTO petNewData) {
     log.info("Fetching pet with id = " + petId);
     Pet petFromDB = petRepository.getById(petId);
     log.info("Updating of " + petFromDB + " to " + petNewData.toString());
-    petFromDB.modify(petNewData);
+    petFromDB.modify(petNewData.toPet());
 
     return petRepository.save(petFromDB);
   }
@@ -58,10 +49,4 @@ public class PetService {
     log.info("Fetching pet with id = " + petId);
     return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
   }
-
-    public List<Pet> getUserPets(long userId) {
-      AppUser user = appUserService.get(userId);
-      log.info("Fetching all user's pets");
-      return user.getPets();
-    }
 }

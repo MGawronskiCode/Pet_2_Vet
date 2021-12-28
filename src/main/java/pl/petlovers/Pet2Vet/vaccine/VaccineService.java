@@ -8,6 +8,8 @@ import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.VaccineNotFoundExcep
 
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
+import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
+import pl.petlovers.Pet2Vet.vaccine.controller.VaccineDTO;
 
 import java.util.List;
 
@@ -42,13 +44,13 @@ public class VaccineService {
     return vaccine;
   }
 
-  public Vaccine update(long vaccineId, Vaccine vaccineNewData) {
+  public Vaccine update(long vaccineId, VaccineDTO vaccineNewData) {
     log.info(FETCHING_VACCINE + vaccineId);
     Vaccine vaccineFromDB = vaccineRepository.getById(vaccineId);
     log.info("Updating of " + vaccineFromDB + " to " + vaccineNewData.toString());
-    vaccineRepository.delete(vaccineFromDB);
+    vaccineFromDB.modify(vaccineNewData);
 
-    return vaccineRepository.save(vaccineNewData);
+    return vaccineRepository.save(vaccineFromDB);
   }
 
   public void delete(long vaccineId) {
@@ -71,14 +73,12 @@ public class VaccineService {
   }
 
   public Vaccine createVaccineInPet(long petId, Vaccine vaccine) {
-    Pet pet = petRepository.findById(petId).orElseThrow();
-    List<Vaccine> petVaccines = pet.getVaccines();
+    Pet petFromRepository = petRepository.findById(petId).orElseThrow();
+    List<Vaccine> petVaccines = petFromRepository.getVaccines();
     petVaccines.add(vaccine);
-    pet.setVaccines(petVaccines);
-    pet.modify(pet);
-
-    petRepository.delete(pet);
-    petRepository.save(pet);
+    petFromRepository.setVaccines(petVaccines);
+    petFromRepository.modify(petFromRepository);
+    petRepository.save(petFromRepository);
 
     return vaccine;
   }
@@ -89,7 +89,7 @@ public class VaccineService {
     updateVaccineIfExistOnList(vaccineId, vaccine, newVaccines);
     petFromRepository.setVaccines(newVaccines);
     petFromRepository.modify(petFromRepository);
-    update(vaccineId, vaccine);
+    update(vaccineId, VaccineDTO.of(vaccine));
 
     return vaccine;
   }
