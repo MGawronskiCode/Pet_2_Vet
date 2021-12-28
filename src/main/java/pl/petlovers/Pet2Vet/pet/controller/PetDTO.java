@@ -34,7 +34,7 @@ public class PetDTO {
         .name(pet.getName())
         .sex(pet.getSex())
         .birthday(pet.getBirthday())
-        .owners(pet.getAppUsers().stream().map(AppUser::getId).toList())
+//        .owners(pet.getAppUsers().stream().map(AppUser::getId).toList())
         .build();
   }
 

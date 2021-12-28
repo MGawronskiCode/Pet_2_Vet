@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserService;
+import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 
 import java.util.List;
@@ -27,9 +28,14 @@ public class PetService {
     return petRepository.findAll();
   }
 
-  public Pet create(Pet pet) {
+  public Pet create(long userId, Pet pet) {
     log.info("Creating " + pet.toString());
     petRepository.save(pet);
+    AppUser user = appUserService.get(userId);
+    List<Pet> pets = user.getPets();
+    pets.add(pet);
+    AppUserDTO appUserDTO = AppUserDTO.of(user);
+    appUserService.update(userId, appUserDTO);
 
     return pet;
   }

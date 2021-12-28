@@ -42,10 +42,10 @@ public class PetController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/pets")
-    public PetDTO create(@RequestBody PetDTO petDTO) {
+    @PostMapping("/users/{userId}/pets")
+    public PetDTO create(@PathVariable long userId, @RequestBody PetDTO petDTO) {
 
-        return PetDTO.of(petService.create(petDTO.toPet()));
+        return PetDTO.of(petService.create(userId, petDTO.toPet()));
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
