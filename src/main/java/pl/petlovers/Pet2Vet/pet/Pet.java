@@ -69,14 +69,15 @@ public class Pet {
     }
 
     public void modify(Pet newData){
-        this.setName(newData.getName());
-        this.setSex(newData.getSex());
-        this.setBirthday(newData.getBirthday());
-        this.setSpecie(newData.getSpecie());
-        this.setVaccines(newData.getVaccines());
-        this.setMeals(newData.getMeals());
-        this.setNotes(newData.getNotes());
-        this.setAppUsers(newData.getAppUsers());
+        if (newData.getName() != null) {
+            this.setName(newData.getName());
+        }
+        if (newData.getSex() != null) {
+            this.setSex(newData.getSex());
+        }
+        if (newData.getBirthday() != null) {
+            this.setBirthday(newData.getBirthday());
+        }
     }
 
     @Override

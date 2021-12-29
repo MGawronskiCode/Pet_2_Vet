@@ -7,6 +7,7 @@ import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserService;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
 
 import java.util.List;
 
@@ -28,23 +29,29 @@ public class PetService {
     return petRepository.findAll();
   }
 
-  public Pet create(long userId, Pet pet) {
-    log.info("Creating " + pet.toString());
-    petRepository.save(pet);
+  public PetDTO create(PetDTO newPetData) {
+    log.info("Creating " + newPetData.toString());
+    petRepository.save(newPetData.toPet());
+
+    return newPetData;
+  }
+
+  public PetDTO create(long userId, PetDTO petDTO) {
+    log.info("Creating " + petDTO.toString());
+    Pet petFromDb = petRepository.save(petDTO.toPet());
     AppUser user = appUserService.get(userId);
-    List<Pet> pets = user.getPets();
-    pets.add(pet);
+    user.addPetToPetsList(petFromDb);
     AppUserDTO appUserDTO = AppUserDTO.of(user);
     appUserService.update(userId, appUserDTO);
 
-    return pet;
+    return petDTO;
   }
 
-  public Pet update(long petId, Pet petNewData) {
+  public Pet update(long petId, PetDTO petNewData) {
     log.info("Fetching pet with id = " + petId);
     Pet petFromDB = petRepository.getById(petId);
     log.info("Updating of " + petFromDB + " to " + petNewData.toString());
-    petFromDB.modify(petNewData);
+    petFromDB.modify(petNewData.toPet());
 
     return petRepository.save(petFromDB);
   }
