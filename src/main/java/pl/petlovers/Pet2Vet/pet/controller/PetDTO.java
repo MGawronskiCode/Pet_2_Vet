@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PetDTO {
 
+  private Long id;
   private String name;
 
   @Enumerated
@@ -29,6 +30,7 @@ public class PetDTO {
 
   public static PetDTO of(Pet pet) {
     return PetDTO.builder()
+            .id(pet.getId())
         .name(pet.getName())
         .sex(pet.getSex())
         .birthday(pet.getBirthday())
@@ -38,6 +40,7 @@ public class PetDTO {
 
   public Pet toPet() {
     return Pet.builder()
+            .id(id)
         .name(name)
         .sex(sex)
         .birthday(birthday)

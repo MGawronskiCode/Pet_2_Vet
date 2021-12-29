@@ -30,7 +30,7 @@ INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 2);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 7);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 1);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 8);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 4);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 4);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (3, 3);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 6);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 10);

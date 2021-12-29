@@ -12,11 +12,13 @@ import pl.petlovers.Pet2Vet.vaccine.Vaccine;
 @AllArgsConstructor
 public class VaccineDTO {
 
+  private Long id;
   private String name;
   private String dateTime;
 
   public static VaccineDTO of(Vaccine vaccine) {
     return VaccineDTO.builder()
+            .id(vaccine.getId())
         .name(vaccine.getName())
         .dateTime(vaccine.getDateTime())
         .build();
@@ -24,6 +26,7 @@ public class VaccineDTO {
 
   public Vaccine toVaccine() {
     return Vaccine.builder()
+            .id(id)
         .name(name)
         .dateTime(dateTime)
         .build();

@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class VisitDTO {
 
+  private Long id;
   private List<File> files;
   //TODO FileDTO instead of List<File>
   private String purpose;
@@ -27,6 +28,7 @@ public class VisitDTO {
 
   public static VisitDTO of(Visit visit) {
     return VisitDTO.builder()
+            .id(visit.getId())
       .files(visit.getFiles())
       .purpose(visit.getPurpose())
       .dateTime(visit.getDateTime())
@@ -38,6 +40,7 @@ public class VisitDTO {
 
   public Visit toVisit() {
     return Visit.builder()
+            .id(id)
       .files(files)
       .purpose(purpose)
       .dateTime(dateTime)
