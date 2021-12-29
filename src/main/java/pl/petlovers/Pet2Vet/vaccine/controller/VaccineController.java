@@ -90,7 +90,7 @@ public class VaccineController {
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/vaccines/{vaccineId}")
   public VaccineDTO update(@PathVariable long vaccineId, @RequestBody VaccineDTO vaccineDTO) {
-    return VaccineDTO.of(vaccineService.update(vaccineId, vaccineDTO.toVaccine()));
+    return VaccineDTO.of((vaccineService.update(vaccineId, vaccineDTO)));
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

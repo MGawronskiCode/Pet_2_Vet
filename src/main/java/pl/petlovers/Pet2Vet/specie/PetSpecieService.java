@@ -8,6 +8,7 @@ import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetSpecieNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
 
 import java.util.*;
 
@@ -38,7 +39,7 @@ public class PetSpecieService {
     log.info("Fetching pet specie with id = " + specieId);
     PetSpecie petSpecieFromDB = petSpecieRepository.getById(specieId);
     log.info("Updating of " + petSpecieFromDB + " to " + petSpecieNewData.toString());
-    petSpecieFromDB.modify(petSpecieNewData);
+    petSpecieFromDB.modify(PetSpecieDTO.of(petSpecieNewData));
 
     return petSpecieRepository.save(petSpecieFromDB);
   }

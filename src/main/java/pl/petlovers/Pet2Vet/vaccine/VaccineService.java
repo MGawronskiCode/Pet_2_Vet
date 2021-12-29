@@ -8,6 +8,8 @@ import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.VaccineNotFoundExcep
 
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
+import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
+import pl.petlovers.Pet2Vet.vaccine.controller.VaccineDTO;
 
 import java.util.List;
 
@@ -42,13 +44,13 @@ public class VaccineService {
     return vaccine;
   }
 
-  public Vaccine update(long vaccineId, Vaccine vaccineNewData) {
+  public Vaccine update(long vaccineId, VaccineDTO vaccineNewData) {
     log.info(FETCHING_VACCINE + vaccineId);
     Vaccine vaccineFromDB = vaccineRepository.getById(vaccineId);
     log.info("Updating of " + vaccineFromDB + " to " + vaccineNewData.toString());
-    vaccineRepository.delete(vaccineFromDB);
+    vaccineFromDB.modify(vaccineNewData);
 
-    return vaccineRepository.save(vaccineNewData);
+    return vaccineRepository.save(vaccineFromDB);
   }
 
   public void delete(long vaccineId) {
@@ -71,27 +73,26 @@ public class VaccineService {
   }
 
   public Vaccine createVaccineInPet(long petId, Vaccine vaccine) {
-    Pet pet = petRepository.findById(petId).orElseThrow();
-    List<Vaccine> petVaccines = pet.getVaccines();
+    Pet petFromRepository = petRepository.findById(petId).orElseThrow();
+    List<Vaccine> petVaccines = petFromRepository.getVaccines();
     petVaccines.add(vaccine);
-    pet.setVaccines(petVaccines);
-    pet.modify(pet);
-
-    petRepository.delete(pet);
-    petRepository.save(pet);
+    petFromRepository.setVaccines(petVaccines);
+    petFromRepository.modify(petFromRepository);
+    petRepository.save(petFromRepository);
 
     return vaccine;
   }
 
-  public Vaccine updatePetVaccine(long petId, long vaccineId, Vaccine vaccine) {
+  public Vaccine updatePetVaccine(long petId, long vaccineId, Vaccine vaccineData) {
     Pet petFromRepository = petRepository.findById(petId).orElseThrow();
-    final List<Vaccine> newVaccines = petFromRepository.getVaccines();
-    updateVaccineIfExistOnList(vaccineId, vaccine, newVaccines);
-    petFromRepository.setVaccines(newVaccines);
-    petFromRepository.modify(petFromRepository);
-    update(vaccineId, vaccine);
+    final List<Vaccine> vaccines = petFromRepository.getVaccines();
+    updateVaccineIfExistOnList(vaccineId, vaccineData, vaccines);
+    petFromRepository.setVaccines(vaccines);
 
-    return vaccine;
+    petRepository.save(petFromRepository);
+    update(vaccineId, VaccineDTO.of(vaccineData));
+
+    return vaccineData;
   }
 
   public void deletePetVaccine(long petId, long vaccineId) {
@@ -130,6 +131,7 @@ public class VaccineService {
   private void updateVaccineIfExistOnList(long vaccineId, Vaccine vaccine, List<Vaccine> newVaccines) {
     for (int i = 0; i < newVaccines.size(); i++) {
       if (newVaccines.get(i).getId() == vaccineId) {
+        vaccine.setId(newVaccines.get(i).getId());
         newVaccines.set(i, vaccine);
 
         return;
