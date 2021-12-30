@@ -2,8 +2,6 @@ package pl.petlovers.Pet2Vet.visit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.petlovers.Pet2Vet.file.File;
-import pl.petlovers.Pet2Vet.file.FileRepository;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
 
