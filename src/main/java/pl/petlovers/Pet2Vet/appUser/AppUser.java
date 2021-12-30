@@ -30,10 +30,14 @@ public class AppUser {
     @Column(nullable = false)
     @Enumerated
     private Sex sex;
+
     @Column(nullable = false, unique = true)
     private String login;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    @Enumerated
+    private Role role;
 
     @JsonIgnore
     @ManyToMany

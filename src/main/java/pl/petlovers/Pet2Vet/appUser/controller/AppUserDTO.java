@@ -16,12 +16,14 @@ public class AppUserDTO {
     private Long id;
     private String name;
     private Sex sex;
+    private String role;
 
     public static AppUserDTO of(AppUser appUser) {
         return AppUserDTO.builder()
                 .id(appUser.getId())
                 .name(appUser.getName())
                 .sex(appUser.getSex())
+                .role(String.valueOf(appUser.getRole()))
                 .build();
     }
 
