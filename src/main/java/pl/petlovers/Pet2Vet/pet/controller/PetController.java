@@ -3,7 +3,6 @@ package pl.petlovers.Pet2Vet.pet.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.petlovers.Pet2Vet.appUser.AppUserService;
 import pl.petlovers.Pet2Vet.pet.PetService;
 
 import java.util.List;
@@ -13,12 +12,10 @@ import java.util.List;
 public class PetController {
 
     private final PetService petService;
-    private final AppUserService appUserService;
 
     @Autowired
-    public PetController(PetService petService, AppUserService appUserService) {
+    public PetController(PetService petService) {
         this.petService = petService;
-        this.appUserService = appUserService;
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -87,7 +87,8 @@ public class ExceptionsHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   String dtaIntegrityViolationException(DataIntegrityViolationException exception) {
     log.error(ERROR + exception.toString());
-    return "Could not execute statement, remember to send the data required in this query. If you are trying to delete something, make sure it is not included in some objects";
+    return "Could not execute statement, remember to send the data required in this query."
+        + "If you are trying to delete something, make sure it is not included in some objects";
   }
 
   @ResponseBody

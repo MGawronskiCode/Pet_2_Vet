@@ -33,7 +33,7 @@ public class VisitFileService {
     return fileRepository.save(file);
   }
 
-  public File update(long visitId, long fileId, File file) {
+  public File update(long visitId, long fileId, File file) { //fixme unused visitId
     File fileFromDb = get(fileId);
     fileFromDb.modify(file);
     return fileRepository.save(fileFromDb);
