@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.security;
+package pl.petlovers.Pet2Vet.security.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +10,7 @@ import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-  private AppUserRepository userRepository;
+  private final AppUserRepository userRepository;
 
   @Autowired
   public UserDetailsServiceImpl(AppUserRepository userRepository) {
@@ -19,7 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String userLogin) throws UsernameNotFoundException {
-    return userRepository.findByLogin(userLogin);
+    return new AppUserDetails(userRepository.findByLogin(userLogin)
+        .orElseThrow(() -> new UsernameNotFoundException(userLogin)));
   }
 
 }

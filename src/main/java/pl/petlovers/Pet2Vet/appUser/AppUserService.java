@@ -32,9 +32,9 @@ public class AppUserService {
                 .orElseThrow(() -> new AppUserNotFoundException(id));
     }
 
-    public AppUser create(AppUserDTO userDTO, String password){
+    public AppUser create(AppUserDTO userDTO){
         log.info("Creating " + userDTO.toString());
-        return appUserRepository.save(userDTO.toAppUser(password));
+        return appUserRepository.save(userDTO.toAppUser());
     }
 
     public AppUser update(long id, AppUserDTO user){

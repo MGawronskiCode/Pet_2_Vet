@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.configuration;
+package pl.petlovers.Pet2Vet.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

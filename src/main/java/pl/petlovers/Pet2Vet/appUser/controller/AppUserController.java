@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.appUser.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.appUser.AppUserService;
 
@@ -29,6 +30,7 @@ public class AppUserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{userId}")
     public AppUserDTO get(@PathVariable long userId) {
         return AppUserDTO.of(appUserService.get(userId));
@@ -37,7 +39,7 @@ public class AppUserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public AppUserDTO create(@RequestBody AppUserDTO appUserDTO, @RequestHeader String password) {
-        return AppUserDTO.of(appUserService.create(appUserDTO, password));
+        return AppUserDTO.of(appUserService.create(appUserDTO));
     }
 
     @ResponseStatus(HttpStatus.CREATED)

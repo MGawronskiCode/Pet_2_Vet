@@ -6,7 +6,8 @@ INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Samantha'
 INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Brad', 2, 'brad@gmail.com', 'bradpassword', 1);
 INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Caroline', 3, 'caroline@gmail.com', 'carolinepassword', 2);
 INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Lara', 3, 'lara@gmail.com', 'larapassword', 1);
-INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('ADMIN', 3, 'admin', 'admin123', 0);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Test', 3, 'admin@admin', '$2a$12$66qPPyfCUxkdr1mYb1MMte6VHB/laSE6hzp25r5OETokWQXoTdPp2', 0);
+
 
 -- Specie
 INSERT INTO public.specie(name) VALUES ('Mammal');
