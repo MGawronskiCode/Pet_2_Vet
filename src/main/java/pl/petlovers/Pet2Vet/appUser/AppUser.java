@@ -4,6 +4,9 @@ package pl.petlovers.Pet2Vet.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.note.Note;
@@ -12,14 +15,17 @@ import pl.petlovers.Pet2Vet.pet.Pet;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class AppUser {
+public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,12 +85,37 @@ public class AppUser {
     }
 
     @Override
-    public String toString() {
-        return "AppUser{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", sex='" + sex + '\'' +
-                ", login='" + login + '\'' +
-                '}';
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(String.valueOf(role)));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
