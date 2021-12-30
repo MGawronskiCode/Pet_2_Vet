@@ -11,6 +11,7 @@ import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.security.Roles;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -39,11 +40,13 @@ public class AppUser implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String login;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     @Enumerated
-    private Role role;
+    private Roles role;
 
     @JsonIgnore
     @ManyToMany
@@ -62,6 +65,14 @@ public class AppUser implements UserDetails {
             fetch = FetchType.LAZY
     )
     private List<Note> notes = new ArrayList<>();
+
+    public AppUser(String name, Sex sex, String login, String password, Roles role) {
+        this.name = name;
+        this.sex = sex;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
     public void addNote(Note note) {
         note.setCreated(LocalDateTime.now());
