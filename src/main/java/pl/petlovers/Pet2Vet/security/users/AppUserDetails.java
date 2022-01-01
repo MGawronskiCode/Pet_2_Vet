@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
 
 public class AppUserDetails implements UserDetails {
 
@@ -18,7 +18,10 @@ public class AppUserDetails implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singleton(new SimpleGrantedAuthority(this.appUser.getRole().name()));
+
+    return getUserRoleAsSetOfStrings().stream()
+        .map(SimpleGrantedAuthority::new)
+        .toList();
   }
 
   @Override
@@ -49,5 +52,9 @@ public class AppUserDetails implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  private Set<String> getUserRoleAsSetOfStrings() {
+    return Set.of(appUser.getRole().name());
   }
 }

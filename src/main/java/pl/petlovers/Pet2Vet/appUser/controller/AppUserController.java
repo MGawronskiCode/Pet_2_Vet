@@ -30,16 +30,16 @@ public class AppUserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @Secured("ROLE_ADMIN")
     @GetMapping("/{userId}")
     public AppUserDTO get(@PathVariable long userId) {
         return AppUserDTO.of(appUserService.get(userId));
     }
 
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public AppUserDTO create(@RequestBody AppUserDTO appUserDTO, @RequestHeader String password) {
-        return AppUserDTO.of(appUserService.create(appUserDTO));
+        return AppUserDTO.of(appUserService.create(appUserDTO, password));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
