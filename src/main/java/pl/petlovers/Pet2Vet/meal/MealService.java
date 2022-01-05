@@ -25,14 +25,10 @@ public class MealService {
     public List<Meal> getAllMeals(long petId) {
         log.info("Fetching meals for the pet with id = " + petId);
         Pet pet = getPet(petId);
-        try {
-            if (pet.getId() != petId) {
-                throw new PetNotFoundException(petId);
-            }
-            return petRepository.getById(petId).getMeals();
-        } catch (NullPointerException error) {
-            throw new NullPointerException("There is no pet with id " + petId);
+        if (pet.getId() != petId) {
+            throw new PetNotFoundException(petId);
         }
+        return petRepository.getById(petId).getMeals();
     }
 
     public Meal getMeal(long mealId) {
@@ -44,14 +40,12 @@ public class MealService {
     public Meal getPetMeal(long petId, long mealId) {
         log.info("Fetching pet's meal");
         Meal meal = getMeal(mealId);
-        try {
-            if (meal.getPet().getId() != petId) {
-                throw new MealNotFoundException(mealId);
-            }
-            return meal;
-        } catch (NullPointerException error) {
-            throw new NullPointerException("There is no pet with id " + petId);
+
+        if (meal.getPet().getId() != petId) {
+            throw new MealNotFoundException(mealId);
         }
+        return meal;
+
     }
 
     public Meal createMeal(long petId, Meal meal) {
