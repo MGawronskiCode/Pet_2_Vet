@@ -31,7 +31,7 @@ public class NoteFileService {
     return fileRepository.save(file);
   }
 
-  public File update(long noteId, long fileId, File file) {
+  public File update(long noteId, long fileId, File file) { //fixme unused noteId
     File fileFromDb = get(fileId);
     fileFromDb.modify(file);
     return fileRepository.save(fileFromDb);
