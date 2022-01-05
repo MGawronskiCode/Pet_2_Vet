@@ -12,7 +12,6 @@ import pl.petlovers.Pet2Vet.visit.Visit;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -50,7 +49,7 @@ public class Pet {
     private List<AppUser> appUsers;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Visit> visits = new ArrayList<>();
+    private List<Visit> visits;
 
     public void addNote(Note note) {
         note.setCreated(LocalDateTime.now());
