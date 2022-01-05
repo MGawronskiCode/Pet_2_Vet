@@ -21,7 +21,7 @@ public class MealController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pets/{petId}/meals")
     public List<MealDTO> getAll(@PathVariable long petId) {
-        return mealService.getAllMeals(petId)
+        return mealService.getAll(petId)
                 .stream()
                 .map(MealDTO::of)
                 .toList();
@@ -36,18 +36,18 @@ public class MealController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/pets/{petId}/meals")
     public MealDTO create(@PathVariable long petId, @RequestBody MealDTO mealDTO) {
-        return MealDTO.of(mealService.createMeal(petId, mealDTO.toMeal()));
+        return MealDTO.of(mealService.create(petId, mealDTO.toMeal()));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/pets/{petId}/meals/{mealId}")
     public MealDTO update(@PathVariable long petId, @PathVariable long mealId, @RequestBody MealDTO mealDTO) {
-        return MealDTO.of(mealService.updateMeal(petId, mealId, mealDTO.toMeal()));
+        return MealDTO.of(mealService.update(petId, mealId, mealDTO.toMeal()));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/pets/{petId}/meals/{mealId}")
     public void delete(@PathVariable long petId, @PathVariable long mealId) {
-        mealService.deleteMeal(petId, mealId);
+        mealService.delete(petId, mealId);
     }
 }
