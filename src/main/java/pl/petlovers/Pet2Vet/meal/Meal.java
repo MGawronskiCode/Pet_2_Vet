@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.meal;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +20,10 @@ public class Meal {
     private double foodAmount;
     private LocalDateTime expectedFeedingTime;
     private LocalDateTime actualFeedingTime;
+
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
 
     public void modify(Meal meal) {
