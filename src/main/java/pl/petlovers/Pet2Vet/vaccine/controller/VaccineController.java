@@ -19,59 +19,52 @@ public class VaccineController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping("users/{userId}/pets/{petId}/vaccines")
-  public List<VaccineDTO> getUserPetsVaccines(
-      @PathVariable long userId,
+  @GetMapping("pets/{petId}/vaccines")
+  public List<VaccineDTO> getPetVaccines(
       @PathVariable long petId){
 
-    return vaccineService.getUserPetsVaccines(userId, petId)
+    return vaccineService.getPetVaccines(petId)
         .stream()
         .map(VaccineDTO::of)
         .toList();
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping("users/{userId}/pets/{petId}/vaccines/{vaccineId}")
-  public VaccineDTO getUserPetsVaccine(
-      @PathVariable long userId,
+  @GetMapping("pets/{petId}/vaccines/{vaccineId}")
+  public VaccineDTO getPetVaccine(
       @PathVariable long petId,
       @PathVariable long vaccineId){
 
-    return VaccineDTO.of(vaccineService.getUserPetsVaccine(userId, petId, vaccineId));
+    return VaccineDTO.of(vaccineService.getPetVaccine(petId, vaccineId));
   }
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping("users/{userId}/pets/{petId}/vaccines")
-  public VaccineDTO createVaccineInUserPet(
-      @PathVariable long userId,
+  @PostMapping("pets/{petId}/vaccines")
+  public VaccineDTO createVaccineInPet(
       @PathVariable long petId,
       @RequestBody VaccineDTO vaccineDTO) {
 
-    return VaccineDTO.of(vaccineService.createVaccineInUserPet(userId, petId, vaccineDTO.toVaccine()));
+    return VaccineDTO.of(vaccineService.createVaccineInPet(petId, vaccineDTO.toVaccine()));
   }
 
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @PutMapping("users/{userId}/pets/{petId}/vaccines/{vaccineId}")
-  public VaccineDTO updateUserPetVaccine(
-      @PathVariable long userId,
+  @PutMapping("pets/{petId}/vaccines/{vaccineId}")
+  public VaccineDTO updatePetVaccine(
       @PathVariable long petId,
       @PathVariable long vaccineId,
       @RequestBody VaccineDTO vaccineDTO) {
 
-    return VaccineDTO.of(vaccineService.updateUserPetVaccine(userId, petId, vaccineId, vaccineDTO.toVaccine()));
+    return VaccineDTO.of(vaccineService.updatePetVaccine(petId, vaccineId, vaccineDTO.toVaccine()));
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("users/{userId}/pets/{petId}/vaccines/{vaccineId}")
-  public void cancelUserPerVaccine(
-      @PathVariable long userId,
+  @DeleteMapping("pets/{petId}/vaccines/{vaccineId}")
+  public void cancelPetVaccine(
       @PathVariable long petId,
       @PathVariable long vaccineId) {
 
-    vaccineService.deleteUserPetVaccine(userId, petId, vaccineId);
+    vaccineService.deletePetVaccine(petId, vaccineId);
   }
-
-
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/vaccines")
@@ -97,7 +90,7 @@ public class VaccineController {
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/vaccines/{vaccineId}")
   public VaccineDTO update(@PathVariable long vaccineId, @RequestBody VaccineDTO vaccineDTO) {
-    return VaccineDTO.of(vaccineService.update(vaccineId, vaccineDTO.toVaccine()));
+    return VaccineDTO.of((vaccineService.update(vaccineId, vaccineDTO)));
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

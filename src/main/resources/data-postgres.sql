@@ -1,11 +1,11 @@
 -- Data for the initial DB population
 
 -- AppUser
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Alex', 'Man', 'alex@gmail.com', 'alexpassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Samantha', 'Woman', 'samantha@gmail.com', 'samanthapassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Brad', 'Man', 'brad@gmail.com', 'bradpassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Caroline', 'Woman', 'caroline@gmail.com', 'carolinepassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Lara', 'Woman', 'lara@gmail.com', 'larapassword');
+INSERT INTO public.app_user(name, sex, login, password) VALUES ('Alex', 2, 'alex@gmail.com', 'alexpassword');
+INSERT INTO public.app_user(name, sex, login, password) VALUES ('Samantha', 3, 'samantha@gmail.com', 'samanthapassword');
+INSERT INTO public.app_user(name, sex, login, password) VALUES ('Brad', 2, 'brad@gmail.com', 'bradpassword');
+INSERT INTO public.app_user(name, sex, login, password) VALUES ('Caroline', 3, 'caroline@gmail.com', 'carolinepassword');
+INSERT INTO public.app_user(name, sex, login, password) VALUES ('Lara', 3, 'lara@gmail.com', 'larapassword');
 
 -- Specie
 INSERT INTO public.specie(name) VALUES ('Mammal');
@@ -14,23 +14,23 @@ INSERT INTO public.specie(name) VALUES ('Rodent');
 INSERT INTO public.specie(name) VALUES ('Reptile');
 
 -- Pet
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Wizard', 'Male', '2021-01-05', 1); --     Dog #1
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Kitana', 'Female', '2019-02-05', 2); --   Cat #2
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Neo', 'Male', '2021-05-11', 1); --        Dog #3
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Audrey', 'Female', '2021-06-26', 3); --  Bird #4
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Rudolph', 'Male', '2020-12-15', 4); -- Rodent #5
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Grinch', 'Male', '2020-09-09', 1); -- Reptile #6
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Dizzy', 'Female', '2021-02-13', 4); -- Rodent #7
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Simba', 'Male', '2018-05-03', 2); --      Cat #8
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Tiara', 'Female', '2020-10-29', 3); --   Bird #9
-INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Merlin', 'Male', '2015-04-30', 1); --     Dog #10
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Wizard', 0, '2021-01-05', 1); --     Dog #1
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Kitana', 1, '2019-02-05', 2); --   Cat #2
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Neo', 0, '2021-05-11', 1); --        Dog #3
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Audrey', 1, '2021-06-26', 3); --  Bird #4
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Rudolph', 0, '2020-12-15', 4); -- Rodent #5
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Grinch', 0, '2020-09-09', 1); -- Reptile #6
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Dizzy', 1, '2021-02-13', 4); -- Rodent #7
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Simba', 0, '2018-05-03', 2); --      Cat #8
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Tiara', 1, '2020-10-29', 3); --   Bird #9
+INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Merlin', 0, '2015-04-30', 1); --     Dog #10
 
 -- Users pets
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 2);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 7);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 1);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 8);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 4);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 4);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (3, 3);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 6);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 10);

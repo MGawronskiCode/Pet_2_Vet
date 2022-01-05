@@ -1,9 +1,9 @@
 package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.vaccine.controller.VaccineDTO;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,9 +21,13 @@ public class Vaccine {
 
   private String dateTime;
 
-  public void modify(Vaccine newData){
-    this.setName(newData.getName());
-    this.setDateTime(newData.getDateTime());
+  public void modify(VaccineDTO newData){
+    if (newData.getName() != null) {
+      this.setName(newData.getName());
+    }
+    if (newData.getDateTime() != null) {
+      this.setDateTime(newData.getDateTime());
+    }
   }
 
   @Override

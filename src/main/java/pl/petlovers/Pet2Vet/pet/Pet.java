@@ -1,15 +1,18 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.meal.Meal;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.specie.PetSpecie;
 import pl.petlovers.Pet2Vet.vaccine.Vaccine;
+import pl.petlovers.Pet2Vet.visit.Visit;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,7 +28,8 @@ public class Pet {
 
     private String name;
 
-    private String sex;
+    @Enumerated
+    private Sex sex;
 
     private LocalDate birthday;
 
@@ -39,16 +43,14 @@ public class Pet {
     @JoinColumn(name = "pet_id")
     List<Meal> meals;
 
-    @OneToMany(
-            mappedBy = "pet",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<Note> notes;
 
     @ManyToMany(mappedBy = "pets", cascade = CascadeType.ALL)
     private List<AppUser> appUsers;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Visit> visits = new ArrayList<>();
 
     public void addNote(Note note) {
         note.setCreated(LocalDateTime.now());
@@ -62,15 +64,20 @@ public class Pet {
         this.meals.add(meal);
     }
 
+    public void addVisit(Visit visit) {
+        this.visits.add(visit);
+    }
+
     public void modify(Pet newData){
-        this.setName(newData.getName());
-        this.setSex(newData.getSex());
-        this.setBirthday(newData.getBirthday());
-        this.setSpecie(newData.getSpecie());
-        this.setVaccines(newData.getVaccines());
-        this.setMeals(newData.getMeals());
-        this.setNotes(newData.getNotes());
-        this.setAppUsers(newData.getAppUsers());
+        if (newData.getName() != null) {
+            this.setName(newData.getName());
+        }
+        if (newData.getSex() != null) {
+            this.setSex(newData.getSex());
+        }
+        if (newData.getBirthday() != null) {
+            this.setBirthday(newData.getBirthday());
+        }
     }
 
     @Override
@@ -82,4 +89,5 @@ public class Pet {
                 ", birthday=" + birthday +
                 '}';
     }
+
 }

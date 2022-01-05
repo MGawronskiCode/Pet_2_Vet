@@ -3,6 +3,7 @@ package pl.petlovers.Pet2Vet.meal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.MealNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
@@ -32,6 +33,7 @@ public class MealService {
     }
 
     public Meal getMeal(long mealId) {
+   
         log.info("Fetching meal with id = " + mealId);
         return mealRepository.findById(mealId)
                 .orElseThrow(() -> new MealNotFoundException(mealId));

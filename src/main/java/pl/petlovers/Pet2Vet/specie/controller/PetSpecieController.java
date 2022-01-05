@@ -3,7 +3,6 @@ package pl.petlovers.Pet2Vet.specie.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.petlovers.Pet2Vet.specie.PetSpecie;
 import pl.petlovers.Pet2Vet.specie.PetSpecieService;
 
 import java.util.List;
@@ -17,22 +16,6 @@ public class PetSpecieController {
   @Autowired
   public PetSpecieController(PetSpecieService petService) {
     this.petSpecieService = petService;
-  }
-
-  @ResponseStatus(HttpStatus.OK)
-  @GetMapping("users/{userId}/pets/species")
-  public List<PetSpecieDTO> getUserPetsSpecies(@PathVariable long userId) {
-    List<PetSpecie> userPetsSpecies = petSpecieService.getUserPetsSpecies(userId);
-
-    return userPetsSpecies.stream()
-        .map(PetSpecieDTO::of)
-        .toList();
-  }
-
-  @ResponseStatus(HttpStatus.OK)
-  @GetMapping("users/{userId}/pets/{petId}/species")
-  public PetSpecieDTO get(@PathVariable long userId, @PathVariable long petId) {
-    return PetSpecieDTO.of(petSpecieService.getUserPetSpecie(userId, petId));
   }
 
   @ResponseStatus(HttpStatus.OK)
