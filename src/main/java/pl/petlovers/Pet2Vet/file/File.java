@@ -8,7 +8,8 @@ import pl.petlovers.Pet2Vet.visit.Visit;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -18,19 +19,8 @@ public class File {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-//  @ManyToOne(cascade = CascadeType.ALL)
-////  TODO join column??
-//  private Note note;
-//
-////  TODO Visit visit? Many to one
-//
-//  @ManyToOne(cascade = CascadeType.ALL)
-//  private Visit visit;
-
   private String name;
   private String url;
-
   private LocalDateTime created;
   private LocalDateTime modified;
 

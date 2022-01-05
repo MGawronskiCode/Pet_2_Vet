@@ -27,7 +27,7 @@ public class MealService {
         return petRepository.getById(petId).getMeals();
     }
 
-    public Meal get(long petId, long mealId) {//todo use pet id to find only specific pet meals
+    public Meal get(long petId, long mealId) {//fixme unused petId
         log.info("Fetching meal with id = " + mealId);
         return mealRepository.findById(mealId)
                 .orElseThrow(() -> new MealNotFoundException(mealId));

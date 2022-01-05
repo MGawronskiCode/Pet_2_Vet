@@ -28,7 +28,7 @@ public class PetDTO {
 
   public static PetDTO of(Pet pet) {
     return PetDTO.builder()
-            .id(pet.getId())
+        .id(pet.getId())
         .name(pet.getName())
         .sex(pet.getSex())
         .birthday(pet.getBirthday())
@@ -37,7 +37,7 @@ public class PetDTO {
 
   public Pet toPet() {
     return Pet.builder()
-            .id(id)
+        .id(id)
         .name(name)
         .sex(sex)
         .birthday(birthday)

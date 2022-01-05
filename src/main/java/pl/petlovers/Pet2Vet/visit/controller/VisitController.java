@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.visit.VisitService;
-import pl.petlovers.Pet2Vet.visit.controller.VisitDTO;
 
 import java.util.List;
 
