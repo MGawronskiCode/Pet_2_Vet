@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.MealNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.List;
@@ -24,13 +25,29 @@ public class MealService {
 
     public List<Meal> getAll(long petId) {
         log.info("Fetching meals for the pet with id = " + petId);
+        Pet pet = getPet(petId);
+        if (pet.getId() != petId) {
+            throw new PetNotFoundException(petId);
+        }
         return petRepository.getById(petId).getMeals();
     }
 
-    public Meal get(long petId, long mealId) {//fixme unused petId
+    public Meal get(long mealId) {
+   
         log.info("Fetching meal with id = " + mealId);
         return mealRepository.findById(mealId)
                 .orElseThrow(() -> new MealNotFoundException(mealId));
+    }
+
+    public Meal getPetMeal(long petId, long mealId) {
+        log.info("Fetching pet's meal");
+        Meal meal = getMeal(mealId);
+
+        if (meal.getPet().getId() != petId) {
+            throw new MealNotFoundException(mealId);
+        }
+        return meal;
+
     }
 
     public Meal create(long petId, Meal meal) {
@@ -44,14 +61,22 @@ public class MealService {
 
     public Meal update(long petId, long id, Meal meal) {
         log.info("Fetching meal with id = " + id);
-        Meal mealFromDb = get(petId, id);
+        Meal mealFromDb = getPetMeal(petId, id);
         log.info("Updating of " + mealFromDb.toString() + " to " + meal.toString());
         mealFromDb.modify(meal);
         return mealRepository.save(mealFromDb);
     }
 
     public void delete(long petId, long id) {
-        mealRepository.delete(get(petId, id));
+        mealRepository.delete(getPetMeal(petId, id));
         log.info("Deleting meal with id = " + id);
     }
+
+    private Pet getPet(long petId) {
+        log.info("Fetching pet with id = " + petId);
+        return petRepository.findById(petId)
+                .orElseThrow(() -> new PetNotFoundException(petId));
+
+    }
+
 }
