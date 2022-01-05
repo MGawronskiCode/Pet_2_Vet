@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.MealNotFoundException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.pet.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class MealService {
 
     public Meal getPetMeal(long petId, long mealId) {
         log.info("Fetching pet's meal");
-        Meal meal = getMeal(mealId);
+        Meal meal = get(mealId);
 
         if (meal.getPet().getId() != petId) {
             throw new MealNotFoundException(mealId);
