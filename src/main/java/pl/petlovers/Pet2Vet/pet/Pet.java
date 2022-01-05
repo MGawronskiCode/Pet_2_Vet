@@ -1,12 +1,10 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
-import org.apache.commons.lang3.StringUtils;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.meal.Meal;
 import pl.petlovers.Pet2Vet.note.Note;
-import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
 import pl.petlovers.Pet2Vet.specie.PetSpecie;
 import pl.petlovers.Pet2Vet.vaccine.Vaccine;
 import pl.petlovers.Pet2Vet.visit.Visit;
