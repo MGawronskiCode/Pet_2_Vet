@@ -23,7 +23,7 @@ public class MealService {
         this.mealRepository = mealRepository;
     }
 
-    public List<Meal> getAllMeals(long petId) {
+    public List<Meal> getAll(long petId) {
         log.info("Fetching meals for the pet with id = " + petId);
         Pet pet = getPet(petId);
         if (pet.getId() != petId) {
@@ -32,7 +32,7 @@ public class MealService {
         return petRepository.getById(petId).getMeals();
     }
 
-    public Meal getMeal(long mealId) {
+    public Meal get(long mealId) {
    
         log.info("Fetching meal with id = " + mealId);
         return mealRepository.findById(mealId)
@@ -50,7 +50,7 @@ public class MealService {
 
     }
 
-    public Meal createMeal(long petId, Meal meal) {
+    public Meal create(long petId, Meal meal) {
         log.info("Fetching pet with id = " + petId);
         Pet pet = petRepository.getById(petId);
         log.info("Creating " + meal.toString());
@@ -59,7 +59,7 @@ public class MealService {
         return meal;
     }
 
-    public Meal updateMeal(long petId, long id, Meal meal) {
+    public Meal update(long petId, long id, Meal meal) {
         log.info("Fetching meal with id = " + id);
         Meal mealFromDb = getPetMeal(petId, id);
         log.info("Updating of " + mealFromDb.toString() + " to " + meal.toString());
@@ -67,7 +67,7 @@ public class MealService {
         return mealRepository.save(mealFromDb);
     }
 
-    public void deleteMeal(long petId, long id) {
+    public void delete(long petId, long id) {
         mealRepository.delete(getPetMeal(petId, id));
         log.info("Deleting meal with id = " + id);
     }
