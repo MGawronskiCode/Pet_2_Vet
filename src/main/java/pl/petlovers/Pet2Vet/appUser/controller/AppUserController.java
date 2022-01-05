@@ -35,7 +35,6 @@ public class AppUserController {
         return AppUserDTO.of(appUserService.get(userId));
     }
 
-    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public AppUserDTO create(@RequestBody AppUserDTO appUserDTO, @RequestHeader String password) {
