@@ -35,9 +35,9 @@ INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 8);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 4);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (3, 3);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 6);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 10);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (5, 9);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (5, 5);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (6, 10);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (6, 9);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (6, 5);
 
 -- Meal
 INSERT INTO public.meal(actual_feeding_time, expected_feeding_time, food, food_amount, pet_id) VALUES ('2021-11-23T07:00:00', '2021-11-23T07:30:00', 'Dry food', 300, 1);
