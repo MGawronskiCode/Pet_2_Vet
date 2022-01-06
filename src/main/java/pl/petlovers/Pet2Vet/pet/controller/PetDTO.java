@@ -5,12 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.petlovers.Pet2Vet.Sex;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.Enumerated;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Builder
