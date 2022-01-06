@@ -36,8 +36,8 @@ public class AppUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AppUserDTO create(@RequestBody AppUserDTO appUserDTO) {
-        return AppUserDTO.of(appUserService.create(appUserDTO));
+    public AppUserDTO create(@RequestBody AppUserDTO appUserDTO, @RequestHeader String password) {
+        return AppUserDTO.of(appUserService.create(appUserDTO, password));
     }
 
     @ResponseStatus(HttpStatus.CREATED)

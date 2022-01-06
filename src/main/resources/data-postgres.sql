@@ -1,11 +1,12 @@
 -- Data for the initial DB population
 
 -- AppUser
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Alex', 2, 'alex@gmail.com', 'alexpassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Samantha', 3, 'samantha@gmail.com', 'samanthapassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Brad', 2, 'brad@gmail.com', 'bradpassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Caroline', 3, 'caroline@gmail.com', 'carolinepassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Lara', 3, 'lara@gmail.com', 'larapassword');
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Alex', 2, 'alex@gmail.com', 'alexpassword', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Samantha', 3, 'samantha@gmail.com', 'samanthapassword', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Brad', 2, 'brad@gmail.com', 'bradpassword', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Caroline', 3, 'caroline@gmail.com', 'carolinepassword', 2);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Lara', 3, 'lara@gmail.com', 'larapassword', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('ADMIN', 3, 'admin', 'admin123', 0);
 
 -- Specie
 INSERT INTO public.specie(name) VALUES ('Mammal');
