@@ -56,6 +56,10 @@ public class AppUserDetails implements UserDetails {
     return true;
   }
 
+  public boolean isAdmin() {
+    return this.appUser.getRole() == Roles.ROLE_ADMIN;
+  }
+
   private Set<String> getUserRoleAsSetOfStrings() {
     return Set.of(appUser.getRole().name());
   }
