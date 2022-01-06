@@ -30,7 +30,7 @@ public class MealController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pets/{petId}/meals/{mealId}")
     public MealDTO get(@PathVariable long petId, @PathVariable long mealId) {
-        return MealDTO.of(mealService.get(petId, mealId));
+        return MealDTO.of(mealService.getPetMeal(petId, mealId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
