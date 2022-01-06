@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.pet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.appUser.AppUserService;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
@@ -70,11 +71,21 @@ class PetServiceTest {
   @Test
   void should_return_correct_object_when_using_create_with_id_argument_method() {
 //    given
-    //todo jak nadpisać metodę w mocku albo jak stworzyć własnego mocka
-    PetService service = new PetService(mock(PetRepository.class), mock(AppUserService.class));
+    final PetRepository petRepositoryMock = mock(PetRepository.class);
+    final AppUserService appUserServiceMock = mock(AppUserService.class);
+    AppUser user = mock(AppUser.class);
+
+    Pet pet = new Pet();
+
+    when(petRepositoryMock.save(pet)).thenReturn(pet);
+    when(user.getId()).thenReturn(1L);
+    when(appUserServiceMock.get(1L)).thenReturn(user);
+
+    PetService service = new PetService(petRepositoryMock, appUserServiceMock);
     PetDTO petDTO = new PetDTO();
     petDTO.setId(1L);
 //    when
+//    todo jak to rozwiązać
     final PetDTO createdPetDTO = service.create(5, petDTO);
 //    then
     assertNotNull(createdPetDTO);

@@ -3,6 +3,7 @@ package pl.petlovers.Pet2Vet.pet.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.pet.PetService;
+import pl.petlovers.Pet2Vet.security.users.AppUserDetails;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +68,7 @@ class PetControllerTest {
     PetController controller = new PetController(mock(PetService.class));
     PetDTO petDTO = new PetDTO();
 //    when
-    final PetDTO createdDTO = controller.create(1L, petDTO);
+    final PetDTO createdDTO = controller.create(petDTO, new AppUserDetails());
 //    then
     assertNull(createdDTO);
   }

@@ -2,8 +2,11 @@ package pl.petlovers.Pet2Vet.pet.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.pet.PetService;
+import pl.petlovers.Pet2Vet.security.users.AppUserDetails;
 
 import java.util.List;
 
@@ -36,10 +39,11 @@ public class PetController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/users/{userId}/pets")
-    public PetDTO create(@PathVariable long userId, @RequestBody PetDTO petDTO) {
+    @PostMapping("/pets")
+    public PetDTO create(@RequestBody PetDTO petDTO, @AuthenticationPrincipal AppUserDetails user) {
 
-    return petService.create(userId, petDTO);
+
+    return petService.create(user.getAppUser().getId(), petDTO);
   }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
