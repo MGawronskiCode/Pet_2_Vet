@@ -18,7 +18,7 @@ import pl.petlovers.Pet2Vet.exceptions.unautorized_exceptions.UnauthorizedAttemp
 @ControllerAdvice
 public class ExceptionsHandler {
 
-  static final String ERROR = "---Error: ";
+  static final String ERROR = "!!! Error: ";
 
   @ResponseBody
   @ExceptionHandler(ForbiddenAccessException.class)
@@ -87,8 +87,7 @@ public class ExceptionsHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   String dtaIntegrityViolationException(DataIntegrityViolationException exception) {
     log.error(ERROR + exception.toString());
-    return "Could not execute statement, remember to send the data required in this query."
-        + "If you are trying to delete something, make sure it is not included in some objects";
+    return exception.getMessage();
   }
 
   @ResponseBody
@@ -105,49 +104,6 @@ public class ExceptionsHandler {
   String invalidDataAccessApiUsageException(InvalidDataAccessApiUsageException exception) {
     log.error(ERROR + exception.toString());
     return exception.toString();
-  }
-
-
-  @ResponseBody
-  @ExceptionHandler(AppUserNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  String appUserNotFoundHandler(AppUserNotFoundException exception) {
-    return exception.getMessage();
-  }
-
-  @ResponseBody
-  @ExceptionHandler(MealNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  String mealNotFoundHandler(MealNotFoundException exception) {
-    return exception.getMessage();
-  }
-
-  @ResponseBody
-  @ExceptionHandler(NoteNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  String noteNotFoundHandler(NoteNotFoundException exception) {
-    return exception.getMessage();
-  }
-
-  @ResponseBody
-  @ExceptionHandler(PetNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  String petNotFoundHandler(PetNotFoundException exception) {
-    return exception.getMessage();
-  }
-
-  @ResponseBody
-  @ExceptionHandler(PetSpecieNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  String petSpecieNotFoundHandler(PetSpecieNotFoundException exception) {
-    return exception.getMessage();
-  }
-
-  @ResponseBody
-  @ExceptionHandler(VaccineNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  String vaccineNotFoundHandler(VaccineNotFoundException exception) {
-    return exception.getMessage();
   }
 
   @ResponseBody

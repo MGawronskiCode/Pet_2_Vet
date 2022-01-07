@@ -1,11 +1,13 @@
 -- Data for the initial DB population
 
 -- AppUser
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Alex', 2, 'alex@gmail.com', 'alexpassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Samantha', 3, 'samantha@gmail.com', 'samanthapassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Brad', 2, 'brad@gmail.com', 'bradpassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Caroline', 3, 'caroline@gmail.com', 'carolinepassword');
-INSERT INTO public.app_user(name, sex, login, password) VALUES ('Lara', 3, 'lara@gmail.com', 'larapassword');
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Alex', 2, 'alex@gmail.com', '$2a$12$TubK7CsuGdoLC7k/5t9rVuk895OFB1.ptaoRqT8ochIE/NDPqlwra', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Samantha', 3, 'samantha@gmail.com', '$2a$12$7X4MtR8D2YVJJYbIDCID.O3L8vNfNvu1vY6tdONaspjeCd8xGuS9q', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Brad', 2, 'brad@gmail.com', '$2a$12$3oMRmMAvHoEqWkMrwmnAc./wu5KI0TEmVxYrTnWV7sya05eOeu84S', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Caroline', 3, 'caroline@gmail.com', '$2a$12$AKlcgdKpBZ5LibEEJq/nuevu7qU17d8T0jHbGjUKn6ugcef0wGEG2', 2);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Test1', 3, 'user@user', '$2a$12$Wmx.OKQyzwslJClf0k9JP.kUX7SsbIuWre4S1QEctpjRUQMvJrcbm', 1);
+INSERT INTO public.app_user(name, sex, login, password, role) VALUES ('Test2', 3, 'admin@admin', '$2a$12$66qPPyfCUxkdr1mYb1MMte6VHB/laSE6hzp25r5OETokWQXoTdPp2', 0);
+
 
 -- Specie
 INSERT INTO public.specie(name) VALUES ('Mammal');
@@ -33,7 +35,7 @@ INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 8);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 4);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (3, 3);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 6);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 10);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (5, 10);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (5, 9);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (5, 5);
 

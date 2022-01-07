@@ -8,18 +8,20 @@ import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.note.Note;
 import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.security.users.Roles;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class AppUser {
+public class AppUser{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +32,16 @@ public class AppUser {
     @Column(nullable = false)
     @Enumerated
     private Sex sex;
+
     @Column(nullable = false, unique = true)
     private String login;
+
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    @Enumerated
+    private Roles role;
 
     @JsonIgnore
     @ManyToMany
@@ -52,6 +60,14 @@ public class AppUser {
             fetch = FetchType.LAZY
     )
     private List<Note> notes = new ArrayList<>();
+
+    public AppUser(String name, Sex sex, String login, String password, Roles role) {
+        this.name = name;
+        this.sex = sex;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
     public void addNote(Note note) {
         note.setCreated(LocalDateTime.now());
@@ -74,13 +90,4 @@ public class AppUser {
         this.pets.add(pet);
     }
 
-    @Override
-    public String toString() {
-        return "AppUser{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", sex='" + sex + '\'' +
-                ", login='" + login + '\'' +
-                '}';
-    }
 }
