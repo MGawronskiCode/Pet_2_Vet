@@ -68,3 +68,6 @@ INSERT INTO public.pet_vaccines(pet_id, vaccines_id) VALUES (1, 1);
 INSERT INTO public.pet_vaccines(pet_id, vaccines_id) VALUES (1, 2);
 INSERT INTO public.pet_vaccines(pet_id, vaccines_id) VALUES (8, 3);
 INSERT INTO public.pet_vaccines(pet_id, vaccines_id) VALUES (3, 4);
+
+-- Visits
+INSERT INTO public.visit(pet_id, date_time, description, place, purpose, recommendation) VALUES (3, '2021-11-23T10:16:00', 'A visit to the doctor regarding pain in the abdomen', 'Struga 25 st.', 'Drug recipe', 'Porridge water diet');

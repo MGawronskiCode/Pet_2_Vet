@@ -2,13 +2,14 @@ package pl.petlovers.Pet2Vet.visit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.visit.VisitService;
-import pl.petlovers.Pet2Vet.visit.controller.VisitDTO;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/pets")
 public class VisitController {
 
@@ -46,9 +47,10 @@ public class VisitController {
     return VisitDTO.of(visitService.update(visitId, visitDTO.toVisit()));
   }
 
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.OK)
   @DeleteMapping("/{petId}/visits/{visitId}")
-  public void delete(@PathVariable long petId, @PathVariable long visitId) {
-    visitService.delete(visitId);
+  public ResponseEntity<Long> delete(@PathVariable long petId, @PathVariable long visitId) {
+    visitService.delete(petId, visitId);
+    return new ResponseEntity<>(visitId, HttpStatus.OK);
   }
 }

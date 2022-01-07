@@ -49,7 +49,7 @@ public class Pet {
     @ManyToMany(mappedBy = "pets", cascade = CascadeType.ALL)
     private List<AppUser> appUsers;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Visit> visits = new ArrayList<>();
 
     public void addNote(Note note) {

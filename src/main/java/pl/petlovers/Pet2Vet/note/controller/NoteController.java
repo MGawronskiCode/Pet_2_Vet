@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.note.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.note.NoteService;
 
@@ -99,9 +100,10 @@ public class NoteController {
         noteService.deletePetNotes(petId);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/pets/{petId}/notes/{noteId}")
-    public void deletePetNote(@PathVariable long petId, @PathVariable long noteId) {
+    public ResponseEntity<Long> deletePetNote(@PathVariable long petId, @PathVariable long noteId) {
         noteService.deletePetNote(petId, noteId);
+        return new ResponseEntity<>(noteId, HttpStatus.OK);
     }
 }
