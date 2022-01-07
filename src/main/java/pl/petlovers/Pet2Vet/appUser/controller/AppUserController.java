@@ -64,17 +64,18 @@ public class AppUserController {
         return AppUserDTO.of(appUserService.create(appUserDTO, password));
     }
 
-//    todo change login
-    @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @PutMapping("/{userId}")
-    public AppUserDTO update(@PathVariable long userId, @RequestBody AppUserDTO appUserDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
+//    todo change login or password
+//    todo change role only by admin
+@Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
+@ResponseStatus(HttpStatus.ACCEPTED)
+@PutMapping("/{userId}")
+public AppUserDTO update(@PathVariable long userId, @RequestBody AppUserDTO appUserDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-        if (changeOwnAccountOrAdmin(userId, loggedUser)) {
+    if (changeOwnAccountOrAdmin(userId, loggedUser)) {
 
-            return AppUserDTO.of(appUserService.update(userId, appUserDTO));
-        } else {
-            throw new AppUserForbiddenAccessException();
+        return AppUserDTO.of(appUserService.update(userId, appUserDTO));
+    } else {
+        throw new AppUserForbiddenAccessException();
         }
     }
 
