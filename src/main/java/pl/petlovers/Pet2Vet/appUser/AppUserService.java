@@ -2,8 +2,10 @@ package pl.petlovers.Pet2Vet.appUser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 
@@ -34,7 +36,11 @@ public class AppUserService {
 
     public AppUser create(AppUserDTO userDTO, String password) {
         log.info("Creating " + userDTO.toString());
-        return appUserRepository.save(userDTO.toAppUser(password));
+        try {
+            return appUserRepository.save(userDTO.toAppUser(password));
+        } catch (DataIntegrityViolationException e) {
+            throw new AppUserWithThisLoginAlreadyExistException();
+        }
     }
 
     public AppUser update(long id, AppUserDTO user){

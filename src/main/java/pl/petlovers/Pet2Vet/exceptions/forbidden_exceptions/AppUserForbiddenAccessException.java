@@ -1,7 +1,12 @@
 package pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions;
 
 public class AppUserForbiddenAccessException extends ForbiddenAccessException {
-  protected AppUserForbiddenAccessException(String message) {
+
+  public AppUserForbiddenAccessException() {
+    super("Nie masz dostępu do tego użytkownika.");
+  }
+
+  public AppUserForbiddenAccessException(String message) {
     super(message);
   }
 }
