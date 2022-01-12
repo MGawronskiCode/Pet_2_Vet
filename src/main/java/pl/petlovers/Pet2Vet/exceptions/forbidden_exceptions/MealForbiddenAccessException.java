@@ -1,7 +1,12 @@
 package pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions;
 
 public class MealForbiddenAccessException extends ForbiddenAccessException {
-  protected MealForbiddenAccessException(String message) {
+
+  public MealForbiddenAccessException() {
+    super("Nie masz dostępu do tego posiłku.");
+  }
+
+  public MealForbiddenAccessException(String message) {
     super(message);
   }
 }
