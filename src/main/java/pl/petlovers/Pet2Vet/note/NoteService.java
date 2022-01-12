@@ -82,6 +82,7 @@ public class NoteService {
             return note;
         } catch (NullPointerException error) {
             throw new NullPointerException("Wrong note ID"); // not User's note but Pet's
+//            maybe make Note abstract and create UserNote and PetNote?
         }
     }
 

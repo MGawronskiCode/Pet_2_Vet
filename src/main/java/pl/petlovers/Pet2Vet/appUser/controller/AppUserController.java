@@ -41,7 +41,7 @@ public class AppUserController {
     @GetMapping("/{userId}")
     public AppUserDTO get(@PathVariable long userId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-        if (changeOwnAccountOrAdmin(userId, loggedUser)) {
+        if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
 
             return AppUserDTO.of(appUserService.get(userId));
         } else {
@@ -71,7 +71,7 @@ public class AppUserController {
     @PutMapping("/{userId}")
     public AppUserDTO update(@PathVariable long userId, @RequestBody AppUserDTO appUserDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-        if (changeOwnAccountOrAdmin(userId, loggedUser)) {
+        if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
 
             return AppUserDTO.of(appUserService.update(userId, appUserDTO));
         } else {
@@ -84,7 +84,7 @@ public class AppUserController {
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable long userId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-        if (changeOwnAccountOrAdmin(userId, loggedUser)) {
+        if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
 
             appUserService.delete(userId);
         } else {
@@ -92,9 +92,9 @@ public class AppUserController {
         }
     }
 
-    private boolean changeOwnAccountOrAdmin(long userId, AppUserDetails loggedUser) {
+    private boolean changeOwnAccountOrAdminLogged(long userToChangeId, AppUserDetails loggedUser) {
 
-        return loggedUser.getAppUser().getId() == userId || loggedUser.isAdmin();
+        return loggedUser.getId() == userToChangeId || loggedUser.isAdmin();
     }
 
 }

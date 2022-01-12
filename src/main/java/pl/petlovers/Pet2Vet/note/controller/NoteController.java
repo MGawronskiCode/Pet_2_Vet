@@ -2,8 +2,10 @@ package pl.petlovers.Pet2Vet.note.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.note.NoteService;
+import pl.petlovers.Pet2Vet.security.users.AppUserDetails;
 
 import java.util.List;
 
@@ -19,21 +21,15 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/users/{userId}/notes")
-    public List<NoteDTO> getAllUserNotes(@PathVariable long userId) {
-        return noteService.getAllUserNotes(userId)
-                .stream()
-                .map(NoteDTO::of)
-                .toList();
-    }
+    @GetMapping("/notes")
+    public List<NoteDTO> getAllUserNotes(@AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("users/{userId}/pets/notes")
-    public List<NoteDTO> getAllUserPetsNotes(@PathVariable long userId) {
-        return noteService.getAllUserPetsNotes(userId)
-                .stream()
-                .map(NoteDTO::of)
-                .toList();
+        long userId = loggedUser.getId();
+
+        return noteService.getAllUserNotes(userId)
+            .stream()
+            .map(NoteDTO::of)
+            .toList();
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -46,9 +42,15 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/users/{userId}/notes/{noteId}")
-    public NoteDTO getUserNote(@PathVariable long userId, @PathVariable long noteId) {
-        return NoteDTO.of(noteService.getUserNote(userId, noteId));
+    @GetMapping("/pets/notes")
+    public List<NoteDTO> getAllUserPetsNotes(@AuthenticationPrincipal AppUserDetails loggedUser) {
+
+        long userId = loggedUser.getId();
+
+        return noteService.getAllUserPetsNotes(userId)
+                .stream()
+                .map(NoteDTO::of)
+                .toList();
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -57,10 +59,13 @@ public class NoteController {
         return NoteDTO.of(noteService.getPetNote(petId, noteId));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/users/{userId}/notes")
-    public NoteDTO createUserNote(@PathVariable long userId, @RequestBody NoteDTO noteDTO) {
-        return NoteDTO.of(noteService.createUserNote(userId, noteDTO.toNote()));
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/notes/{noteId}")
+    public NoteDTO getUserNote(@AuthenticationPrincipal AppUserDetails loggedUser, @PathVariable long noteId) {
+
+        long userId = loggedUser.getId();
+
+        return NoteDTO.of(noteService.getUserNote(userId, noteId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -70,9 +75,12 @@ public class NoteController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping("/users/{userId}/notes/{noteId}")
-    public NoteDTO updateUserNote(@PathVariable long userId, @PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
-        return NoteDTO.of(noteService.updateUserNote(userId, noteId, noteDTO.toNote()));
+    @PostMapping("/notes")
+    public NoteDTO createUserNote(@AuthenticationPrincipal AppUserDetails loggedUser, @RequestBody NoteDTO noteDTO) {
+
+        long userId = loggedUser.getId();
+
+        return NoteDTO.of(noteService.createUserNote(userId, noteDTO.toNote()));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -81,16 +89,22 @@ public class NoteController {
         return NoteDTO.of(noteService.updatePetNote(petId, noteId, noteDTO.toNote()));
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/users/{userId}/notes")
-    public void deleteUserNotes(@PathVariable long userId) {
-        noteService.deleteUserNotes(userId);
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/notes/{noteId}")
+    public NoteDTO updateUserNote(@AuthenticationPrincipal AppUserDetails loggedUser, @PathVariable long noteId, @RequestBody NoteDTO noteDTO) {
+
+        long userId = loggedUser.getId();
+
+        return NoteDTO.of(noteService.updateUserNote(userId, noteId, noteDTO.toNote()));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/users/{userId}/notes/{noteId}")
-    public void deleteUserNote(@PathVariable long userId, @PathVariable long noteId) {
-        noteService.deleteUserNote(userId, noteId);
+    @DeleteMapping("/notes")
+    public void deleteUserNotes(@AuthenticationPrincipal AppUserDetails loggedUser) {
+
+        long userId = loggedUser.getId();
+
+        noteService.deleteUserNotes(userId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -103,5 +117,14 @@ public class NoteController {
     @DeleteMapping("/pets/{petId}/notes/{noteId}")
     public void deletePetNote(@PathVariable long petId, @PathVariable long noteId) {
         noteService.deletePetNote(petId, noteId);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/notes/{noteId}")
+    public void deleteUserNote(@AuthenticationPrincipal AppUserDetails loggedUser, @PathVariable long noteId) {
+
+        long userId = loggedUser.getId();
+
+        noteService.deleteUserNote(userId, noteId);
     }
 }
