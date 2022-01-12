@@ -29,6 +29,11 @@ public class PetService {
     return petRepository.findAll();
   }
 
+  public Pet get(long petId) {
+    log.info("Fetching pet with id = " + petId);
+    return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
+  }
+
   public PetDTO create(PetDTO newPetData) {
     log.info("Creating " + newPetData.toString());
     petRepository.save(newPetData.toPet());
@@ -59,11 +64,6 @@ public class PetService {
   public void delete(long petId) {
     petRepository.delete(get(petId));
     log.info("Deleting pet with id = " + petId);
-  }
-
-  public Pet get(long petId) {
-    log.info("Fetching pet with id = " + petId);
-    return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
   }
 
     public List<Pet> getUserPets(long userId) {
