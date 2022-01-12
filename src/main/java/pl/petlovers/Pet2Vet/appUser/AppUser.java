@@ -48,7 +48,8 @@ public class AppUser{
     @JoinTable(
             name = "Users_pets",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "pet_id")
+            inverseJoinColumns = @JoinColumn(name = "pet_id"
+            )
     )
     private List<Pet> pets = new ArrayList<>();
 

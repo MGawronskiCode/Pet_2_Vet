@@ -42,20 +42,6 @@ public class PetController {
     }
   }
 
-  private boolean loggedUserHaveThisPet(Pet pet, AppUserDetails loggedUser) {
-    return pet.getAppUsers()
-        .stream()
-        .anyMatch(user -> user.getId().equals(loggedUser.getAppUser().getId()));
-  }
-
-
-  @Secured({"ROLE_ADMIN", "ROLE_OWNER"})
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping("/pets")
-  public PetDTO create(@RequestBody PetDTO petDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
-
-    return petService.create(loggedUser.getAppUser().getId(), petDTO);
-  }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
@@ -68,6 +54,14 @@ public class PetController {
     } else {
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
+  }
+
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER"})
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping("/pets")
+  public PetDTO create(@RequestBody PetDTO petDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
+
+    return petService.create(loggedUser.getAppUser().getId(), petDTO);
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER"})
@@ -94,6 +88,12 @@ public class PetController {
     } else {
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
+  }
+
+  private boolean loggedUserHaveThisPet(Pet pet, AppUserDetails loggedUser) {
+    return pet.getAppUsers()
+        .stream()
+        .anyMatch(user -> user.getId().equals(loggedUser.getAppUser().getId()));
   }
 
   private String getYouDontHaveThisPetCommunicate(long petId) {

@@ -14,6 +14,8 @@ import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.ForbiddenAccessExcep
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.*;
 import pl.petlovers.Pet2Vet.exceptions.unautorized_exceptions.UnauthorizedAttemptException;
 
+//todo wszystkie komunikaty w jednym języku
+
 @Slf4j
 @ControllerAdvice
 public class ExceptionsHandler {
