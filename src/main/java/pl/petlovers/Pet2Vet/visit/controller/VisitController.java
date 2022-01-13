@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.visit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.VisitForbiddenAccessException;
@@ -25,6 +26,7 @@ public class VisitController {
     this.petService = petService;
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{petId}/visits")
   public List<VisitDTO> getAll(@PathVariable long petId, @AuthenticationPrincipal AppUserDetails loggedUser) {
@@ -41,6 +43,7 @@ public class VisitController {
     }
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{petId}/visits/{visitId}")
   public VisitDTO get(@PathVariable long petId, @PathVariable long visitId, @AuthenticationPrincipal AppUserDetails loggedUser) {
@@ -54,6 +57,7 @@ public class VisitController {
     }
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{petId}/visits")
   public VisitDTO create(@PathVariable long petId, @RequestBody VisitDTO visitDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
@@ -67,6 +71,7 @@ public class VisitController {
     }
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.CREATED)
   @PutMapping("/{petId}/visits/{visitId}")
   public VisitDTO update(@PathVariable long petId, @PathVariable long visitId, @RequestBody VisitDTO visitDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
@@ -80,6 +85,7 @@ public class VisitController {
     }
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{petId}/visits/{visitId}")
   public void delete(@PathVariable long petId, @PathVariable long visitId, @AuthenticationPrincipal AppUserDetails loggedUser) {
