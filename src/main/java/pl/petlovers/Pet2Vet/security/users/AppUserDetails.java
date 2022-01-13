@@ -21,7 +21,7 @@ public class AppUserDetails implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
 
-    return getUserRoleAsSetOfStrings().stream()
+    return getUserRoleAsCollection().stream()
         .map(SimpleGrantedAuthority::new)
         .toList();
   }
@@ -64,7 +64,7 @@ public class AppUserDetails implements UserDetails {
     return this.appUser.getId();
   }
 
-  private Set<String> getUserRoleAsSetOfStrings() {
+  private Set<String> getUserRoleAsCollection() {
     return Set.of(appUser.getRole().name());
   }
 }
