@@ -54,7 +54,7 @@ public class AppUserController {
     @PostMapping
     public AppUserDTO create(@RequestBody AppUserDTO appUserDTO, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-        if (appUserDTO.getRole() == Roles.ROLE_ADMIN) {
+        if (tryingToCreateAdminAccount(appUserDTO)) {
             if (loggedUser.isAdmin()) {
 
                 return AppUserDTO.of(appUserService.create(appUserDTO, password));
@@ -67,7 +67,11 @@ public class AppUserController {
         return AppUserDTO.of(appUserService.create(appUserDTO, password));
     }
 
-//    todo change login or password
+    private boolean tryingToCreateAdminAccount(AppUserDTO appUserDTO) {
+        return appUserDTO.getRole() == Roles.ROLE_ADMIN;
+    }
+
+    //    todo change login or password
 //    todo change role only by admin
     @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
     @ResponseStatus(HttpStatus.ACCEPTED)
