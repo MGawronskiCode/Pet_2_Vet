@@ -20,26 +20,31 @@ public class VisitService {
   }
 
   public List<Visit> getAll(long petId) {
+
     return petRepository.getById(petId).getVisits();
   }
 
   public Visit get(long visitId) {
+
     return visitRepository.getById(visitId);
   }
 
   public Visit create(long petId, Visit visit) {
     Pet pet = petRepository.getById(petId);
     pet.addVisit(visit);
+
     return visitRepository.save(visit);
   }
 
   public Visit update(long visitId, Visit visit) {
     Visit visitFromDb = get(visitId);
     visitFromDb.modify(visit);
+
     return visitRepository.save(visitFromDb);
   }
 
   public void delete(long visitId) {
+
     visitRepository.delete(get(visitId));
   }
 }

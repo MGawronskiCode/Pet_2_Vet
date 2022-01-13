@@ -27,14 +27,17 @@ public class MealService {
         log.info("Fetching meals for the pet with id = " + petId);
         Pet pet = getPet(petId);
         if (pet.getId() != petId) {
+
             throw new PetNotFoundException(petId);
         }
+
         return petRepository.getById(petId).getMeals();
     }
 
     public Meal get(long mealId) {
-   
+
         log.info("Fetching meal with id = " + mealId);
+
         return mealRepository.findById(mealId)
                 .orElseThrow(() -> new MealNotFoundException(mealId));
     }
@@ -44,10 +47,11 @@ public class MealService {
         Meal meal = get(mealId);
 
         if (meal.getPet().getId() != petId) {
+
             throw new MealNotFoundException(mealId);
         }
-        return meal;
 
+        return meal;
     }
 
     public Meal create(long petId, Meal meal) {
@@ -56,6 +60,7 @@ public class MealService {
         log.info("Creating " + meal.toString());
         pet.addMeal(meal);
         mealRepository.save(meal);
+
         return meal;
     }
 
@@ -64,6 +69,7 @@ public class MealService {
         Meal mealFromDb = getPetMeal(petId, id);
         log.info("Updating of " + mealFromDb.toString() + " to " + meal.toString());
         mealFromDb.modify(meal);
+
         return mealRepository.save(mealFromDb);
     }
 
@@ -74,6 +80,7 @@ public class MealService {
 
     private Pet getPet(long petId) {
         log.info("Fetching pet with id = " + petId);
+
         return petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(petId));
 

@@ -24,12 +24,14 @@ public class PetSpecieService {
 
   public List<PetSpecie> getAll() {
     log.info("Fetching all pets species");
+
     return petSpecieRepository.findAll();
   }
 
   public PetSpecie create(PetSpecie petSpecie) {
     log.info("Creating " + petSpecie.toString());
     petSpecieRepository.save(petSpecie);
+
     return petSpecie;
   }
 
@@ -49,6 +51,7 @@ public class PetSpecieService {
 
   public PetSpecie get(long kindId) {
     log.info("Fetching pet's specie with id = " + kindId);
+
     return petSpecieRepository.findById(kindId).orElseThrow(() -> new PetSpecieNotFoundException(kindId));
   }
 

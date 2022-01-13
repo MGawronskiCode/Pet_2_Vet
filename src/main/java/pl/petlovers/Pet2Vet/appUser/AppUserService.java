@@ -25,11 +25,13 @@ public class AppUserService {
 
     public List<AppUser> getAll() {
         log.info("Fetching all users");
+
         return appUserRepository.findAll();
     }
 
     public AppUser get(long id) {
         log.info("Fetching user with id = " + id);
+
         return appUserRepository.findById(id)
                 .orElseThrow(() -> new AppUserNotFoundException(id));
     }
@@ -37,8 +39,10 @@ public class AppUserService {
     public AppUser create(AppUserDTO userDTO, String password) {
         log.info("Creating " + userDTO.toString());
         try {
+
             return appUserRepository.save(userDTO.toAppUser(password));
         } catch (DataIntegrityViolationException e) {
+
             throw new AppUserWithThisLoginAlreadyExistException();
         }
     }
@@ -47,6 +51,7 @@ public class AppUserService {
         AppUser userFromDb = get(id);
         log.info("Updating of " + userFromDb.toString() + " to " + user.toString());
         userFromDb.modify(user);
+
         return appUserRepository.save(userFromDb);
     }
 

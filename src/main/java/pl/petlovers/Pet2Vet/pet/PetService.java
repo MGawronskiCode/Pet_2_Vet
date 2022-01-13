@@ -26,11 +26,13 @@ public class PetService {
 
   public List<Pet> getAll() {
     log.info("Fetching all pets");
+
     return petRepository.findAll();
   }
 
   public Pet get(long petId) {
     log.info("Fetching pet with id = " + petId);
+
     return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
   }
 
@@ -69,6 +71,7 @@ public class PetService {
     public List<Pet> getUserPets(long userId) {
       AppUser user = appUserService.get(userId);
       log.info("Fetching all user's pets");
+
       return user.getPets();
     }
 }

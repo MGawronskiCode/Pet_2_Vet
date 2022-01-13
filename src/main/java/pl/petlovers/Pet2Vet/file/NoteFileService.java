@@ -28,12 +28,14 @@ public class NoteFileService {
   public File create(long noteId, File file) {
     Note note = noteRepository.getById(noteId);
     note.addFile(file);
+
     return fileRepository.save(file);
   }
 
   public File update(long noteId, long fileId, File file) { //fixme unused noteId
     File fileFromDb = get(fileId);
     fileFromDb.modify(file);
+
     return fileRepository.save(fileFromDb);
   }
 

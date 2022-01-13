@@ -32,11 +32,13 @@ public class MealController {
     public List<MealDTO> getAll(@PathVariable long petId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
         if (loggedUserIsAdminOrContainsPet(petId, loggedUser)) {
+
             return mealService.getAll(petId)
                 .stream()
                 .map(MealDTO::of)
                 .toList();
         } else {
+
             throw new MealForbiddenAccessException();
         }
     }
@@ -47,8 +49,10 @@ public class MealController {
     public MealDTO get(@PathVariable long petId, @PathVariable long mealId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
         if (loggedUserIsAdminOrContainsPet(petId, loggedUser)) {
+
             return MealDTO.of(mealService.getPetMeal(petId, mealId));
         } else {
+
             throw new MealForbiddenAccessException();
         }
     }
@@ -59,8 +63,10 @@ public class MealController {
     public MealDTO create(@PathVariable long petId, @RequestBody MealDTO mealDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
         if (loggedUserIsAdminOrContainsPet(petId, loggedUser)) {
+
             return MealDTO.of(mealService.create(petId, mealDTO.toMeal()));
         } else {
+
             throw new MealForbiddenAccessException();
         }
     }
@@ -71,8 +77,10 @@ public class MealController {
     public MealDTO update(@PathVariable long petId, @PathVariable long mealId, @RequestBody MealDTO mealDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
         if (loggedUserIsAdminOrContainsPet(petId, loggedUser)) {
+
             return MealDTO.of(mealService.update(petId, mealId, mealDTO.toMeal()));
         } else {
+
             throw new MealForbiddenAccessException();
         }
     }
@@ -83,8 +91,10 @@ public class MealController {
     public void delete(@PathVariable long petId, @PathVariable long mealId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
         if (loggedUserIsAdminOrContainsPet(petId, loggedUser)) {
+
             mealService.delete(petId, mealId);
         } else {
+
             throw new MealForbiddenAccessException();
         }
     }

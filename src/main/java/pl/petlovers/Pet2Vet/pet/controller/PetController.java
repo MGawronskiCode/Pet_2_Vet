@@ -50,8 +50,10 @@ public class PetController {
 
     final Pet pet = petService.get(petId);
     if (loggedUserHaveThisPet(pet, loggedUser) || loggedUser.isAdmin()) {
+
       return PetDTO.of(pet);
     } else {
+
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
   }
@@ -71,8 +73,10 @@ public class PetController {
 
     final Pet pet = petService.get(petId);
     if (loggedUserHaveThisPet(pet, loggedUser) || loggedUser.isAdmin()) {
+
       return PetDTO.of(petService.update(petId, petDTO));
     } else {
+
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
   }
@@ -84,8 +88,10 @@ public class PetController {
 
     final Pet pet = petService.get(petId);
     if (loggedUserHaveThisPet(pet, loggedUser) || loggedUser.isAdmin()) {
+
       petService.delete(petId);
     } else {
+
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
   }

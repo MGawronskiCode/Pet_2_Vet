@@ -29,11 +29,13 @@ public class VaccineService {
 
   public List<Vaccine> getAll() {
     log.info("Fetching all vaccines");
+
     return vaccineRepository.findAll();
   }
 
   public Vaccine get(long vaccineId) {
     log.info(FETCHING_VACCINE + vaccineId);
+
     return vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
   }
 
@@ -56,6 +58,7 @@ public class VaccineService {
   public void delete(long vaccineId) {
     Vaccine vaccine = get(vaccineId);
     log.info("Deleting vaccine");
+
     vaccineRepository.delete(vaccine);
   }
 

@@ -45,6 +45,7 @@ public class AppUserController {
 
             return AppUserDTO.of(appUserService.get(userId));
         } else {
+
             throw new AppUserForbiddenAccessException();
         }
     }
@@ -55,8 +56,10 @@ public class AppUserController {
 
         if (appUserDTO.getRole() == Roles.ROLE_ADMIN) {
             if (loggedUser.isAdmin()) {
+
                 return AppUserDTO.of(appUserService.create(appUserDTO, password));
             } else {
+
                 throw new CreatingAdminAccountNotByAdminForbidden();
             }
         }
@@ -75,6 +78,7 @@ public class AppUserController {
 
             return AppUserDTO.of(appUserService.update(userId, appUserDTO));
         } else {
+
             throw new AppUserForbiddenAccessException();
             }
         }
@@ -88,6 +92,7 @@ public class AppUserController {
 
             appUserService.delete(userId);
         } else {
+
             throw new AppUserForbiddenAccessException();
         }
     }
