@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -65,7 +66,9 @@ class PetControllerTest {
   @Test
   void should_return_correct_object_when_using_petService_create_with_petId_and_petDTO_arguments_method() {
 //    given
-    PetController controller = new PetController(mock(PetService.class));
+    final PetService mock = mock(PetService.class);
+    when(mock.create(any(), any())).thenReturn(new PetDTO());//todo tak jest super i działa, zastosować w pozostałych miejscach.
+    PetController controller = new PetController(mock);
     PetDTO petDTO = new PetDTO();
 //    when
     final PetDTO createdDTO = controller.create(petDTO, new AppUserDetails());
