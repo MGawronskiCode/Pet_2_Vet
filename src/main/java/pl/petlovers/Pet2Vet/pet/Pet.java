@@ -52,6 +52,9 @@ public class Pet {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Visit> visits = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean isDeleted;
+
     public void addNote(Note note) {
         note.setCreated(LocalDateTime.now());
         note.setModified(null);
@@ -88,6 +91,18 @@ public class Pet {
                 ", sex='" + sex + '\'' +
                 ", birthday=" + birthday +
                 '}';
+    }
+
+    public boolean deleted() {
+        return isDeleted;
+    }
+
+    public void delete() {
+        isDeleted = true;
+    }
+
+    public void returnFromDelete() {
+        isDeleted = false;
     }
 
 }
