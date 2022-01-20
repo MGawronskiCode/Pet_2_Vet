@@ -46,7 +46,7 @@ public class Pet {
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Note> notes;
 
-    @ManyToMany(mappedBy = "pets", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "pets", fetch = FetchType.LAZY)
     private List<AppUser> appUsers;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

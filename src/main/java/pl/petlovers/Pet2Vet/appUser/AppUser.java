@@ -44,19 +44,18 @@ public class AppUser{
     private Roles role;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "Users_pets",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "pet_id")
+            inverseJoinColumns = @JoinColumn(name = "pet_id"
+            )
     )
     private List<Pet> pets = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(
             mappedBy = "appUser",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
             fetch = FetchType.LAZY
     )
     private List<Note> notes = new ArrayList<>();

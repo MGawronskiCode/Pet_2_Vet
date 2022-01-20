@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;

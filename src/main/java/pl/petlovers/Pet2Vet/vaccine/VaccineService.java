@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.VaccineNotFoundException;
 
 import pl.petlovers.Pet2Vet.pet.Pet;
@@ -63,20 +65,20 @@ public class VaccineService {
   }
 
   public List<Vaccine> getPetVaccines(long petId) {
-    Pet pet = petRepository.findById(petId).orElseThrow();
+    Pet pet = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
 
     return pet.getVaccines();
   }
 
   public Vaccine getPetVaccine(long petId, long vaccineId) {
-    Pet pet = petRepository.findById(petId).orElseThrow();
+    Pet pet = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
     List<Vaccine> vaccines = pet.getVaccines();
 
     return findVaccineInList(vaccineId, vaccines);
   }
 
   public Vaccine createVaccineInPet(long petId, Vaccine vaccine) {
-    Pet petFromRepository = petRepository.findById(petId).orElseThrow();
+    Pet petFromRepository = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
     List<Vaccine> petVaccines = petFromRepository.getVaccines();
     petVaccines.add(vaccine);
     petFromRepository.setVaccines(petVaccines);
@@ -86,8 +88,9 @@ public class VaccineService {
     return vaccine;
   }
 
+  @Transactional
   public Vaccine updatePetVaccine(long petId, long vaccineId, Vaccine vaccineData) {
-    Pet petFromRepository = petRepository.findById(petId).orElseThrow();
+    Pet petFromRepository = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
     final List<Vaccine> vaccines = petFromRepository.getVaccines();
     updateVaccineIfExistOnList(vaccineId, vaccineData, vaccines);
     petFromRepository.setVaccines(vaccines);
@@ -98,8 +101,9 @@ public class VaccineService {
     return vaccineData;
   }
 
+  @Transactional
   public void deletePetVaccine(long petId, long vaccineId) {
-    Pet petFromRepository = petRepository.findById(petId).orElseThrow();
+    Pet petFromRepository = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
     final List<Vaccine> newVaccines = petFromRepository.getVaccines();
 
     deleteVaccineIfExistOnList(vaccineId, newVaccines);

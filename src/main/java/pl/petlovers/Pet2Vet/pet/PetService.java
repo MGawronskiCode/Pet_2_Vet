@@ -9,6 +9,7 @@ import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
 import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
@@ -43,9 +44,11 @@ public class PetService {
     return newPetData;
   }
 
+  @Transactional
   public PetDTO create(long userId, PetDTO petDTO) {
     log.info("Creating " + petDTO.toString());
     Pet petFromDb = petRepository.save(petDTO.toPet());
+
     AppUser user = appUserService.get(userId);
     user.addPetToPetsList(petFromDb);
     AppUserDTO appUserDTO = AppUserDTO.of(user);
@@ -63,15 +66,29 @@ public class PetService {
     return petRepository.save(petFromDB);
   }
 
+  @Transactional
   public void delete(long petId) {
-    petRepository.delete(get(petId));
+    final Pet petFromRepo = get(petId);
+
+    removePetFromPetListOfAllItsOwners(petFromRepo);
+
+    removeAllOwnersFromPetOwnersList(petFromRepo);
+//  fixme
+
+    petRepository.delete(petFromRepo);
     log.info("Deleting pet with id = " + petId);
   }
 
-    public List<Pet> getUserPets(long userId) {
-      AppUser user = appUserService.get(userId);
-      log.info("Fetching all user's pets");
-
-      return user.getPets();
+  private void removePetFromPetListOfAllItsOwners(Pet petFromRepo) {
+    List<AppUser> petOwners = petFromRepo.getAppUsers();
+    for (AppUser owner : petOwners) {
+      owner.getPets().remove(petFromRepo);
+      appUserService.update(owner.getId(), AppUserDTO.of(owner));
     }
+  }
+
+  private void removeAllOwnersFromPetOwnersList(Pet petFromRepo) {
+    petFromRepo.getAppUsers().clear();
+    petRepository.save(petFromRepo);
+  }
 }
