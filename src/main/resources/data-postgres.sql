@@ -40,9 +40,9 @@ INSERT INTO public.users_pets(user_id, pet_id) VALUES
     (1, 4),
     (3, 3),
     (4, 6),
-    (5, 10),
-    (5, 9),
-    (5, 5);
+    (6, 10),
+    (6, 9),
+    (6, 5);
 
 -- Meal
 INSERT INTO public.meal(actual_feeding_time, expected_feeding_time, food, food_amount, pet_id, is_deleted) VALUES

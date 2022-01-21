@@ -20,7 +20,6 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @Entity
 @Builder
 @NoArgsConstructor
