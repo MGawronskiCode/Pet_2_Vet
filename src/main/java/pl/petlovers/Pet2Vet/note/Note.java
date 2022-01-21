@@ -3,6 +3,8 @@ package pl.petlovers.Pet2Vet.note;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Hibernate;
+import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.file.File;
 import pl.petlovers.Pet2Vet.pet.Pet;
@@ -11,13 +13,15 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Note {
+public class Note implements Deletable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,12 +41,16 @@ public class Note {
       orphanRemoval = true,
       fetch = FetchType.LAZY
     )
+    @ToString.Exclude
     private List<File> files = new ArrayList<>();
 
     private String title;
     private String content;
     private LocalDateTime created;
     private LocalDateTime modified; //OffsetDateTime / ZonedDateTime
+
+    @Column(nullable = false)
+    private boolean isDeleted;
 
     public void addFile(File file) {
         file.setCreated(LocalDateTime.now());
@@ -73,5 +81,33 @@ public class Note {
                 ", created=" + created +
                 ", modified=" + modified +
                 '}';
+    }
+
+    @Override
+    public void delete() {
+        this.isDeleted = true;
+    }
+
+    @Override
+    public void restore() {
+        this.isDeleted = false;
+    }
+
+    @Override
+    public boolean isDeleted() {
+        return this.isDeleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Note note = (Note) o;
+        return id != null && Objects.equals(id, note.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

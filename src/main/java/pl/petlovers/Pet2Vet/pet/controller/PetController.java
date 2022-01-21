@@ -29,18 +29,21 @@ public class PetController {
   public List<PetDTO> get(@AuthenticationPrincipal AppUserDetails loggedUser) {
 
     if (loggedUser.isAdmin()) {
+
       return petService.getAll()
           .stream()
           .map(PetDTO::of)
           .toList();
     } else {
+
       return petService.getAll()
           .stream()
-          .filter(pet -> loggedUserHavePet(pet, loggedUser))
+          .filter(pet -> loggedUserHaveThisPet(pet, loggedUser))
           .map(PetDTO::of)
           .toList();
     }
   }
+
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
@@ -48,13 +51,14 @@ public class PetController {
   public PetDTO get(@PathVariable long petId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
     final Pet pet = petService.get(petId);
-    if (loggedUserHavePet(pet, loggedUser) || loggedUser.isAdmin()) {
+    if (loggedUserHaveThisPet(pet, loggedUser) || loggedUser.isAdmin()) {
+
       return PetDTO.of(pet);
     } else {
+
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
   }
-
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER"})
   @ResponseStatus(HttpStatus.CREATED)
@@ -70,9 +74,11 @@ public class PetController {
   public PetDTO update(@PathVariable long petId, @RequestBody PetDTO petDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
     final Pet pet = petService.get(petId);
-    if (loggedUserHavePet(pet, loggedUser) || loggedUser.isAdmin()) {
+    if (loggedUserHaveThisPet(pet, loggedUser) || loggedUser.isAdmin()) {
+
       return PetDTO.of(petService.update(petId, petDTO));
     } else {
+
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
   }
@@ -83,14 +89,16 @@ public class PetController {
   public void cancel(@PathVariable long petId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
     final Pet pet = petService.get(petId);
-    if (loggedUserHavePet(pet, loggedUser) || loggedUser.isAdmin()) {
+    if (loggedUserHaveThisPet(pet, loggedUser) || loggedUser.isAdmin()) {
+
       petService.delete(petId);
     } else {
+
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
   }
 
-  private boolean loggedUserHavePet(Pet pet, AppUserDetails loggedUser) {
+  private boolean loggedUserHaveThisPet(Pet pet, AppUserDetails loggedUser) {
     return pet.getAppUsers()
         .stream()
         .anyMatch(user -> user.getId().equals(loggedUser.getAppUser().getId()));

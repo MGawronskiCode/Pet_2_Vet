@@ -2,8 +2,11 @@ package pl.petlovers.Pet2Vet.appUser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 
@@ -23,30 +26,52 @@ public class AppUserService {
 
     public List<AppUser> getAll() {
         log.info("Fetching all users");
-        return appUserRepository.findAll();
+
+        return appUserRepository.findAll()
+            .stream()
+            .filter(appUser -> !appUser.isDeleted())
+            .toList();
     }
 
     public AppUser get(long id) {
         log.info("Fetching user with id = " + id);
-        return appUserRepository.findById(id)
-                .orElseThrow(() -> new AppUserNotFoundException(id));
+        final AppUser appUser = appUserRepository.findById(id)
+            .orElseThrow(() -> new AppUserNotFoundException(id));
+
+        if (appUser.isDeleted()) {
+
+            throw new AppUserNotFoundException(id);
+        } else {
+
+            return appUser;
+        }
     }
 
     public AppUser create(AppUserDTO userDTO, String password) {
         log.info("Creating " + userDTO.toString());
-        return appUserRepository.save(userDTO.toAppUser(password));
+        try {
+
+            return appUserRepository.save(userDTO.toAppUser(password));
+        } catch (DataIntegrityViolationException e) {
+
+            throw new AppUserWithThisLoginAlreadyExistException();
+        }
     }
 
     public AppUser update(long id, AppUserDTO user){
         AppUser userFromDb = get(id);
         log.info("Updating of " + userFromDb.toString() + " to " + user.toString());
         userFromDb.modify(user);
+
         return appUserRepository.save(userFromDb);
     }
 
     public void delete(long id){
-        appUserRepository.delete(get(id));
+        AppUser userFromDb = get(id);
         log.info("Deleting user with id = " + id);
+        userFromDb.delete();
+
+        appUserRepository.save(userFromDb);
     }
 
 }

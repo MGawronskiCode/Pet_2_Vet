@@ -2,8 +2,7 @@ package pl.petlovers.Pet2Vet.file;
 
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import pl.petlovers.Pet2Vet.note.Note;
-import pl.petlovers.Pet2Vet.visit.Visit;
+import pl.petlovers.Pet2Vet.Deletable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,15 +13,19 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class File {
+public class File implements Deletable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
   private String url;
   private LocalDateTime created;
   private LocalDateTime modified;
+
+  @Column(nullable = false)
+  private boolean isDeleted;
 
   protected void modify(File file) {
     if (StringUtils.isNoneBlank(file.getName())) {
@@ -35,5 +38,18 @@ public class File {
     }
   }
 
+  @Override
+  public void delete() {
+    isDeleted = true;
+  }
 
+  @Override
+  public void restore() {
+    isDeleted = false;
+  }
+
+  @Override
+  public boolean isDeleted() {
+    return isDeleted;
+  }
 }

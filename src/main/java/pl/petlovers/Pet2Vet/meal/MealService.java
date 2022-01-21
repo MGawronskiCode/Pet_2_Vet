@@ -27,27 +27,42 @@ public class MealService {
         log.info("Fetching meals for the pet with id = " + petId);
         Pet pet = getPet(petId);
         if (pet.getId() != petId) {
+
             throw new PetNotFoundException(petId);
         }
-        return petRepository.getById(petId).getMeals();
+
+        return petRepository.getById(petId).getMeals()
+            .stream()
+            .filter(meals -> !meals.isDeleted())
+            .toList();
     }
 
     public Meal get(long mealId) {
-   
+
         log.info("Fetching meal with id = " + mealId);
-        return mealRepository.findById(mealId)
-                .orElseThrow(() -> new MealNotFoundException(mealId));
+
+        final Meal meal = mealRepository.findById(mealId)
+            .orElseThrow(() -> new MealNotFoundException(mealId));
+
+        if (meal.isDeleted()) {
+
+            throw new MealNotFoundException(mealId);
+        } else {
+
+            return meal;
+        }
     }
 
     public Meal getPetMeal(long petId, long mealId) {
         log.info("Fetching pet's meal");
         Meal meal = get(mealId);
 
-        if (meal.getPet().getId() != petId) {
+        if ((meal.getPet().getId() != petId) || (meal.isDeleted())) {
+
             throw new MealNotFoundException(mealId);
         }
-        return meal;
 
+        return meal;
     }
 
     public Meal create(long petId, Meal meal) {
@@ -56,6 +71,7 @@ public class MealService {
         log.info("Creating " + meal.toString());
         pet.addMeal(meal);
         mealRepository.save(meal);
+
         return meal;
     }
 
@@ -64,16 +80,21 @@ public class MealService {
         Meal mealFromDb = getPetMeal(petId, id);
         log.info("Updating of " + mealFromDb.toString() + " to " + meal.toString());
         mealFromDb.modify(meal);
+
         return mealRepository.save(mealFromDb);
     }
 
     public void delete(long petId, long id) {
-        mealRepository.delete(getPetMeal(petId, id));
         log.info("Deleting meal with id = " + id);
+        Meal mealFromDb = getPetMeal(petId, id);
+        mealFromDb.delete();
+
+        mealRepository.save(mealFromDb);
     }
 
     private Pet getPet(long petId) {
         log.info("Fetching pet with id = " + petId);
+
         return petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(petId));
 

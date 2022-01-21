@@ -1,16 +1,20 @@
 package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
+import org.hibernate.Hibernate;
+import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.vaccine.controller.VaccineDTO;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Vaccine {
+public class Vaccine implements Deletable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +24,9 @@ public class Vaccine {
   private String name;
 
   private String dateTime;
+
+  @Column(nullable = false)
+  private boolean isDeleted;
 
   public void modify(VaccineDTO newData){
     if (newData.getName() != null) {
@@ -37,5 +44,33 @@ public class Vaccine {
             ", name='" + name + '\'' +
             ", dateTime='" + dateTime + '\'' +
             '}';
+  }
+
+  @Override
+  public void delete() {
+    this.isDeleted = true;
+  }
+
+  @Override
+  public void restore() {
+    this.isDeleted = false;
+  }
+
+  @Override
+  public boolean isDeleted() {
+    return this.isDeleted;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    Vaccine vaccine = (Vaccine) o;
+    return id != null && Objects.equals(id, vaccine.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

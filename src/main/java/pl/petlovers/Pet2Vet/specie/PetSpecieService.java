@@ -24,12 +24,17 @@ public class PetSpecieService {
 
   public List<PetSpecie> getAll() {
     log.info("Fetching all pets species");
-    return petSpecieRepository.findAll();
+
+    return petSpecieRepository.findAll()
+        .stream()
+        .filter(specie -> !specie.isDeleted())
+        .toList();
   }
 
   public PetSpecie create(PetSpecie petSpecie) {
     log.info("Creating " + petSpecie.toString());
     petSpecieRepository.save(petSpecie);
+
     return petSpecie;
   }
 
@@ -43,12 +48,16 @@ public class PetSpecieService {
   }
 
   public void delete(long specieId) {
-    petSpecieRepository.delete(get(specieId));
     log.info("Deleting pet's specie");
+    final PetSpecie petSpecie = get(specieId);
+    petSpecie.delete();
+
+    petSpecieRepository.save(petSpecie);
   }
 
   public PetSpecie get(long kindId) {
     log.info("Fetching pet's specie with id = " + kindId);
+
     return petSpecieRepository.findById(kindId).orElseThrow(() -> new PetSpecieNotFoundException(kindId));
   }
 
