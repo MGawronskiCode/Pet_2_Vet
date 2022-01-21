@@ -140,4 +140,26 @@ public class VaccineService {
 
     return vaccineRepository.save(vaccineFromDB);
   }
+
+  public void deletePetVaccine(long petId, long vaccineId) {
+    Pet petFromRepository = petRepository.findById(petId).orElseThrow();
+    final List<Vaccine> newVaccines = petFromRepository.getVaccines();
+
+    deleteVaccineIfExistOnList(vaccineId, newVaccines);
+    petFromRepository.setVaccines(newVaccines);
+    petFromRepository.modify(petFromRepository);
+    delete(vaccineId);
+  }
+
+  private void deleteVaccineIfExistOnList(long vaccineId, List<Vaccine> newVaccines) {
+    for (int i = 0; i < newVaccines.size(); i++) {
+      if (newVaccines.get(i).getId() == vaccineId) {
+        newVaccines.remove(i);
+
+        return;
+      }
+    }
+
+    throw new VaccineNotFoundException(vaccineId);
+  }
 }
