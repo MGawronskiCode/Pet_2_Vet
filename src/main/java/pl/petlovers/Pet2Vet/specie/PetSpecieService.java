@@ -25,7 +25,10 @@ public class PetSpecieService {
   public List<PetSpecie> getAll() {
     log.info("Fetching all pets species");
 
-    return petSpecieRepository.findAll();
+    return petSpecieRepository.findAll()
+        .stream()
+        .filter(specie -> !specie.isDeleted())
+        .toList();
   }
 
   public PetSpecie create(PetSpecie petSpecie) {
@@ -45,8 +48,11 @@ public class PetSpecieService {
   }
 
   public void delete(long specieId) {
-    petSpecieRepository.delete(get(specieId));
     log.info("Deleting pet's specie");
+    final PetSpecie petSpecie = get(specieId);
+    petSpecie.delete();
+
+    petSpecieRepository.save(petSpecie);
   }
 
   public PetSpecie get(long kindId) {

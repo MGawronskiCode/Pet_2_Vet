@@ -6,6 +6,7 @@ INSERT INTO public.app_user(name, sex, login, password, role, is_deleted) VALUES
     ('Samantha', 3, 'samantha@gmail.com', '$2a$12$7X4MtR8D2YVJJYbIDCID.O3L8vNfNvu1vY6tdONaspjeCd8xGuS9q', 1, false),
     ('Brad', 2, 'brad@gmail.com', '$2a$12$3oMRmMAvHoEqWkMrwmnAc./wu5KI0TEmVxYrTnWV7sya05eOeu84S', 1, false),
     ('Caroline', 3, 'caroline@gmail.com', '$2a$12$AKlcgdKpBZ5LibEEJq/nuevu7qU17d8T0jHbGjUKn6ugcef0wGEG2', 2, false),
+    ('Test0', 3, 'deleted@user', '$2a$12$Wmx.OKQyzwslJClf0k9JP.kUX7SsbIuWre4S1QEctpjRUQMvJrcbm', 1, true),
     ('Test1', 3, 'user@user', '$2a$12$Wmx.OKQyzwslJClf0k9JP.kUX7SsbIuWre4S1QEctpjRUQMvJrcbm', 1, false),
     ('Test2', 3, 'admin@admin', '$2a$12$66qPPyfCUxkdr1mYb1MMte6VHB/laSE6hzp25r5OETokWQXoTdPp2', 0, false);
 

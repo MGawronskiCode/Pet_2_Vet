@@ -4,11 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.AppUserRepository;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.NoteNotFoundException;
-import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.Collection;
@@ -18,181 +18,213 @@ import java.util.List;
 @Service
 public class NoteService {
 
-    private final NoteRepository noteRepository;
-    private final AppUserRepository userRepository;
-    private final PetRepository petRepository;
+  private final NoteRepository noteRepository;
+  private final AppUserRepository userRepository;
+  private final PetRepository petRepository;
 
-    @Autowired
-    public NoteService(NoteRepository noteRepository, AppUserRepository userRepository, PetRepository petRepository) {
-        this.noteRepository = noteRepository;
-        this.userRepository = userRepository;
-        this.petRepository = petRepository;
+  @Autowired
+  public NoteService(NoteRepository noteRepository, AppUserRepository userRepository, PetRepository petRepository) {
+    this.noteRepository = noteRepository;
+    this.userRepository = userRepository;
+    this.petRepository = petRepository;
+  }
+
+  public List<Note> getAllUserNotes(long userId) {
+    AppUser user = getUser(userId);
+    log.info("Fetching all user's notes");
+
+    return user.getNotes()
+        .stream()
+        .filter(note -> !note.isDeleted())
+        .toList();
+  }
+
+  private AppUser getUser(long userId) {
+    log.info("Fetching user with id = " + userId);
+
+    return userRepository.findById(userId)
+        .orElseThrow(() -> new AppUserNotFoundException(userId));
+  }
+
+  public List<Note> getAllUserPetsNotes(long userId) {
+    AppUser user = getUser(userId);
+    List<Pet> pets = getPets(user);
+    log.info("Fetching all user pets notes");
+
+    return pets.stream()
+        .map(Pet::getNotes)
+        .flatMap(Collection::stream)
+        .filter(note -> !note.isDeleted())
+        .toList();
+  }
+
+  private List<Pet> getPets(AppUser user) {
+    log.info("Fetching all user's pets");
+    List<Pet> pets = user.getPets();
+    if (pets.isEmpty()) {
+
+      throw new IllegalStateException("No pet was found.");
     }
 
-    public List<Note> getAllUserNotes(long userId) {
-        AppUser user = getUser(userId);
-        log.info("Fetching all user's notes");
+    return pets;
+  }
 
-        return user.getNotes();
-    }
+  public List<Note> getAllPetNotes(long petId) {
+    Pet pet = getPet(petId);
+    log.info("Fetching all user pet's notes");
 
-    private AppUser getUser(long userId) {
-        log.info("Fetching user with id = " + userId);
+    return pet.getNotes()
+        .stream()
+        .filter(note -> !note.isDeleted())
+        .toList();
+  }
 
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new AppUserNotFoundException(userId));
-    }
+  private Pet getPet(long petId) {
+    log.info("Fetching user's pet with id = " + petId);
 
-    public List<Note> getAllUserPetsNotes(long userId) {
-        AppUser user = getUser(userId);
-        List<Pet> pets = getPets(user);
-        log.info("Fetching all user pets notes");
+    return petRepository.findById(petId)
+        .orElseThrow(() -> new PetNotFoundException(petId));
+  }
 
-        return pets.stream()
-                .map(Pet::getNotes)
-                .flatMap(Collection::stream)
-                .toList();
-    }
+  public Note createUserNote(long userId, Note note) {
+    AppUser user = getUser(userId);
+    log.info("Creating user's " + note.toString());
+    user.addNote(note);
+    noteRepository.save(note);
 
-    private List<Pet> getPets(AppUser user) {
-        log.info("Fetching all user's pets");
-        List<Pet> pets = user.getPets();
-        if (pets.isEmpty()) {
+    return note;
+  }
 
-            throw new IllegalStateException("No pet was found.");
-        }
+  public Note createPetNote(long petId, Note note) {
+    Pet pet = getPet(petId);
+    log.info("Creating pet's " + note.toString());
+    pet.addNote(note);
+    noteRepository.save(note);
 
-        return pets;
-    }
+    return note;
+  }
 
-    public List<Note> getAllPetNotes(long petId) {
-        Pet pet = getPet(petId);
-        log.info("Fetching all user pet's notes");
+  public Note updateUserNote(long userId, long noteId, Note newData) {
+    Note noteFromDb = getUserNote(userId, noteId);
+    log.info("Updating of " + noteFromDb.toString() + " to " + newData.toString());
 
-        return pet.getNotes();
-    }
+    return getModifiedNote(newData, noteFromDb);
+  }
 
-    private Pet getPet(long petId) {
-        log.info("Fetching user's pet with id = " + petId);
+  public Note getUserNote(long userId, long noteId) {
+    log.info("Fetching user's note");
+    Note note = getNote(noteId);
+    try {
+      if ((note.getAppUser().getId() != userId)) {
 
-        return petRepository.findById(petId)
-                .orElseThrow(() -> new PetNotFoundException(petId));
-    }
+        throw new IllegalArgumentException("Wrong user ID");
+      } else if (note.isDeleted()) {
 
-    public Note getUserNote(long userId, long noteId) {
-        log.info("Fetching user's note");
-        Note note = getNote(noteId);
-        try {
-            if (note.getAppUser().getId() != userId) {
+        throw new NoteNotFoundException(noteId);
+      }
 
-                throw new IllegalArgumentException("Wrong user ID");
-            }
+      return note;
+    } catch (NullPointerException error) {
 
-            return note;
-        } catch (NullPointerException error) {
-
-            throw new NullPointerException("Wrong note ID"); // not User's note but Pet's
+      throw new NullPointerException("Wrong note ID"); // not User's note but Pet's
 //            maybe make Note abstract and create UserNote and PetNote?
-        }
     }
+  }
 
-    public Note getNote(long noteId) {
-        log.info("Fetching note with id = " + noteId);
+  private Note getModifiedNote(Note newData, Note noteFromDb) {
+    noteFromDb.modify(newData);
+    noteRepository.save(noteFromDb);
 
-        return noteRepository.findById(noteId)
-                .orElseThrow(() -> new NoteNotFoundException(noteId));
+    return noteFromDb;
+  }
+
+  public Note getNote(long noteId) {
+    log.info("Fetching note with id = " + noteId);
+
+    final Note note = noteRepository.findById(noteId)
+        .orElseThrow(() -> new NoteNotFoundException(noteId));
+
+    if (note.isDeleted()) {
+
+      throw new NoteNotFoundException(noteId);
+    } else {
+
+      return note;
     }
+  }
 
-    public Note getPetNote(long petId, long noteId) {
-        log.info("Fetching pet's note");
-        Note note = getNote(noteId);
-        try {
-            if (note.getPet().getId() != petId) {
+  public Note updatePetNote(long petId, long noteId, Note newData) {
+    Note noteFromDb = getPetNote(petId, noteId);
+    log.info("Updating of " + noteFromDb.toString() + " to " + newData.toString());
 
-                throw new IllegalArgumentException("Wrong pet ID");
-            }
+    return getModifiedNote(newData, noteFromDb);
+  }
 
-            return note;
-        } catch (NullPointerException error) {
+  public Note getPetNote(long petId, long noteId) {
+    log.info("Fetching pet's note");
+    Note note = getNote(noteId);
+    try {
+      if (note.getPet().getId() != petId) {
 
-            throw new NullPointerException("Wrong note ID"); // not Pet's note but User's
-        }
-    }
+        throw new IllegalArgumentException("Wrong pet ID");
+      } else if (note.isDeleted()) {
 
-    public Note createUserNote(long userId, Note note) {
-        AppUser user = getUser(userId);
-        log.info("Creating user's " + note.toString());
-        user.addNote(note);
-        noteRepository.save(note);
+        throw new NoteNotFoundException(noteId);
+      } else {
 
         return note;
+      }
+
+    } catch (NullPointerException error) {
+
+      throw new NullPointerException("Wrong note ID"); // not Pet's note but User's
     }
+  }
 
-    public Note createPetNote(long petId, Note note) {
-        Pet pet = getPet(petId);
-        log.info("Creating pet's " + note.toString());
-        pet.addNote(note);
-        noteRepository.save(note);
+  public void deleteUserNotes(long userId) {
+    AppUser user = getUser(userId);
+    if (user.getNotes().isEmpty()) {
 
-        return note;
+      throw new IllegalStateException("No note was found.");
     }
+    log.info("Deleting all user's notes");
 
-    public Note updateUserNote(long userId, long noteId, Note newData) {
-        Note noteFromDb = getUserNote(userId, noteId);
-        log.info("Updating of " + noteFromDb.toString() + " to " + newData.toString());
+      final List<Note> userNotes = user.getNotes();
+      for (Note note : userNotes) {
+          note.delete();
+      }
 
-        return getModifiedNote(newData, noteFromDb);
+      userRepository.save(user);
+  }
+
+  public void deleteUserNote(long userId, long noteId) {
+    Note noteFromDb = getUserNote(userId, noteId);
+    log.info("Deleting user's note");
+    noteFromDb.delete();
+
+    noteRepository.save(noteFromDb);
+  }
+
+  public void deletePetNotes(long petId) {
+    Pet pet = getPet(petId);
+    if (pet.getNotes().isEmpty()) {
+
+      throw new IllegalStateException("No note was found.");
     }
+    log.info("Deleting all pet's notes");
+      final List<Note> petNotes = pet.getNotes();
+      for (Note note : petNotes) {
+          note.delete();
+      }
 
-    private Note getModifiedNote(Note newData, Note noteFromDb) {
-        noteFromDb.modify(newData);
-        noteRepository.save(noteFromDb);
+      petRepository.save(pet);
+  }
 
-        return noteFromDb;
-    }
+  public void deletePetNote(long petId, long noteId) {
+    Note noteFromDb = getPetNote(petId, noteId);
+    log.info("Deleting pet's note");
+    noteFromDb.delete();
 
-    public Note updatePetNote(long petId, long noteId, Note newData) {
-        Note noteFromDb = getPetNote(petId, noteId);
-        log.info("Updating of " + noteFromDb.toString() + " to " + newData.toString());
-
-        return getModifiedNote(newData, noteFromDb);
-    }
-
-    public void deleteUserNotes(long userId) {
-        AppUser user = getUser(userId);
-        if (user.getNotes().isEmpty()) {
-
-            throw new IllegalStateException("No note was found.");
-        }
-        log.info("Deleting all user's notes");
-
-        user.getNotes().clear();
-        userRepository.save(user);
-    }
-
-    public void deleteUserNote(long userId, long noteId) {
-        Note noteFromDb = getUserNote(userId, noteId);
-        log.info("Deleting user's note");
-
-        noteRepository.delete(noteFromDb);
-    }
-
-    public void deletePetNotes(long petId) {
-        Pet pet = getPet(petId);
-        if (pet.getNotes().isEmpty()) {
-
-            throw new IllegalStateException("No note was found.");
-        }
-        log.info("Deleting all pet's notes");
-
-        pet.getNotes().clear();
-        petRepository.save(pet);
-    }
-
-    public void deletePetNote(long petId, long noteId) {
-        Note noteFromDb = getPetNote(petId, noteId);
-        log.info("Deleting pet's note");
-
-        noteRepository.delete(noteFromDb);
-    }
+    noteRepository.save(noteFromDb);
+  }
 }

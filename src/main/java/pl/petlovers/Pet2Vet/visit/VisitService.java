@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.visit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.VisitNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetRepository;
 
@@ -21,12 +22,21 @@ public class VisitService {
 
   public List<Visit> getAll(long petId) {
 
-    return petRepository.getById(petId).getVisits();
+    return petRepository.getById(petId).getVisits()
+        .stream()
+        .filter(visits -> !visits.isDeleted())
+        .toList();
   }
 
   public Visit get(long visitId) {
+    final Visit visit = visitRepository.getById(visitId);
+    if (visit.isDeleted()) {
 
-    return visitRepository.getById(visitId);
+      throw new VisitNotFoundException(visitId);
+    } else {
+
+      return visit;
+    }
   }
 
   public Visit create(long petId, Visit visit) {
@@ -44,7 +54,9 @@ public class VisitService {
   }
 
   public void delete(long visitId) {
+    Visit visitFromDb = get(visitId);
+    visitFromDb.delete();
 
-    visitRepository.delete(get(visitId));
+    visitRepository.save(visitFromDb);
   }
 }

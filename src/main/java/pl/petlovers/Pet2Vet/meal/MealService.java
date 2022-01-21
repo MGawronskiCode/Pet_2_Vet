@@ -31,22 +31,33 @@ public class MealService {
             throw new PetNotFoundException(petId);
         }
 
-        return petRepository.getById(petId).getMeals();
+        return petRepository.getById(petId).getMeals()
+            .stream()
+            .filter(meals -> !meals.isDeleted())
+            .toList();
     }
 
     public Meal get(long mealId) {
 
         log.info("Fetching meal with id = " + mealId);
 
-        return mealRepository.findById(mealId)
-                .orElseThrow(() -> new MealNotFoundException(mealId));
+        final Meal meal = mealRepository.findById(mealId)
+            .orElseThrow(() -> new MealNotFoundException(mealId));
+
+        if (meal.isDeleted()) {
+
+            throw new MealNotFoundException(mealId);
+        } else {
+
+            return meal;
+        }
     }
 
     public Meal getPetMeal(long petId, long mealId) {
         log.info("Fetching pet's meal");
         Meal meal = get(mealId);
 
-        if (meal.getPet().getId() != petId) {
+        if ((meal.getPet().getId() != petId) || (meal.isDeleted())) {
 
             throw new MealNotFoundException(mealId);
         }
@@ -74,8 +85,11 @@ public class MealService {
     }
 
     public void delete(long petId, long id) {
-        mealRepository.delete(getPetMeal(petId, id));
         log.info("Deleting meal with id = " + id);
+        Meal mealFromDb = getPetMeal(petId, id);
+        mealFromDb.delete();
+
+        mealRepository.save(mealFromDb);
     }
 
     private Pet getPet(long petId) {

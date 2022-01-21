@@ -1,7 +1,8 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
-import pl.petlovers.Pet2Vet.DatabaseObject;
+import org.hibernate.Hibernate;
+import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.meal.Meal;
@@ -15,13 +16,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Pet extends DatabaseObject {
+public class Pet implements Deletable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,19 +43,24 @@ public class Pet extends DatabaseObject {
     private PetSpecie specie;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Vaccine> vaccines;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
+    @ToString.Exclude
     List<Meal> meals;
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     List<Note> notes;
 
     @ManyToMany(mappedBy = "pets", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<AppUser> appUsers;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Visit> visits = new ArrayList<>();
 
     @Column(nullable = false)
@@ -94,4 +104,31 @@ public class Pet extends DatabaseObject {
                 '}';
     }
 
+    @Override
+    public void delete() {
+        this.isDeleted = true;
+    }
+
+    @Override
+    public void restore() {
+        this.isDeleted = false;
+    }
+
+    @Override
+    public boolean isDeleted() {
+        return this.isDeleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Pet pet = (Pet) o;
+        return id != null && Objects.equals(id, pet.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

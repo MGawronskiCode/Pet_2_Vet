@@ -27,14 +27,24 @@ public class AppUserService {
     public List<AppUser> getAll() {
         log.info("Fetching all users");
 
-        return appUserRepository.findAll();
+        return appUserRepository.findAll()
+            .stream()
+            .filter(appUser -> !appUser.isDeleted())
+            .toList();
     }
 
     public AppUser get(long id) {
         log.info("Fetching user with id = " + id);
+        final AppUser appUser = appUserRepository.findById(id)
+            .orElseThrow(() -> new AppUserNotFoundException(id));
 
-        return appUserRepository.findById(id)
-                .orElseThrow(() -> new AppUserNotFoundException(id));
+        if (appUser.isDeleted()) {
+
+            throw new AppUserNotFoundException(id);
+        } else {
+
+            return appUser;
+        }
     }
 
     public AppUser create(AppUserDTO userDTO, String password) {
@@ -57,8 +67,11 @@ public class AppUserService {
     }
 
     public void delete(long id){
-        appUserRepository.delete(get(id));
+        AppUser userFromDb = get(id);
         log.info("Deleting user with id = " + id);
+        userFromDb.delete();
+
+        appUserRepository.save(userFromDb);
     }
 
 }

@@ -1,7 +1,8 @@
 package pl.petlovers.Pet2Vet.visit;
 
 import lombok.*;
-import pl.petlovers.Pet2Vet.DatabaseObject;
+import org.hibernate.Hibernate;
+import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.file.File;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
@@ -9,13 +10,17 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Visit extends DatabaseObject {
+public class Visit implements Deletable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +30,7 @@ public class Visit extends DatabaseObject {
   private Pet pet;
 
   @OneToMany
+  @ToString.Exclude
   private List<File> files = new ArrayList<>();
 
   private String purpose;
@@ -53,5 +59,32 @@ public class Visit extends DatabaseObject {
     this.setRecommendation(visit.getRecommendation());
     }
 
+  @Override
+  public void delete() {
+    this.isDeleted = true;
   }
+
+  @Override
+  public void restore() {
+    this.isDeleted = false;
+  }
+
+  @Override
+  public boolean isDeleted() {
+    return this.isDeleted;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    Visit visit = (Visit) o;
+    return id != null && Objects.equals(id, visit.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
+}
 

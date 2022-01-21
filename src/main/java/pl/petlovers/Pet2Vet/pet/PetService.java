@@ -28,13 +28,23 @@ public class PetService {
   public List<Pet> getAll() {
     log.info("Fetching all pets");
 
-    return petRepository.findAll();
+    return petRepository.findAll()
+        .stream()
+        .filter(pet -> !pet.isDeleted())
+        .toList();
   }
 
   public Pet get(long petId) {
     log.info("Fetching pet with id = " + petId);
+    final Pet pet = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
 
-    return petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
+    if (pet.isDeleted()) {
+
+      throw new PetNotFoundException(petId);
+    } else {
+
+      return pet;
+    }
   }
 
   public PetDTO create(PetDTO newPetData) {
@@ -68,27 +78,10 @@ public class PetService {
 
   @Transactional
   public void delete(long petId) {
-    final Pet petFromRepo = get(petId);
-
-    removePetFromPetListOfAllItsOwners(petFromRepo);
-
-    removeAllOwnersFromPetOwnersList(petFromRepo);
-//  fixme
-
-    petRepository.delete(petFromRepo);
     log.info("Deleting pet with id = " + petId);
-  }
+    final Pet petFromRepo = get(petId);
+    petFromRepo.delete();
 
-  private void removePetFromPetListOfAllItsOwners(Pet petFromRepo) {
-    List<AppUser> petOwners = petFromRepo.getAppUsers();
-    for (AppUser owner : petOwners) {
-      owner.getPets().remove(petFromRepo);
-      appUserService.update(owner.getId(), AppUserDTO.of(owner));
-    }
-  }
-
-  private void removeAllOwnersFromPetOwnersList(Pet petFromRepo) {
-    petFromRepo.getAppUsers().clear();
     petRepository.save(petFromRepo);
   }
 }
