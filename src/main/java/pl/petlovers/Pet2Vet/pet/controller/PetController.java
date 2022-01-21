@@ -29,11 +29,13 @@ public class PetController {
   public List<PetDTO> get(@AuthenticationPrincipal AppUserDetails loggedUser) {
 
     if (loggedUser.isAdmin()) {
+
       return petService.getAll()
           .stream()
           .map(PetDTO::of)
           .toList();
     } else {
+
       return petService.getAll()
           .stream()
           .filter(pet -> loggedUserHaveThisPet(pet, loggedUser))
