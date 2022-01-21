@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.visit;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.DatabaseObject;
 import pl.petlovers.Pet2Vet.file.File;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Visit {
+public class Visit extends DatabaseObject {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +33,9 @@ public class Visit {
   private String description;
   private String recommendation;
 
+  @Column(nullable = false)
+  private boolean isDeleted;
+
   public void addFile(File file) {
     file.setCreated(LocalDateTime.now());
     this.files.add(file);
@@ -48,5 +52,6 @@ public class Visit {
     this.setDescription(visit.getDescription());
     this.setRecommendation(visit.getRecommendation());
     }
+
   }
 

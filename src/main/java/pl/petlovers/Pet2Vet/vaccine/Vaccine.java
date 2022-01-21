@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.DatabaseObject;
 import pl.petlovers.Pet2Vet.vaccine.controller.VaccineDTO;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Vaccine {
+public class Vaccine extends DatabaseObject {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,9 @@ public class Vaccine {
   private String name;
 
   private String dateTime;
+
+  @Column(nullable = false)
+  private boolean isDeleted;
 
   public void modify(VaccineDTO newData){
     if (newData.getName() != null) {
@@ -38,4 +42,5 @@ public class Vaccine {
             ", dateTime='" + dateTime + '\'' +
             '}';
   }
+
 }

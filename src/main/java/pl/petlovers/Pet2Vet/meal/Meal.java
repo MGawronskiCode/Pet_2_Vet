@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.meal;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.DatabaseObject;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Meal {
+public class Meal extends DatabaseObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,9 @@ public class Meal {
     @ManyToOne
     @JoinColumn(name = "pet_id")
     private Pet pet;
+
+    @Column(nullable = false)
+    private boolean isDeleted;
 
 
     public void modify(Meal meal) {
@@ -43,4 +47,5 @@ public class Meal {
                 ", actualFeedingTime=" + actualFeedingTime +
                 '}';
     }
+
 }

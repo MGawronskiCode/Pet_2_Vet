@@ -4,6 +4,7 @@ package pl.petlovers.Pet2Vet.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import pl.petlovers.Pet2Vet.DatabaseObject;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.note.Note;
@@ -21,7 +22,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class AppUser {
+public class AppUser extends DatabaseObject {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,18 +91,6 @@ public class AppUser {
 
   public void addPetToPetsList(Pet pet) {
     this.pets.add(pet);
-  }
-
-  public boolean deleted() {
-      return isDeleted;
-  }
-
-  public void delete() {
-      isDeleted = true;
-  }
-
-  public void returnFromDelete() {
-      isDeleted = false;
   }
 
 }

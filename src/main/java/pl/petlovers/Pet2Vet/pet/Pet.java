@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
+import pl.petlovers.Pet2Vet.DatabaseObject;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.meal.Meal;
@@ -20,7 +21,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Pet {
+public class Pet extends DatabaseObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,18 +92,6 @@ public class Pet {
                 ", sex='" + sex + '\'' +
                 ", birthday=" + birthday +
                 '}';
-    }
-
-    public boolean deleted() {
-        return isDeleted;
-    }
-
-    public void delete() {
-        isDeleted = true;
-    }
-
-    public void returnFromDelete() {
-        isDeleted = false;
     }
 
 }

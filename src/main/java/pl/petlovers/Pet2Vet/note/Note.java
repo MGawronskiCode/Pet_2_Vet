@@ -3,6 +3,7 @@ package pl.petlovers.Pet2Vet.note;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import pl.petlovers.Pet2Vet.DatabaseObject;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.file.File;
 import pl.petlovers.Pet2Vet.pet.Pet;
@@ -17,7 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Note {
+public class Note extends DatabaseObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +44,9 @@ public class Note {
     private String content;
     private LocalDateTime created;
     private LocalDateTime modified; //OffsetDateTime / ZonedDateTime
+
+    @Column(nullable = false)
+    private boolean isDeleted;
 
     public void addFile(File file) {
         file.setCreated(LocalDateTime.now());
@@ -74,4 +78,5 @@ public class Note {
                 ", modified=" + modified +
                 '}';
     }
+
 }
