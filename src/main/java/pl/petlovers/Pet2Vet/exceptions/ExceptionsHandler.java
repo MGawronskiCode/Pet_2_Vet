@@ -20,7 +20,7 @@ import pl.petlovers.Pet2Vet.exceptions.unautorized_exceptions.UnauthorizedAttemp
 @ControllerAdvice
 public class ExceptionsHandler {
 
-  static final String ERROR = "!!! Error: ";
+  static final String ERROR = "---Error: ";
 
   @ResponseBody
   @ExceptionHandler(ForbiddenAccessException.class)
