@@ -30,18 +30,26 @@ public class PetController {
 
     if (loggedUser.isAdmin()) {
 
-      return petService.getAll()
-          .stream()
-          .map(PetDTO::of)
-          .toList();
+      return getAllPetsFromDB();
     } else {
 
-      return petService.getAll()
-          .stream()
-          .filter(pet -> loggedUserHaveThisPet(pet, loggedUser))
-          .map(PetDTO::of)
-          .toList();
+      return getUserPetsFromDB(loggedUser);
     }
+  }
+
+  private List<PetDTO> getUserPetsFromDB(AppUserDetails loggedUser) {
+    return petService.getAll()
+        .stream()
+        .filter(pet -> loggedUserHaveThisPet(pet, loggedUser))
+        .map(PetDTO::of)
+        .toList();
+  }
+
+  private List<PetDTO> getAllPetsFromDB() {
+    return petService.getAll()
+        .stream()
+        .map(PetDTO::of)
+        .toList();
   }
 
 

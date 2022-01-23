@@ -47,7 +47,7 @@ public class VisitFileService {
     return fileRepository.save(file);
   }
 
-  public File update(long visitId, long fileId, File file) { //fixme unused visitId
+  public File update(long fileId, File file) {
     File fileFromDb = get(fileId);
     fileFromDb.modify(file);
 

@@ -85,7 +85,7 @@ public class VisitFileController {
 
       if(visitService.get(visitId).containsFile(fileId)) {
 
-        return FileDTO.of(visitFileService.update(visitId, fileId, fileDTO.toFile()));
+        return FileDTO.of(visitFileService.update(fileId, fileDTO.toFile()));
       }
 
       throw new IllegalArgumentException(NO_HACKING_ALLOWED_COMMUNICATE);

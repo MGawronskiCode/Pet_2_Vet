@@ -30,7 +30,6 @@ public class NoteFileService {
 
   public File get(long fileId) {
     final File file = fileRepository.getById(fileId);
-
     if (file.isDeleted()) {
 
       throw new FileNotFoundException(fileId);
@@ -47,7 +46,7 @@ public class NoteFileService {
     return fileRepository.save(file);
   }
 
-  public File update(long noteId, long fileId, File file) { //fixme unused noteId
+  public File update(long fileId, File file) {
     File fileFromDb = get(fileId);
     fileFromDb.modify(file);
 

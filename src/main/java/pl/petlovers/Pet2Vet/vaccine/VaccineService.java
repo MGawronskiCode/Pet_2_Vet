@@ -132,13 +132,13 @@ public class VaccineService {
     throw new VaccineNotFoundException(vaccineId);
   }
 
-  public Vaccine update(long vaccineId, VaccineDTO vaccineNewData) {
+  public void update(long vaccineId, VaccineDTO vaccineNewData) {
     log.info(FETCHING_VACCINE + vaccineId);
     Vaccine vaccineFromDB = vaccineRepository.getById(vaccineId);
     log.info("Updating of " + vaccineFromDB + " to " + vaccineNewData.toString());
     vaccineFromDB.modify(vaccineNewData);
 
-    return vaccineRepository.save(vaccineFromDB);
+    vaccineRepository.save(vaccineFromDB);
   }
 
   public void deletePetVaccine(long petId, long vaccineId) {

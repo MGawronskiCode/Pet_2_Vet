@@ -86,7 +86,7 @@ public class NoteFileController {
 
       if (noteService.getNote(noteId).containsFile(fileId)) {
 
-        return FileDTO.of(noteFileService.update(noteId, fileId, fileDTO.toFile()));
+        return FileDTO.of(noteFileService.update(fileId, fileDTO.toFile()));
       }
 
       throw new IllegalArgumentException(NO_HACKING_ALLOWED_COMMUNICATE);

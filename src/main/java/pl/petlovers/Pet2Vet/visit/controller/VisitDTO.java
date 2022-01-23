@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.petlovers.Pet2Vet.file.File;
-import pl.petlovers.Pet2Vet.file.controller.FileDTO;
 import pl.petlovers.Pet2Vet.visit.Visit;
 
 import java.time.LocalDateTime;
@@ -19,7 +18,6 @@ public class VisitDTO {
 
   private Long id;
   private List<File> files;
-  //TODO FileDTO instead of List<File>
   private String purpose;
   private LocalDateTime dateTime;
   private String place;

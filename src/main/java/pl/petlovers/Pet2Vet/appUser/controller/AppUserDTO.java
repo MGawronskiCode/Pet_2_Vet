@@ -31,16 +31,6 @@ public class AppUserDTO {
                 .build();
     }
 
-    public AppUser toAppUser() {
-        return AppUser.builder()
-                .id(id)
-                .name(name)
-                .sex(sex)
-                .login(login)
-                .role(role)
-                .build();
-    }
-
     public AppUser toAppUser(String password) {
         return AppUser.builder()
             .id(id)
