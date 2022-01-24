@@ -2,7 +2,6 @@ package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.vaccine.controller.VaccineDTO;
 
 import javax.persistence.*;
@@ -14,7 +13,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Vaccine implements Deletable {
+public class Vaccine {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,17 +36,14 @@ public class Vaccine implements Deletable {
     }
   }
 
-  @Override
   public boolean isDeleted() {
     return this.isDeleted;
   }
 
-  @Override
   public void delete() {
     this.isDeleted = true;
   }
 
-  @Override
   public void restore() {
     this.isDeleted = false;
   }

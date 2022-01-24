@@ -2,7 +2,6 @@ package pl.petlovers.Pet2Vet.meal;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
 import javax.persistence.*;
@@ -15,7 +14,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Meal implements Deletable {
+public class Meal {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,17 +39,14 @@ public class Meal implements Deletable {
     setActualFeedingTime(meal.getActualFeedingTime());
   }
 
-  @Override
   public boolean isDeleted() {
     return this.isDeleted;
   }
 
-  @Override
   public void delete() {
     this.isDeleted = true;
   }
 
-  @Override
   public void restore() {
     this.isDeleted = false;
   }

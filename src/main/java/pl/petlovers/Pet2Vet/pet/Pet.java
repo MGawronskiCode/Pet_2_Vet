@@ -2,7 +2,6 @@ package pl.petlovers.Pet2Vet.pet;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.AppUser;
 import pl.petlovers.Pet2Vet.meal.Meal;
@@ -24,7 +23,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Pet implements Deletable {
+public class Pet {
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   @JoinColumn(name = "pet_id")
@@ -84,17 +83,14 @@ public class Pet implements Deletable {
     }
   }
 
-  @Override
   public boolean isDeleted() {
     return this.isDeleted;
   }
 
-  @Override
   public void delete() {
     this.isDeleted = true;
   }
 
-  @Override
   public void restore() {
     this.isDeleted = false;
   }

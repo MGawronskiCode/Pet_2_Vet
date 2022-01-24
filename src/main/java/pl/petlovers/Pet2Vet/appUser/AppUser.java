@@ -4,7 +4,6 @@ package pl.petlovers.Pet2Vet.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.note.Note;
@@ -22,7 +21,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class AppUser implements Deletable {
+public class AppUser {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,17 +92,14 @@ public class AppUser implements Deletable {
     this.pets.add(pet);
   }
 
-  @Override
   public boolean isDeleted() {
     return this.isDeleted;
   }
 
-  @Override
   public void delete() {
     this.isDeleted = true;
   }
 
-  @Override
   public void restore() {
     this.isDeleted = false;
   }

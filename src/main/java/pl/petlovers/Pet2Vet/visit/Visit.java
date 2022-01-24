@@ -2,7 +2,6 @@ package pl.petlovers.Pet2Vet.visit;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.file.File;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
@@ -18,7 +17,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Visit implements Deletable {
+public class Visit {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,17 +56,14 @@ public class Visit implements Deletable {
     this.setRecommendation(visit.getRecommendation());
   }
 
-  @Override
   public boolean isDeleted() {
     return this.isDeleted;
   }
 
-  @Override
   public void delete() {
     this.isDeleted = true;
   }
 
-  @Override
   public void restore() {
     this.isDeleted = false;
   }
