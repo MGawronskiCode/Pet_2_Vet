@@ -46,7 +46,7 @@ public class Visit implements Deletable {
   }
 
   public boolean containsFile(long fileId) {
-    return files.stream().anyMatch(file -> file.getId()==fileId);
+    return files.stream().anyMatch(file -> file.getId() == fileId);
   }
 
   public void modify(Visit visit) {
@@ -55,7 +55,12 @@ public class Visit implements Deletable {
     this.setPlace(visit.getPlace());
     this.setDescription(visit.getDescription());
     this.setRecommendation(visit.getRecommendation());
-    }
+  }
+
+  @Override
+  public boolean isDeleted() {
+    return this.isDeleted;
+  }
 
   @Override
   public void delete() {
@@ -68,8 +73,8 @@ public class Visit implements Deletable {
   }
 
   @Override
-  public boolean isDeleted() {
-    return this.isDeleted;
+  public int hashCode() {
+    return getClass().hashCode();
   }
 
   @Override
@@ -78,11 +83,6 @@ public class Visit implements Deletable {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
     Visit visit = (Visit) o;
     return id != null && Objects.equals(id, visit.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return getClass().hashCode();
   }
 }
 

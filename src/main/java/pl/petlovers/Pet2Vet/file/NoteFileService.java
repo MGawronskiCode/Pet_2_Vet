@@ -28,17 +28,6 @@ public class NoteFileService {
         .toList();
   }
 
-  public File get(long fileId) {
-    final File file = fileRepository.getById(fileId);
-    if (file.isDeleted()) {
-
-      throw new FileNotFoundException(fileId);
-    } else {
-
-      return file;
-    }
-  }
-
   public File create(long noteId, File file) {
     Note note = noteRepository.getById(noteId);
     note.addFile(file);
@@ -51,6 +40,17 @@ public class NoteFileService {
     fileFromDb.modify(file);
 
     return fileRepository.save(fileFromDb);
+  }
+
+  public File get(long fileId) {
+    final File file = fileRepository.getById(fileId);
+    if (file.isDeleted()) {
+
+      throw new FileNotFoundException(fileId);
+    } else {
+
+      return file;
+    }
   }
 
   public void delete(long fileId) {

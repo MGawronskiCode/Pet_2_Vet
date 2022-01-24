@@ -26,25 +26,25 @@ public class VisitDTO {
 
   public static VisitDTO of(Visit visit) {
     return VisitDTO.builder()
-            .id(visit.getId())
-      .files(visit.getFiles())
-      .purpose(visit.getPurpose())
-      .dateTime(visit.getDateTime())
-      .place(visit.getPlace())
-      .description(visit.getDescription())
-      .recommendation(visit.getRecommendation())
-      .build();
+        .id(visit.getId())
+        .files(visit.getFiles())
+        .purpose(visit.getPurpose())
+        .dateTime(visit.getDateTime())
+        .place(visit.getPlace())
+        .description(visit.getDescription())
+        .recommendation(visit.getRecommendation())
+        .build();
   }
 
   public Visit toVisit() {
     return Visit.builder()
-            .id(id)
-      .files(files)
-      .purpose(purpose)
-      .dateTime(dateTime)
-      .place(place)
-      .description(description)
-      .recommendation(recommendation)
-      .build();
+        .id(id)
+        .files(files)
+        .purpose(purpose)
+        .dateTime(dateTime)
+        .place(place)
+        .description(description)
+        .recommendation(recommendation)
+        .build();
   }
 }

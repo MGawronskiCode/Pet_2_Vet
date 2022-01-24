@@ -94,6 +94,11 @@ public class AppUser implements Deletable {
   }
 
   @Override
+  public boolean isDeleted() {
+    return this.isDeleted;
+  }
+
+  @Override
   public void delete() {
     this.isDeleted = true;
   }
@@ -101,10 +106,5 @@ public class AppUser implements Deletable {
   @Override
   public void restore() {
     this.isDeleted = false;
-  }
-
-  @Override
-  public boolean isDeleted() {
-    return this.isDeleted;
   }
 }

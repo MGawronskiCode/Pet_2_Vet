@@ -46,20 +46,6 @@ class PetControllerTest {
     assertEquals(new PetDTO(1L, "test", null, null, new PetSpecieDTO(null, null)), petDTOs.get(0));
   }
 
-  @Test
-  void should_throw_NullPointerException_when_using_PetController_get_method() {
-//    given
-    final AppUserDetails loggedUser = mock(AppUserDetails.class);
-    when(loggedUser.isAdmin()).thenReturn(false);
-
-    final PetService petServiceMock = mock(PetService.class);
-    when(petServiceMock.getAll()).thenReturn(getSamplePetList());
-
-    final PetController controller = new PetController(petServiceMock);
-//    then
-    assertThrows(NullPointerException.class, () -> controller.get(loggedUser));
-  }
-
   private List<Pet> getSamplePetList() {
 
     List<Pet> pets = new ArrayList<>();
@@ -79,6 +65,19 @@ class PetControllerTest {
     return pets;
   }
 
+  @Test
+  void should_throw_NullPointerException_when_using_PetController_get_method() {
+//    given
+    final AppUserDetails loggedUser = mock(AppUserDetails.class);
+    when(loggedUser.isAdmin()).thenReturn(false);
+
+    final PetService petServiceMock = mock(PetService.class);
+    when(petServiceMock.getAll()).thenReturn(getSamplePetList());
+
+    final PetController controller = new PetController(petServiceMock);
+//    then
+    assertThrows(NullPointerException.class, () -> controller.get(loggedUser));
+  }
 
   @Test
   void should_return_correct_list_when_using_PetController_getAll_with_petId_argument_method() {
@@ -95,6 +94,16 @@ class PetControllerTest {
 //    then
     assertNotNull(petDTO);
     assertEquals(new PetDTO(1L, "test", null, null, new PetSpecieDTO(null, null)), petDTO);
+  }
+
+  private Pet getSamplePet() {
+    Pet pet = new Pet();
+    pet.setId(1L);
+    pet.setName("test");
+    pet.setSpecie(new PetSpecie());
+    pet.setAppUsers(new ArrayList<>());
+
+    return pet;
   }
 
   @Test
@@ -116,16 +125,6 @@ class PetControllerTest {
 //    then
     assertNotNull(createdPetDTO);
     assertEquals(new PetDTO(1L, "test", null, null, new PetSpecieDTO(null, null)), createdPetDTO);
-  }
-
-  private Pet getSamplePet() {
-    Pet pet = new Pet();
-    pet.setId(1L);
-    pet.setName("test");
-    pet.setSpecie(new PetSpecie());
-    pet.setAppUsers(new ArrayList<>());
-
-    return pet;
   }
 
   @Test

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetSpecieNotFoundException;
 import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
 
-import java.util.*;
+import java.util.List;
 
 @Slf4j
 @Service

@@ -20,24 +20,12 @@ public class VisitFileService {
     this.visitRepository = visitRepository;
   }
 
-  public List<File> getAll(long visitId){
+  public List<File> getAll(long visitId) {
 
     return visitRepository.getById(visitId).getFiles()
         .stream()
         .filter(file -> !file.isDeleted())
         .toList();
-  }
-
-  public File get(long fileId) {
-    final File file = fileRepository.getById(fileId);
-    if (file.isDeleted()) {
-
-      throw new FileNotFoundException(fileId);
-    } else {
-
-      return file;
-    }
-
   }
 
   public File create(long visitId, File file) {
@@ -52,6 +40,18 @@ public class VisitFileService {
     fileFromDb.modify(file);
 
     return fileRepository.save(fileFromDb);
+  }
+
+  public File get(long fileId) {
+    final File file = fileRepository.getById(fileId);
+    if (file.isDeleted()) {
+
+      throw new FileNotFoundException(fileId);
+    } else {
+
+      return file;
+    }
+
   }
 
   public void delete(long fileId) {

@@ -43,6 +43,22 @@ public class VisitController {
     }
   }
 
+  private boolean loggedUserIsAdminOrVisitOfHisPet(long petId, AppUserDetails loggedUser) {
+
+    return loggedUser.isAdmin() || visitOfLoggedUserPet(petId, loggedUser);
+  }
+
+  private boolean visitOfLoggedUserPet(long petId, AppUserDetails loggedUser) {
+
+    Pet pet = petService.get(petId);
+
+    return petOfLoggedUser(loggedUser, pet);
+  }
+
+  private boolean petOfLoggedUser(AppUserDetails loggedUser, Pet pet) {
+    return loggedUser.getAppUser().getPets().contains(pet);
+  }
+
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{petId}/visits/{visitId}")
@@ -97,21 +113,5 @@ public class VisitController {
 
       throw new VisitForbiddenAccessException();
     }
-  }
-
-  private boolean loggedUserIsAdminOrVisitOfHisPet(long petId, AppUserDetails loggedUser) {
-
-    return loggedUser.isAdmin() || visitOfLoggedUserPet(petId, loggedUser);
-  }
-
-  private boolean visitOfLoggedUserPet(long petId, AppUserDetails loggedUser) {
-
-    Pet pet = petService.get(petId);
-
-    return petOfLoggedUser(loggedUser, pet);
-  }
-
-  private boolean petOfLoggedUser(AppUserDetails loggedUser, Pet pet) {
-    return loggedUser.getAppUser().getPets().contains(pet);
   }
 }

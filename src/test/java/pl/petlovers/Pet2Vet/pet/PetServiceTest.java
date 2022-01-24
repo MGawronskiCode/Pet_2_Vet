@@ -69,6 +69,17 @@ class PetServiceTest {
     assertEquals("PetDTO(id=1, name=test, sex=null, birthday=null, specie=PetSpecieDTO(id=null, name=null))", createdPetDTO.toString());
   }
 
+  private PetDTO getNewPetData() {
+    PetDTO petDTO = new PetDTO();
+    petDTO.setId(1L);
+    petDTO.setName("test");
+    petDTO.setSex(null);
+    petDTO.setBirthday(null);
+    petDTO.setSpecie(new PetSpecieDTO());
+
+    return petDTO;
+  }
+
   @Test
   void should_return_correct_object_when_using_create_with_id_argument_method() {
 //    given
@@ -100,17 +111,6 @@ class PetServiceTest {
 //    then
     assertNotNull(updatedPet);
     assertEquals("Pet{id=1, name='test', sex='null', birthday=null}", updatedPet.toString());
-  }
-
-  private PetDTO getNewPetData() {
-    PetDTO petDTO = new PetDTO();
-    petDTO.setId(1L);
-    petDTO.setName("test");
-    petDTO.setSex(null);
-    petDTO.setBirthday(null);
-    petDTO.setSpecie(new PetSpecieDTO());
-
-    return petDTO;
   }
 
   @Test

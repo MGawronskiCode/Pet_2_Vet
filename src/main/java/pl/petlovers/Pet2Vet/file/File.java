@@ -39,6 +39,11 @@ public class File implements Deletable {
   }
 
   @Override
+  public boolean isDeleted() {
+    return isDeleted;
+  }
+
+  @Override
   public void delete() {
     isDeleted = true;
   }
@@ -46,10 +51,5 @@ public class File implements Deletable {
   @Override
   public void restore() {
     isDeleted = false;
-  }
-
-  @Override
-  public boolean isDeleted() {
-    return isDeleted;
   }
 }

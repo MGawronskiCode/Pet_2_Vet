@@ -43,6 +43,22 @@ public class VaccineController {
     }
   }
 
+  private boolean loggedUserIsAdminOrVaccineOfHisPet(long petId, AppUserDetails loggedUser) {
+
+    return loggedUser.isAdmin() || vaccineOfLoggedUserPet(petId, loggedUser);
+  }
+
+  private boolean vaccineOfLoggedUserPet(long petId, AppUserDetails loggedUser) {
+
+    Pet pet = petService.get(petId);
+
+    return loggedUserPet(loggedUser, pet);
+  }
+
+  private boolean loggedUserPet(AppUserDetails loggedUser, Pet pet) {
+    return loggedUser.getAppUser().getPets().contains(pet);
+  }
+
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("pets/{petId}/vaccines/{vaccineId}")
@@ -110,21 +126,5 @@ public class VaccineController {
 
       throw new VaccineForbiddenAccessException();
     }
-  }
-
-  private boolean loggedUserIsAdminOrVaccineOfHisPet(long petId, AppUserDetails loggedUser) {
-
-    return loggedUser.isAdmin() || vaccineOfLoggedUserPet(petId, loggedUser);
-  }
-
-  private boolean vaccineOfLoggedUserPet(long petId, AppUserDetails loggedUser) {
-
-    Pet pet = petService.get(petId);
-
-    return loggedUserPet(loggedUser, pet);
-  }
-
-  private boolean loggedUserPet(AppUserDetails loggedUser, Pet pet) {
-    return loggedUser.getAppUser().getPets().contains(pet);
   }
 }

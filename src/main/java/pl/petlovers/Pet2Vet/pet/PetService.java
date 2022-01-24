@@ -34,19 +34,6 @@ public class PetService {
         .toList();
   }
 
-  public Pet get(long petId) {
-    log.info("Fetching pet with id = " + petId);
-    final Pet pet = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
-
-    if (pet.isDeleted()) {
-
-      throw new PetNotFoundException(petId);
-    } else {
-
-      return pet;
-    }
-  }
-
   public PetDTO create(PetDTO newPetData) {
     log.info("Creating " + newPetData.toString());
     petRepository.save(newPetData.toPet());
@@ -82,5 +69,18 @@ public class PetService {
     petFromRepo.delete();
 
     petRepository.save(petFromRepo);
+  }
+
+  public Pet get(long petId) {
+    log.info("Fetching pet with id = " + petId);
+    final Pet pet = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
+
+    if (pet.isDeleted()) {
+
+      throw new PetNotFoundException(petId);
+    } else {
+
+      return pet;
+    }
   }
 }
