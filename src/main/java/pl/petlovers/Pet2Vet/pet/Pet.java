@@ -127,6 +127,6 @@ public class Pet implements Deletable {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return super.hashCode();
     }
 }

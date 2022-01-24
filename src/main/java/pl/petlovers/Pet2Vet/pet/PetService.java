@@ -76,7 +76,6 @@ public class PetService {
     return petRepository.save(petFromDB);
   }
 
-  @Transactional
   public void delete(long petId) {
     log.info("Deleting pet with id = " + petId);
     final Pet petFromRepo = get(petId);

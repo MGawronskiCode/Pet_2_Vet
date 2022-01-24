@@ -3,6 +3,8 @@ package pl.petlovers.Pet2Vet.pet.controller;
 import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.Sex;
 import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.specie.PetSpecie;
+import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
 
 import java.time.LocalDate;
 
@@ -29,7 +31,7 @@ class PetDTOTest {
     //    given
     PetDTO petDTO;
 //    when
-    petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1));
+    petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1), new PetSpecieDTO());
 //    then
     assertNotNull(petDTO);
 
@@ -47,6 +49,7 @@ class PetDTOTest {
     pet.setName("test");
     pet.setSex(Sex.MALE);
     pet.setBirthday(LocalDate.of(2000, 1, 1));
+    pet.setSpecie(new PetSpecie());
 //    when
     PetDTO petDTO = PetDTO.of(pet);
 //    then
@@ -54,12 +57,14 @@ class PetDTOTest {
     assertEquals("test", petDTO.getName());
     assertEquals(Sex.MALE, petDTO.getSex());
     assertEquals(LocalDate.of(2000, 1, 1), petDTO.getBirthday());
+    assertEquals(new PetSpecieDTO(), petDTO.getSpecie());
+
   }
 
   @Test
   void should_create_correct_object_when_using_toPet_method() {
 //    given
-    PetDTO petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1));
+    PetDTO petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1), new PetSpecieDTO());
 //    when
     Pet pet = petDTO.toPet();
 //    then
@@ -69,5 +74,7 @@ class PetDTOTest {
     assertEquals(LocalDate.of(2000, 1, 1), pet.getBirthday());
 
   }
+
+
 
 }

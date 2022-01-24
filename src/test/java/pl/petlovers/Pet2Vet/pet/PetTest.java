@@ -34,7 +34,7 @@ class PetTest {
     assertNull(pet.getMeals());
     assertNull(pet.getNotes());
     assertNull(pet.getAppUsers());
-    assertNull(pet.getVisits());
+    assertEquals(List.of(), pet.getVisits());
 
   }
 
@@ -55,7 +55,7 @@ class PetTest {
     assertNull(pet.getMeals());
     assertNull(pet.getNotes());
     assertNull(pet.getAppUsers());
-    assertNull(pet.getVisits());
+    assertEquals(List.of(), pet.getVisits());
 
     assertEquals("test", newPetData.getName());
     assertEquals(Sex.MALE, newPetData.getSex());
@@ -76,7 +76,7 @@ class PetTest {
     assertNull(pet.getVaccines());
     assertNull(pet.getNotes());
     assertNull(pet.getAppUsers());
-    assertNull(pet.getVisits());
+    assertEquals(List.of(), pet.getVisits());
 
     assertNotNull(pet.getMeals());
     assertEquals(1, pet.getMeals().size());
@@ -117,7 +117,7 @@ class PetTest {
     assertNull(pet.getVaccines());
     assertNull(pet.getMeals());
     assertNull(pet.getAppUsers());
-    assertNull(pet.getVisits());
+    assertEquals(List.of(), pet.getVisits());
 
     assertNotNull(pet.getNotes());
     assertEquals(1, pet.getNotes().size());
@@ -148,9 +148,10 @@ class PetTest {
 //    then
     assertEquals(pet1, pet1);
     assertEquals(pet2, pet2);
-    assertEquals(pet1, pet2);
-    assertEquals(pet2, pet1);
-
+    assertEquals(pet1.getId(), pet2.getId());
+    assertEquals(pet1.getName(), pet2.getName());
+    assertEquals(pet1.getSex(), pet2.getSex());
+    assertEquals(pet1.getBirthday(), pet2.getBirthday());
     assertNotEquals(pet1, pet3);
     assertNotEquals(pet3, pet1);
     assertNotEquals(1, pet1);
@@ -158,17 +159,32 @@ class PetTest {
 
   @Test
   void should_return_correct_values_when_using_pet_hashCode_method() {
-    //    given
+//    given
     Pet pet1 = new Pet();
     Pet pet2 = new Pet();
-    Pet pet3 = new Pet();
-    pet3.setId(1L);
 //    then
-    assertEquals(pet1.hashCode(), pet2.hashCode());
-    assertEquals(pet2.hashCode(), pet1.hashCode());
+    assertNotEquals(pet1.hashCode(), pet2.hashCode());
+    assertNotEquals(pet2.hashCode(), pet1.hashCode());
+  }
 
-    assertNotEquals(pet1.hashCode(), pet3.hashCode());
-    assertNotEquals(pet3.hashCode(), pet1.hashCode());
+  @Test
+  void should_change_isDeleted_flag_on_true_when_using_delete_method() {
+//    given
+    Pet pet1 = new Pet();
+//    when
+    pet1.delete();
+//    then
+    assertTrue(pet1.isDeleted());
+  }
 
+  @Test
+  void should_change_isDeleted_flag_on_false_when_using_restore_method() {
+//    given
+    Pet pet1 = new Pet();
+//    when
+    pet1.delete();
+    pet1.restore();
+//    then
+    assertFalse(pet1.isDeleted());
   }
 }

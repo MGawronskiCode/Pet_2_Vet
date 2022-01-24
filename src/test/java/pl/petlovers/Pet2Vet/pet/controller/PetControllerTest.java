@@ -1,16 +1,18 @@
 package pl.petlovers.Pet2Vet.pet.controller;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
+import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetService;
 import pl.petlovers.Pet2Vet.security.users.AppUserDetails;
+import pl.petlovers.Pet2Vet.specie.PetSpecie;
+import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,81 +29,130 @@ class PetControllerTest {
   }
 
   @Test
-  void should_return_correct_list_when_using_petService_getAll_method() {
+  void should_return_correct_list_when_using_PetController_get_method_as_admin() {
 //    given
-    PetController controller = new PetController(mock(PetService.class));
-    when(controller.get()).thenReturn(getSamplePetList());
+    final AppUserDetails loggedUser = mock(AppUserDetails.class);
+    when(loggedUser.isAdmin()).thenReturn(true);
+
+    final PetService petServiceMock = mock(PetService.class);
+    when(petServiceMock.getAll()).thenReturn(getSamplePetList());
+
+    final PetController controller = new PetController(petServiceMock);
 //    when
-    ClassCastException thrown = Assertions.assertThrows(ClassCastException.class, controller::get);
+    final List<PetDTO> petDTOs = controller.get(loggedUser);
 //    then
-    Assertions.assertEquals("class pl.petlovers.Pet2Vet.pet.controller.PetDTO cannot be cast to class pl.petlovers.Pet2Vet.pet.Pet (pl.petlovers.Pet2Vet.pet.controller.PetDTO and pl.petlovers.Pet2Vet.pet.Pet are in unnamed module of loader 'app')", thrown.getMessage());
+    assertNotNull(petDTOs);
+    assertFalse(petDTOs.isEmpty());
+    assertEquals(new PetDTO(1L, "test", null, null, new PetSpecieDTO(null, null)), petDTOs.get(0));
   }
 
-  private List<PetDTO> getSamplePetList() {
-    List<PetDTO> pets = new ArrayList<>();
+  @Test
+  void should_throw_NullPointerException_when_using_PetController_get_method() {
+//    given
+    final AppUserDetails loggedUser = mock(AppUserDetails.class);
+    when(loggedUser.isAdmin()).thenReturn(false);
 
-    PetDTO pet1 = new PetDTO();
+    final PetService petServiceMock = mock(PetService.class);
+    when(petServiceMock.getAll()).thenReturn(getSamplePetList());
+
+    final PetController controller = new PetController(petServiceMock);
+//    then
+    assertThrows(NullPointerException.class, () -> controller.get(loggedUser));
+  }
+
+  private List<Pet> getSamplePetList() {
+
+    List<Pet> pets = new ArrayList<>();
+
+    Pet pet1 = new Pet();
     pet1.setId(1L);
     pet1.setName("test");
+    pet1.setSpecie(new PetSpecie());
     pets.add(pet1);
 
-    PetDTO pet2 = new PetDTO();
+    Pet pet2 = new Pet();
     pet2.setId(2L);
     pet2.setName("test2");
+    pet2.setSpecie(new PetSpecie());
     pets.add(pet2);
 
     return pets;
   }
 
+
   @Test
-  void should_return_correct_list_when_using_petService_getAll_with_petId_argument_method() {
+  void should_return_correct_list_when_using_PetController_getAll_with_petId_argument_method() {
 //    given
-    PetController controller = new PetController(mock(PetService.class));
+    final AppUserDetails loggedUser = mock(AppUserDetails.class);
+    when(loggedUser.isAdmin()).thenReturn(true);
+
+    final PetService petServiceMock = mock(PetService.class);
+    when(petServiceMock.get(anyLong())).thenReturn(getSamplePet());
+
+    PetController controller = new PetController(petServiceMock);
 //    when
-    NullPointerException thrown = Assertions.assertThrows(NullPointerException.class,() -> controller.get(1L));
+    final PetDTO petDTO = controller.get(1L, loggedUser);
 //    then
-    Assertions.assertEquals("Cannot invoke \"pl.petlovers.Pet2Vet.pet.Pet.getId()\" because \"pet\" is null", thrown.getMessage());
+    assertNotNull(petDTO);
+    assertEquals(new PetDTO(1L, "test", null, null, new PetSpecieDTO(null, null)), petDTO);
   }
 
   @Test
-  void should_return_correct_object_when_using_petService_create_with_petId_and_petDTO_arguments_method() {
+  void should_return_correct_object_when_using_petController_create_with_petId_and_petDTO_arguments_method() {
 //    given
-    final PetService mock = mock(PetService.class);
-    when(mock.create(any(), any())).thenReturn(new PetDTO());//todo tak jest super i działa, zastosować w pozostałych miejscach.
-    PetController controller = new PetController(mock);
-    PetDTO petDTO = new PetDTO();
+    final AppUserDetails loggedUser = mock(AppUserDetails.class);
+    when(loggedUser.isAdmin()).thenReturn(true);
+    final AppUser appUserMock = mock(AppUser.class);
+    when(loggedUser.getAppUser()).thenReturn(appUserMock);
+    when(appUserMock.getId()).thenReturn(1L);
+    final PetDTO petDTO = PetDTO.of(getSamplePet());
+
+    final PetService petServiceMock = mock(PetService.class);
+    when(petServiceMock.create(1L, petDTO)).thenReturn(petDTO);
+
+    PetController controller = new PetController(petServiceMock);
 //    when
-    final PetDTO createdDTO = controller.create(petDTO, new AppUserDetails());
+    final PetDTO createdPetDTO = controller.create(petDTO, loggedUser);
 //    then
-    assertNull(createdDTO);
+    assertNotNull(createdPetDTO);
+    assertEquals(new PetDTO(1L, "test", null, null, new PetSpecieDTO(null, null)), createdPetDTO);
+  }
+
+  private Pet getSamplePet() {
+    Pet pet = new Pet();
+    pet.setId(1L);
+    pet.setName("test");
+    pet.setSpecie(new PetSpecie());
+    pet.setAppUsers(new ArrayList<>());
+
+    return pet;
   }
 
   @Test
   void should_create_correct_object_when_using_update_method() {
 //    given
-    PetController controller = new PetController(mock(PetService.class));
-    PetDTO petDTO = new PetDTO();
+    final PetService petServiceMock = mock(PetService.class);
+    when(petServiceMock.get(1L)).thenReturn(getSamplePet());
+    when(petServiceMock.update(1L, PetDTO.of(getSamplePet()))).thenReturn(getSamplePet());
+    final AppUserDetails appUserDetailsMock = mock(AppUserDetails.class);
+    when(appUserDetailsMock.isAdmin()).thenReturn(true);
+    PetController controller = new PetController(petServiceMock);
 //    when
-    NullPointerException thrown = Assertions.assertThrows(NullPointerException.class,() -> controller.update(1L, petDTO));
+    final PetDTO updatedPet = controller.update(1L, PetDTO.of(getSamplePet()), appUserDetailsMock);
 //    then
-    Assertions.assertEquals("Cannot invoke \"pl.petlovers.Pet2Vet.pet.Pet.getId()\" because \"pet\" is null", thrown.getMessage());
+    assertNotNull(updatedPet);
+    assertEquals(new PetDTO(1L, "test", null, null, new PetSpecieDTO(null, null)), updatedPet);
   }
 
   @Test
-  void should_pass_when_using_cancel_method() {
+  void should_not_pass_when_using_cancel_method() {
 //    given
-    PetController controller = new PetController(mock(PetService.class));
+    final PetService petServiceMock = mock(PetService.class);
+    final AppUserDetails appUserDetailsMock = mock(AppUserDetails.class);
+    when(appUserDetailsMock.isAdmin()).thenReturn(true);
+    PetController controller = new PetController(petServiceMock);
 //    then
-    assertDoesNotThrow(() -> controller.cancel(1));
+    assertThrows(NullPointerException.class, () -> controller.cancel(1L, appUserDetailsMock));
   }
 
-  @Test
-  void should_return_correct_list_when_using_petService_getAllUserPets_method() {
-//    given
-    PetController controller = new PetController(mock(PetService.class));
-//    when
-    final List<PetDTO> userPets = controller.getAllUserPets(1);
-//    then
-    assertEquals(Collections.emptyList(), userPets);
-  }
 }
