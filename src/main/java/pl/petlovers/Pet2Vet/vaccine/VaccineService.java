@@ -25,22 +25,6 @@ public class VaccineService {
     this.petRepository = petRepository;
   }
 
-  public List<Vaccine> getAll() {
-    log.info("Fetching all vaccines");
-
-    return vaccineRepository.findAll()
-        .stream()
-        .filter(vaccine -> !vaccine.isDeleted())
-        .toList();
-  }
-
-  public Vaccine create(Vaccine vaccine) {
-    log.info("Creating " + vaccine.toString());
-    vaccineRepository.save(vaccine);
-
-    return vaccine;
-  }
-
   public List<Vaccine> getPetVaccines(long petId) {
     Pet pet = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
 

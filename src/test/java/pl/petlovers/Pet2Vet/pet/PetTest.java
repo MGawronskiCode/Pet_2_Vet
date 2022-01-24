@@ -154,7 +154,6 @@ class PetTest {
     assertEquals(pet1.getBirthday(), pet2.getBirthday());
     assertNotEquals(pet1, pet3);
     assertNotEquals(pet3, pet1);
-    assertNotEquals(1, pet1);
   }
 
   @Test

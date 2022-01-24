@@ -6,7 +6,4 @@ public class AppUserForbiddenAccessException extends ForbiddenAccessException {
     super("Nie masz dostępu do tego użytkownika.");
   }
 
-  public AppUserForbiddenAccessException(String message) {
-    super(message);
-  }
 }
