@@ -12,3 +12,5 @@ It's a backend part of the application that provides the API that enables the ab
 
 
 ![alt text](https://i.imgur.com/ptEv6Gc.png)
+![alt text](https://i.imgur.com/y19roDC.png)
+![alt text](https://i.imgur.com/AD6oFnG.png)
