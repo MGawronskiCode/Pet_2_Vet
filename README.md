@@ -6,7 +6,7 @@ We want to help pet owners take better care of  their friends. App can store med
 How it works?
   Register your account, 
   add pets and create its profile, 
-  add appointments with veterinarians, vaccination dates and reminders about them, notes and have them and manage with you whenever you need to.
+  add appointments with veterinarians, vaccination dates and reminders about them, notes and have them with you and manage whenever you need to.
  
 It's a backend part of the application that provides the API that enables the above.
 
