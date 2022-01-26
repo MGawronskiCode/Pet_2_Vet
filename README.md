@@ -8,7 +8,7 @@ How it works?
   add pets and create its profile, 
   add appointments with veterinarians, vaccination dates and reminders about them, notes and have them and manage with you whenever you need to.
  
-It's the backend part of the application that provides the API that enables the above.
+It's a backend part of the application that provides the API that enables the above.
 
 
 ![alt text](https://i.imgur.com/ptEv6Gc.png)
