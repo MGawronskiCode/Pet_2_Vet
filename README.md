@@ -10,4 +10,4 @@ How it works?
  
 It's the backend part of the application that provides the API that enables the above.
 ![alt text](https://github.com/[MGawronskiCode]/[Pet_2_Vet]/blob/[development]/image.jpg?raw=true)
-![alt text](https://imgur.com/ptEv6Gc)
+![alt text](https://i.imgur.com/ptEv6Gc.png)
