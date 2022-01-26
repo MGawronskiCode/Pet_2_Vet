@@ -2,12 +2,15 @@ package pl.petlovers.Pet2Vet.pet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.appUser.AppUserService;
-import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
-import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
-import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
-import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUserService;
+import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
+import pl.petlovers.Pet2Vet.utills.exceptions.not_found_exceptions.PetNotFoundException;
+import pl.petlovers.Pet2Vet.entities.pet.Pet;
+import pl.petlovers.Pet2Vet.entities.pet.PetRepository;
+import pl.petlovers.Pet2Vet.entities.pet.PetService;
+import pl.petlovers.Pet2Vet.entities.pet.controller.PetDTO;
+import pl.petlovers.Pet2Vet.entities.specie.controller.PetSpecieDTO;
 
 import java.util.ArrayList;
 import java.util.List;
