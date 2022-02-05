@@ -15,9 +15,9 @@ import java.util.List;
 @RestController
 public class VisitFileController {
 
+  private static final String NO_HACKING_ALLOWED_COMMUNICATE = "You naughty naughty user, no hacking here!";
   private final VisitFileService visitFileService;
   private final VisitService visitService;
-  private static final String NO_HACKING_ALLOWED_COMMUNICATE = "You naughty naughty user, no hacking here!";
 
   @Autowired
   public VisitFileController(VisitFileService visitFileService, VisitService visitService) {
@@ -42,6 +42,28 @@ public class VisitFileController {
     }
   }
 
+  private boolean fileAddedToLoggedUserPetVisit(long visitId, AppUserDetails loggedUser) {
+
+    final List<Long> countsOfVisitsWithGivenIdInUserPets = getListOfCountsOfVisitsWithGivenIdInUsersPets(visitId, loggedUser);
+
+    for (Long countsOfVisitsWithGivenIdInUserPet : countsOfVisitsWithGivenIdInUserPets) {
+
+      if (countsOfVisitsWithGivenIdInUserPet > 0)
+
+        return true;
+    }
+
+    return false;
+  }
+
+  private List<Long> getListOfCountsOfVisitsWithGivenIdInUsersPets(long visitId, AppUserDetails loggedUser) {
+    return loggedUser.getAppUser().getPets().stream()
+        .map(pet -> pet.getVisits().stream()
+            .filter(visit -> visit.getId() == visitId)
+            .count())
+        .toList();
+  }
+
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/visits/{visitId}/files/{fileId}")
@@ -49,7 +71,7 @@ public class VisitFileController {
 
     if (loggedUser.isAdmin() || fileAddedToLoggedUserPetVisit(visitId, loggedUser)) {
 
-      if(visitService.get(visitId).containsFile(fileId)) {
+      if (visitService.get(visitId).containsFile(fileId)) {
 
         return FileDTO.of(visitFileService.get(fileId));
       }
@@ -83,9 +105,9 @@ public class VisitFileController {
 
     if (loggedUser.isAdmin() || fileAddedToLoggedUserPetVisit(visitId, loggedUser)) {
 
-      if(visitService.get(visitId).containsFile(fileId)) {
+      if (visitService.get(visitId).containsFile(fileId)) {
 
-        return FileDTO.of(visitFileService.update(visitId, fileId, fileDTO.toFile()));
+        return FileDTO.of(visitFileService.update(fileId, fileDTO.toFile()));
       }
 
       throw new IllegalArgumentException(NO_HACKING_ALLOWED_COMMUNICATE);
@@ -102,7 +124,7 @@ public class VisitFileController {
 
     if (loggedUser.isAdmin() || fileAddedToLoggedUserPetVisit(visitId, loggedUser)) {
 
-      if(visitService.get(visitId).containsFile(fileId)) {
+      if (visitService.get(visitId).containsFile(fileId)) {
 
         visitFileService.delete(fileId);
       }
@@ -112,27 +134,5 @@ public class VisitFileController {
 
       throw new FileForbiddenAccessException();
     }
-  }
-
-  private boolean fileAddedToLoggedUserPetVisit(long visitId, AppUserDetails loggedUser) {
-
-    final List<Long> countsOfVisitsWithGivenIdInUserPets = getListOfCountsOfVisitsWithGivenIdInUsersPets(visitId, loggedUser);
-
-    for (Long countsOfVisitsWithGivenIdInUserPet : countsOfVisitsWithGivenIdInUserPets) {
-
-      if (countsOfVisitsWithGivenIdInUserPet > 0)
-
-        return true;
-    }
-
-    return false;
-  }
-
-  private List<Long> getListOfCountsOfVisitsWithGivenIdInUsersPets(long visitId, AppUserDetails loggedUser) {
-    return loggedUser.getAppUser().getPets().stream()
-        .map(pet -> pet.getVisits().stream()
-            .filter(visit -> visit.getId() == visitId)
-            .count())
-        .toList();
   }
 }

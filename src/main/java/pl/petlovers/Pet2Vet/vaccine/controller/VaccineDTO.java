@@ -18,7 +18,7 @@ public class VaccineDTO {
 
   public static VaccineDTO of(Vaccine vaccine) {
     return VaccineDTO.builder()
-            .id(vaccine.getId())
+        .id(vaccine.getId())
         .name(vaccine.getName())
         .dateTime(vaccine.getDateTime())
         .build();
@@ -26,7 +26,7 @@ public class VaccineDTO {
 
   public Vaccine toVaccine() {
     return Vaccine.builder()
-            .id(id)
+        .id(id)
         .name(name)
         .dateTime(dateTime)
         .build();

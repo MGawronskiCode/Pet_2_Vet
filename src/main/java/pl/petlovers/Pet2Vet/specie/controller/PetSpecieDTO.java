@@ -17,14 +17,14 @@ public class PetSpecieDTO {
 
   public static PetSpecieDTO of(PetSpecie specie) {
     return PetSpecieDTO.builder()
-            .id(specie.getId())
+        .id(specie.getId())
         .name(specie.getName())
         .build();
   }
 
   public PetSpecie toPetSpecie() {
     return PetSpecie.builder()
-            .id(id)
+        .id(id)
         .name(name)
         .build();
   }

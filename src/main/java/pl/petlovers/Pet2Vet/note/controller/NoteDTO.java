@@ -12,23 +12,23 @@ import pl.petlovers.Pet2Vet.note.Note;
 @AllArgsConstructor
 class NoteDTO {
 
-    private Long id;
-    private String title;
-    private String content;
+  private Long id;
+  private String title;
+  private String content;
 
-    public Note toNote() {
-        return Note.builder()
-                .id(id)
-                .title(title)
-                .content(content)
-                .build();
-    }
+  public static NoteDTO of(Note note) {
+    return NoteDTO.builder()
+        .id(note.getId())
+        .title(note.getTitle())
+        .content(note.getContent())
+        .build();
+  }
 
-    public static NoteDTO of(Note note){
-        return NoteDTO.builder()
-                .id(note.getId())
-                .title(note.getTitle())
-                .content(note.getContent())
-                .build();
-    }
+  public Note toNote() {
+    return Note.builder()
+        .id(id)
+        .title(title)
+        .content(content)
+        .build();
+  }
 }

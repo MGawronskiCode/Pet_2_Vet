@@ -28,17 +28,6 @@ public class VisitService {
         .toList();
   }
 
-  public Visit get(long visitId) {
-    final Visit visit = visitRepository.getById(visitId);
-    if (visit.isDeleted()) {
-
-      throw new VisitNotFoundException(visitId);
-    } else {
-
-      return visit;
-    }
-  }
-
   public Visit create(long petId, Visit visit) {
     Pet pet = petRepository.getById(petId);
     pet.addVisit(visit);
@@ -51,6 +40,17 @@ public class VisitService {
     visitFromDb.modify(visit);
 
     return visitRepository.save(visitFromDb);
+  }
+
+  public Visit get(long visitId) {
+    final Visit visit = visitRepository.getById(visitId);
+    if (visit.isDeleted()) {
+
+      throw new VisitNotFoundException(visitId);
+    } else {
+
+      return visit;
+    }
   }
 
   public void delete(long visitId) {

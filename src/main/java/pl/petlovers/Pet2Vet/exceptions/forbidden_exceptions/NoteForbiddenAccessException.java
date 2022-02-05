@@ -6,7 +6,4 @@ public class NoteForbiddenAccessException extends ForbiddenAccessException {
     super("Nie masz dostępu do tej notatki.");
   }
 
-  public NoteForbiddenAccessException(String message) {
-    super(message);
-  }
 }

@@ -6,7 +6,4 @@ public class VaccineForbiddenAccessException extends ForbiddenAccessException {
     super("Nie masz dostępu do tego szczepienia.");
   }
 
-  public VaccineForbiddenAccessException(String message) {
-    super(message);
-  }
 }

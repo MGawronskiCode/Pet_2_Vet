@@ -6,7 +6,4 @@ public class MealForbiddenAccessException extends ForbiddenAccessException {
     super("Nie masz dostępu do tego posiłku.");
   }
 
-  public MealForbiddenAccessException(String message) {
-    super(message);
-  }
 }

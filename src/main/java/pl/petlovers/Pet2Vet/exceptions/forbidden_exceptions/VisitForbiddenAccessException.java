@@ -6,8 +6,4 @@ public class VisitForbiddenAccessException extends ForbiddenAccessException {
     super("Nie masz dostępu do tej wizyty.");
   }
 
-  public VisitForbiddenAccessException(String message) {
-    super(message);
-  }
-
 }

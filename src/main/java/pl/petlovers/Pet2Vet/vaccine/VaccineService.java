@@ -25,42 +25,6 @@ public class VaccineService {
     this.petRepository = petRepository;
   }
 
-  public List<Vaccine> getAll() {
-    log.info("Fetching all vaccines");
-
-    return vaccineRepository.findAll()
-        .stream()
-        .filter(vaccine -> !vaccine.isDeleted())
-        .toList();
-  }
-
-  public Vaccine get(long vaccineId) {
-    log.info(FETCHING_VACCINE + vaccineId);
-    final Vaccine vaccine = vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
-    if (vaccine.isDeleted()) {
-
-      throw new VaccineNotFoundException(vaccineId);
-    } else {
-
-      return vaccine;
-    }
-  }
-
-  public Vaccine create(Vaccine vaccine) {
-    log.info("Creating " + vaccine.toString());
-    vaccineRepository.save(vaccine);
-
-    return vaccine;
-  }
-
-  public void delete(long vaccineId) {
-    log.info("Deleting vaccine");
-    Vaccine vaccine = get(vaccineId);
-    vaccine.delete();
-
-    vaccineRepository.save(vaccine);
-  }
-
   public List<Vaccine> getPetVaccines(long petId) {
     Pet pet = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException(petId));
 
@@ -77,7 +41,7 @@ public class VaccineService {
     final Vaccine petVaccine = findVaccineInList(vaccineId, vaccines);
 
     if (petVaccine.isDeleted()) {
-       throw new VaccineNotFoundException(vaccineId);
+      throw new VaccineNotFoundException(vaccineId);
     } else {
 
       return petVaccine;
@@ -132,13 +96,13 @@ public class VaccineService {
     throw new VaccineNotFoundException(vaccineId);
   }
 
-  public Vaccine update(long vaccineId, VaccineDTO vaccineNewData) {
+  public void update(long vaccineId, VaccineDTO vaccineNewData) {
     log.info(FETCHING_VACCINE + vaccineId);
     Vaccine vaccineFromDB = vaccineRepository.getById(vaccineId);
     log.info("Updating of " + vaccineFromDB + " to " + vaccineNewData.toString());
     vaccineFromDB.modify(vaccineNewData);
 
-    return vaccineRepository.save(vaccineFromDB);
+    vaccineRepository.save(vaccineFromDB);
   }
 
   public void deletePetVaccine(long petId, long vaccineId) {
@@ -161,5 +125,25 @@ public class VaccineService {
     }
 
     throw new VaccineNotFoundException(vaccineId);
+  }
+
+  public void delete(long vaccineId) {
+    log.info("Deleting vaccine");
+    Vaccine vaccine = get(vaccineId);
+    vaccine.delete();
+
+    vaccineRepository.save(vaccine);
+  }
+
+  public Vaccine get(long vaccineId) {
+    log.info(FETCHING_VACCINE + vaccineId);
+    final Vaccine vaccine = vaccineRepository.findById(vaccineId).orElseThrow(() -> new VaccineNotFoundException(vaccineId));
+    if (vaccine.isDeleted()) {
+
+      throw new VaccineNotFoundException(vaccineId);
+    } else {
+
+      return vaccine;
+    }
   }
 }

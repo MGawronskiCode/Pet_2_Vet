@@ -189,12 +189,12 @@ public class NoteService {
     }
     log.info("Deleting all user's notes");
 
-      final List<Note> userNotes = user.getNotes();
-      for (Note note : userNotes) {
-          note.delete();
-      }
+    final List<Note> userNotes = user.getNotes();
+    for (Note note : userNotes) {
+      note.delete();
+    }
 
-      userRepository.save(user);
+    userRepository.save(user);
   }
 
   public void deleteUserNote(long userId, long noteId) {
@@ -212,12 +212,12 @@ public class NoteService {
       throw new IllegalStateException("No note was found.");
     }
     log.info("Deleting all pet's notes");
-      final List<Note> petNotes = pet.getNotes();
-      for (Note note : petNotes) {
-          note.delete();
-      }
+    final List<Note> petNotes = pet.getNotes();
+    for (Note note : petNotes) {
+      note.delete();
+    }
 
-      petRepository.save(pet);
+    petRepository.save(pet);
   }
 
   public void deletePetNote(long petId, long noteId) {

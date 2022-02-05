@@ -16,10 +16,9 @@ import java.util.List;
 @RestController
 public class NoteFileController {
 
+  private static final String NO_HACKING_ALLOWED_COMMUNICATE = "You naughty naughty user, no hacking here!";
   private final NoteFileService noteFileService;
   private final NoteService noteService;
-
-  private static final String NO_HACKING_ALLOWED_COMMUNICATE = "You naughty naughty user, no hacking here!";
 
   @Autowired
   public NoteFileController(NoteFileService noteFileService, NoteService noteService) {
@@ -42,6 +41,22 @@ public class NoteFileController {
 
       throw new FileForbiddenAccessException();
     }
+  }
+
+  private boolean loggedUserIsAdminOrFileBelongsToHim(long noteId, AppUserDetails loggedUser) {
+
+    return loggedUser.isAdmin() || fileAddedToLoggedUserNote(noteId, loggedUser);
+  }
+
+  private boolean fileAddedToLoggedUserNote(long noteId, AppUserDetails loggedUser) {
+
+    Note note = noteService.getNote(noteId);
+
+    return noteOfLoggedUser(loggedUser, note);
+  }
+
+  private boolean noteOfLoggedUser(AppUserDetails loggedUser, Note note) {
+    return loggedUser.getAppUser().getNotes().contains(note);
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
@@ -86,7 +101,7 @@ public class NoteFileController {
 
       if (noteService.getNote(noteId).containsFile(fileId)) {
 
-        return FileDTO.of(noteFileService.update(noteId, fileId, fileDTO.toFile()));
+        return FileDTO.of(noteFileService.update(fileId, fileDTO.toFile()));
       }
 
       throw new IllegalArgumentException(NO_HACKING_ALLOWED_COMMUNICATE);
@@ -113,22 +128,6 @@ public class NoteFileController {
 
       throw new FileForbiddenAccessException();
     }
-  }
-
-  private boolean loggedUserIsAdminOrFileBelongsToHim(long noteId, AppUserDetails loggedUser) {
-
-    return loggedUser.isAdmin() || fileAddedToLoggedUserNote(noteId, loggedUser);
-  }
-
-  private boolean fileAddedToLoggedUserNote(long noteId, AppUserDetails loggedUser) {
-
-    Note note = noteService.getNote(noteId);
-
-    return noteOfLoggedUser(loggedUser, note);
-  }
-
-  private boolean noteOfLoggedUser(AppUserDetails loggedUser, Note note) {
-    return loggedUser.getAppUser().getNotes().contains(note);
   }
 }
 

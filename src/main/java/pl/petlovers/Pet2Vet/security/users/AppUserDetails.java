@@ -56,15 +56,15 @@ public class AppUserDetails implements UserDetails {
     return true;
   }
 
+  private Set<String> getUserRoleAsCollection() {
+    return Set.of(appUser.getRole().name());
+  }
+
   public boolean isAdmin() {
     return this.appUser.getRole() == Roles.ROLE_ADMIN;
   }
 
   public long getId() {
     return this.appUser.getId();
-  }
-
-  private Set<String> getUserRoleAsCollection() {
-    return Set.of(appUser.getRole().name());
   }
 }

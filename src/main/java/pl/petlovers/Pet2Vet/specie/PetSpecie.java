@@ -2,7 +2,6 @@ package pl.petlovers.Pet2Vet.specie;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import pl.petlovers.Pet2Vet.Deletable;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
 
@@ -17,7 +16,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PetSpecie implements Deletable {
+public class PetSpecie {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,33 +32,27 @@ public class PetSpecie implements Deletable {
   @Column(nullable = false)
   private boolean isDeleted;
 
-  public void modify(PetSpecieDTO newData){
+  public void modify(PetSpecieDTO newData) {
     if (newData.getName() != null) {
       this.setName(newData.getName());
     }
   }
 
-  @Override
-  public String toString() {
-    return "PetSpecie{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            '}';
+  public boolean isDeleted() {
+    return this.isDeleted;
   }
 
-  @Override
   public void delete() {
     this.isDeleted = true;
   }
 
-  @Override
   public void restore() {
     this.isDeleted = false;
   }
 
   @Override
-  public boolean isDeleted() {
-    return this.isDeleted;
+  public int hashCode() {
+    return getClass().hashCode();
   }
 
   @Override
@@ -71,7 +64,10 @@ public class PetSpecie implements Deletable {
   }
 
   @Override
-  public int hashCode() {
-    return getClass().hashCode();
+  public String toString() {
+    return "PetSpecie{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        '}';
   }
 }

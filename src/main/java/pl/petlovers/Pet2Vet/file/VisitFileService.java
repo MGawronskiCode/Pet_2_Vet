@@ -20,12 +20,26 @@ public class VisitFileService {
     this.visitRepository = visitRepository;
   }
 
-  public List<File> getAll(long visitId){
+  public List<File> getAll(long visitId) {
 
     return visitRepository.getById(visitId).getFiles()
         .stream()
         .filter(file -> !file.isDeleted())
         .toList();
+  }
+
+  public File create(long visitId, File file) {
+    Visit visit = visitRepository.getById(visitId);
+    visit.addFile(file);
+
+    return fileRepository.save(file);
+  }
+
+  public File update(long fileId, File file) {
+    File fileFromDb = get(fileId);
+    fileFromDb.modify(file);
+
+    return fileRepository.save(fileFromDb);
   }
 
   public File get(long fileId) {
@@ -38,20 +52,6 @@ public class VisitFileService {
       return file;
     }
 
-  }
-
-  public File create(long visitId, File file) {
-    Visit visit = visitRepository.getById(visitId);
-    visit.addFile(file);
-
-    return fileRepository.save(file);
-  }
-
-  public File update(long visitId, long fileId, File file) { //fixme unused visitId
-    File fileFromDb = get(fileId);
-    fileFromDb.modify(file);
-
-    return fileRepository.save(fileFromDb);
   }
 
   public void delete(long fileId) {

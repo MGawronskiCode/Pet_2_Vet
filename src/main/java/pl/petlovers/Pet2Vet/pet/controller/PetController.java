@@ -30,20 +30,33 @@ public class PetController {
 
     if (loggedUser.isAdmin()) {
 
-      return petService.getAll()
-          .stream()
-          .map(PetDTO::of)
-          .toList();
+      return getAllPetsFromDB();
     } else {
 
-      return petService.getAll()
-          .stream()
-          .filter(pet -> loggedUserHaveThisPet(pet, loggedUser))
-          .map(PetDTO::of)
-          .toList();
+      return getUserPetsFromDB(loggedUser);
     }
   }
 
+  private List<PetDTO> getAllPetsFromDB() {
+    return petService.getAll()
+        .stream()
+        .map(PetDTO::of)
+        .toList();
+  }
+
+  private List<PetDTO> getUserPetsFromDB(AppUserDetails loggedUser) {
+    return petService.getAll()
+        .stream()
+        .filter(pet -> loggedUserHaveThisPet(pet, loggedUser))
+        .map(PetDTO::of)
+        .toList();
+  }
+
+  private boolean loggedUserHaveThisPet(Pet pet, AppUserDetails loggedUser) {
+    return pet.getAppUsers()
+        .stream()
+        .anyMatch(user -> user.getId().equals(loggedUser.getAppUser().getId()));
+  }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
@@ -58,6 +71,10 @@ public class PetController {
 
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
+  }
+
+  private String getYouDontHaveThisPetCommunicate(long petId) {
+    return "Nie masz pupila z ID: " + petId;
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER"})
@@ -96,15 +113,5 @@ public class PetController {
 
       throw new PetForbiddenAccessException(getYouDontHaveThisPetCommunicate(pet.getId()));
     }
-  }
-
-  private boolean loggedUserHaveThisPet(Pet pet, AppUserDetails loggedUser) {
-    return pet.getAppUsers()
-        .stream()
-        .anyMatch(user -> user.getId().equals(loggedUser.getAppUser().getId()));
-  }
-
-  private String getYouDontHaveThisPetCommunicate(long petId) {
-    return "Nie masz pupila z ID: " + petId;
   }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.ForbiddenAccessException;
-import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.*;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.NotFoundInDatabaseException;
 import pl.petlovers.Pet2Vet.exceptions.unautorized_exceptions.UnauthorizedAttemptException;
 
 //todo wszystkie komunikaty w jednym języku
@@ -20,7 +20,7 @@ import pl.petlovers.Pet2Vet.exceptions.unautorized_exceptions.UnauthorizedAttemp
 @ControllerAdvice
 public class ExceptionsHandler {
 
-  static final String ERROR = "!!! Error: ";
+  static final String ERROR = "---Error: ";
 
   @ResponseBody
   @ExceptionHandler(ForbiddenAccessException.class)
