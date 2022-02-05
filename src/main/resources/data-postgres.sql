@@ -29,9 +29,9 @@ INSERT INTO public.pet(name, sex, birthday, specie_id) VALUES ('Merlin', 0, '201
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 2);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 7);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 1);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 8);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (2, 3);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (1, 4);
-INSERT INTO public.users_pets(user_id, pet_id) VALUES (3, 3);
+INSERT INTO public.users_pets(user_id, pet_id) VALUES (3, 8);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 6);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (4, 10);
 INSERT INTO public.users_pets(user_id, pet_id) VALUES (5, 9);
