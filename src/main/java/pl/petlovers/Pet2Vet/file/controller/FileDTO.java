@@ -22,21 +22,21 @@ public class FileDTO {
 
   public static FileDTO of(File file) {
     return FileDTO.builder()
-      .id(file.getId())
-      .name(file.getName())
-      .url(file.getUrl())
-      .created(file.getCreated())
-      .modified(file.getModified())
-      .build();
+        .id(file.getId())
+        .name(file.getName())
+        .url(file.getUrl())
+        .created(file.getCreated())
+        .modified(file.getModified())
+        .build();
   }
 
   public File toFile() {
     return File.builder()
-      .id(id)
-      .name(name)
-      .url(url)
-      .created(created)
-      .modified(modified)
-      .build();
+        .id(id)
+        .name(name)
+        .url(url)
+        .created(created)
+        .modified(modified)
+        .build();
   }
 }

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.VisitNotFoundException;
 import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.pet.PetService;
+import pl.petlovers.Pet2Vet.pet.PetRepository;
 
 import java.util.List;
 
@@ -12,40 +12,51 @@ import java.util.List;
 public class VisitService {
 
   private final VisitRepository visitRepository;
-  private final PetService petService;
+  private final PetRepository petRepository;
 
   @Autowired
-  public VisitService(VisitRepository visitRepository, PetService petService) {
+  public VisitService(VisitRepository visitRepository, PetRepository petRepository) {
     this.visitRepository = visitRepository;
-    this.petService = petService;
+    this.petRepository = petRepository;
   }
 
   public List<Visit> getAll(long petId) {
-    Pet pet = petService.get(petId);
-    return pet.getVisits();
-  }
 
-  public Visit get(long visitId) {
-    return visitRepository.findById(visitId)
-            .orElseThrow(() -> new VisitNotFoundException(visitId));
+    return petRepository.getById(petId).getVisits()
+        .stream()
+        .filter(visits -> !visits.isDeleted())
+        .toList();
   }
 
   public Visit create(long petId, Visit visit) {
-    Pet pet = petService.get(petId);
-    visit.setPet(pet);
+    Pet pet = petRepository.getById(petId);
     pet.addVisit(visit);
-    visitRepository.save(visit);
-    return visit;
+
+    return visitRepository.save(visit);
   }
 
   public Visit update(long visitId, Visit visit) {
     Visit visitFromDb = get(visitId);
     visitFromDb.modify(visit);
+
     return visitRepository.save(visitFromDb);
   }
 
-  public void delete(long petId, long visitId) {
-    Visit visit = get(visitId);
-    visitRepository.delete(visit);
+  public Visit get(long visitId) {
+    final Visit visit = visitRepository.getById(visitId);
+    if (visit.isDeleted()) {
+
+      throw new VisitNotFoundException(visitId);
+    } else {
+
+      return visit;
+    }
+  }
+
+  public void delete(long visitId) {
+    Visit visitFromDb = get(visitId);
+    visitFromDb.delete();
+
+    visitRepository.save(visitFromDb);
   }
 }

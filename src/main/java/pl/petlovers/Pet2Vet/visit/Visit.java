@@ -1,6 +1,7 @@
 package pl.petlovers.Pet2Vet.visit;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import pl.petlovers.Pet2Vet.file.File;
 import pl.petlovers.Pet2Vet.pet.Pet;
 
@@ -8,8 +9,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -24,6 +27,7 @@ public class Visit {
   private Pet pet;
 
   @OneToMany
+  @ToString.Exclude
   private List<File> files = new ArrayList<>();
 
   private String purpose;
@@ -32,13 +36,16 @@ public class Visit {
   private String description;
   private String recommendation;
 
+  @Column(nullable = false)
+  private boolean isDeleted;
+
   public void addFile(File file) {
     file.setCreated(LocalDateTime.now());
     this.files.add(file);
   }
 
   public boolean containsFile(long fileId) {
-    return files.stream().anyMatch(file -> file.getId()==fileId);
+    return files.stream().anyMatch(file -> file.getId() == fileId);
   }
 
   public void modify(Visit visit) {
@@ -47,6 +54,31 @@ public class Visit {
     this.setPlace(visit.getPlace());
     this.setDescription(visit.getDescription());
     this.setRecommendation(visit.getRecommendation());
-    }
   }
+
+  public boolean isDeleted() {
+    return this.isDeleted;
+  }
+
+  public void delete() {
+    this.isDeleted = true;
+  }
+
+  public void restore() {
+    this.isDeleted = false;
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    Visit visit = (Visit) o;
+    return id != null && Objects.equals(id, visit.id);
+  }
+}
 

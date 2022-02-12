@@ -1,11 +1,14 @@
 package pl.petlovers.Pet2Vet.vaccine;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import pl.petlovers.Pet2Vet.vaccine.controller.VaccineDTO;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -21,7 +24,10 @@ public class Vaccine {
 
   private String dateTime;
 
-  public void modify(VaccineDTO newData){
+  @Column(nullable = false)
+  private boolean isDeleted;
+
+  public void modify(VaccineDTO newData) {
     if (newData.getName() != null) {
       this.setName(newData.getName());
     }
@@ -30,12 +36,37 @@ public class Vaccine {
     }
   }
 
+  public boolean isDeleted() {
+    return this.isDeleted;
+  }
+
+  public void delete() {
+    this.isDeleted = true;
+  }
+
+  public void restore() {
+    this.isDeleted = false;
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    Vaccine vaccine = (Vaccine) o;
+    return id != null && Objects.equals(id, vaccine.id);
+  }
+
   @Override
   public String toString() {
     return "Vaccine{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", dateTime='" + dateTime + '\'' +
-            '}';
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", dateTime='" + dateTime + '\'' +
+        '}';
   }
 }

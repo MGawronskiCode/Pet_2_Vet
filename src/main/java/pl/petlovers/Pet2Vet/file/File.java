@@ -2,13 +2,12 @@ package pl.petlovers.Pet2Vet.file;
 
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import pl.petlovers.Pet2Vet.note.Note;
-import pl.petlovers.Pet2Vet.visit.Visit;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -19,20 +18,13 @@ public class File {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-//  @ManyToOne(cascade = CascadeType.ALL)
-////  TODO join column??
-//  private Note note;
-//
-////  TODO Visit visit? Many to one
-//
-//  @ManyToOne(cascade = CascadeType.ALL)
-//  private Visit visit;
-
   private String name;
   private String url;
-
   private LocalDateTime created;
   private LocalDateTime modified;
+
+  @Column(nullable = false)
+  private boolean isDeleted;
 
   protected void modify(File file) {
     if (StringUtils.isNoneBlank(file.getName())) {
@@ -45,5 +37,15 @@ public class File {
     }
   }
 
+  public boolean isDeleted() {
+    return isDeleted;
+  }
 
+  public void delete() {
+    isDeleted = true;
+  }
+
+  public void restore() {
+    isDeleted = false;
+  }
 }

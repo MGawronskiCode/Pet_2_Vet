@@ -2,7 +2,13 @@ package pl.petlovers.Pet2Vet.vaccine.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.VaccineForbiddenAccessException;
+import pl.petlovers.Pet2Vet.pet.Pet;
+import pl.petlovers.Pet2Vet.pet.PetService;
+import pl.petlovers.Pet2Vet.security.users.AppUserDetails;
 import pl.petlovers.Pet2Vet.vaccine.VaccineService;
 
 import java.util.List;
@@ -12,91 +18,113 @@ import java.util.List;
 public class VaccineController {
 
   private final VaccineService vaccineService;
+  private final PetService petService;
 
   @Autowired
-  public VaccineController(VaccineService vaccineService) {
+  public VaccineController(VaccineService vaccineService, PetService petService) {
     this.vaccineService = vaccineService;
+    this.petService = petService;
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("pets/{petId}/vaccines")
-  public List<VaccineDTO> getPetVaccines(
-      @PathVariable long petId){
+  public List<VaccineDTO> getPetVaccines(@PathVariable long petId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    return vaccineService.getPetVaccines(petId)
-        .stream()
-        .map(VaccineDTO::of)
-        .toList();
+    if (loggedUserIsAdminOrVaccineOfHisPet(petId, loggedUser)) {
+
+      return vaccineService.getPetVaccines(petId)
+          .stream()
+          .map(VaccineDTO::of)
+          .toList();
+    } else {
+
+      throw new VaccineForbiddenAccessException();
+    }
   }
 
+  private boolean loggedUserIsAdminOrVaccineOfHisPet(long petId, AppUserDetails loggedUser) {
+
+    return loggedUser.isAdmin() || vaccineOfLoggedUserPet(petId, loggedUser);
+  }
+
+  private boolean vaccineOfLoggedUserPet(long petId, AppUserDetails loggedUser) {
+
+    Pet pet = petService.get(petId);
+
+    return loggedUserPet(loggedUser, pet);
+  }
+
+  private boolean loggedUserPet(AppUserDetails loggedUser, Pet pet) {
+    return loggedUser.getAppUser().getPets().contains(pet);
+  }
+
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("pets/{petId}/vaccines/{vaccineId}")
   public VaccineDTO getPetVaccine(
       @PathVariable long petId,
-      @PathVariable long vaccineId){
+      @PathVariable long vaccineId,
+      @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    return VaccineDTO.of(vaccineService.getPetVaccine(petId, vaccineId));
+    if (loggedUserIsAdminOrVaccineOfHisPet(petId, loggedUser)) {
+
+      return VaccineDTO.of(vaccineService.getPetVaccine(petId, vaccineId));
+    } else {
+
+      throw new VaccineForbiddenAccessException();
+    }
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("pets/{petId}/vaccines")
   public VaccineDTO createVaccineInPet(
       @PathVariable long petId,
-      @RequestBody VaccineDTO vaccineDTO) {
+      @RequestBody VaccineDTO vaccineDTO,
+      @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    return VaccineDTO.of(vaccineService.createVaccineInPet(petId, vaccineDTO.toVaccine()));
+    if (loggedUserIsAdminOrVaccineOfHisPet(petId, loggedUser)) {
+
+      return VaccineDTO.of(vaccineService.createVaccineInPet(petId, vaccineDTO.toVaccine()));
+    } else {
+
+      throw new VaccineForbiddenAccessException();
+    }
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("pets/{petId}/vaccines/{vaccineId}")
   public VaccineDTO updatePetVaccine(
       @PathVariable long petId,
       @PathVariable long vaccineId,
-      @RequestBody VaccineDTO vaccineDTO) {
+      @RequestBody VaccineDTO vaccineDTO,
+      @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    return VaccineDTO.of(vaccineService.updatePetVaccine(petId, vaccineId, vaccineDTO.toVaccine()));
+    if (loggedUserIsAdminOrVaccineOfHisPet(petId, loggedUser)) {
+
+      return VaccineDTO.of(vaccineService.updatePetVaccine(petId, vaccineId, vaccineDTO.toVaccine()));
+    } else {
+
+      throw new VaccineForbiddenAccessException();
+    }
   }
 
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("pets/{petId}/vaccines/{vaccineId}")
   public void cancelPetVaccine(
       @PathVariable long petId,
-      @PathVariable long vaccineId) {
+      @PathVariable long vaccineId,
+      @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    vaccineService.deletePetVaccine(petId, vaccineId);
+    if (loggedUserIsAdminOrVaccineOfHisPet(petId, loggedUser)) {
+
+      vaccineService.deletePetVaccine(petId, vaccineId);
+    } else {
+
+      throw new VaccineForbiddenAccessException();
+    }
   }
-
-  @ResponseStatus(HttpStatus.OK)
-  @GetMapping("/vaccines")
-  public List<VaccineDTO> get() {
-    return vaccineService.getAll()
-        .stream()
-        .map(VaccineDTO::of)
-        .toList();
-  }
-
-  @ResponseStatus(HttpStatus.OK)
-  @GetMapping("/vaccines/{vaccineId}")
-  public VaccineDTO get(@PathVariable long vaccineId) {
-    return VaccineDTO.of(vaccineService.get(vaccineId));
-  }
-
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping("/vaccines")
-  public VaccineDTO create(@RequestBody VaccineDTO vaccineDTO) {
-    return VaccineDTO.of(vaccineService.create(vaccineDTO.toVaccine()));
-  }
-
-  @ResponseStatus(HttpStatus.ACCEPTED)
-  @PutMapping("/vaccines/{vaccineId}")
-  public VaccineDTO update(@PathVariable long vaccineId, @RequestBody VaccineDTO vaccineDTO) {
-    return VaccineDTO.of((vaccineService.update(vaccineId, vaccineDTO)));
-  }
-
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("/vaccines/{vaccineId}")
-  public void cancel(@PathVariable long vaccineId) {
-    vaccineService.delete(vaccineId);
-  }
-
 }

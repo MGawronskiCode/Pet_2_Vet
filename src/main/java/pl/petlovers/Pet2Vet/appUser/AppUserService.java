@@ -2,11 +2,11 @@ package pl.petlovers.Pet2Vet.appUser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
-import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
-
+import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
+import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.AppUserNotFoundException;
 
 import java.util.List;
 
@@ -14,39 +14,61 @@ import java.util.List;
 @Service
 public class AppUserService {
 
-    private final AppUserRepository appUserRepository;
+  private final AppUserRepository appUserRepository;
 
-    @Autowired
-    public AppUserService(AppUserRepository appUserRepository) {
-        this.appUserRepository = appUserRepository;
-    }
+  @Autowired
+  public AppUserService(AppUserRepository appUserRepository) {
+    this.appUserRepository = appUserRepository;
+  }
 
-    public List<AppUser> getAll() {
-        log.info("Fetching all users");
-        return appUserRepository.findAll();
-    }
+  public List<AppUser> getAll() {
+    log.info("Fetching all users");
 
-    public AppUser get(long id) {
-        log.info("Fetching user with id = " + id);
-        return appUserRepository.findById(id)
-                .orElseThrow(() -> new AppUserNotFoundException(id));
-    }
+    return appUserRepository.findAll()
+        .stream()
+        .filter(appUser -> !appUser.isDeleted())
+        .toList();
+  }
 
-    public AppUser create(AppUserDTO userDTO){
-        log.info("Creating " + userDTO.toString());
-        return appUserRepository.save(userDTO.toAppUser());
-    }
+  public AppUser create(AppUserDTO userDTO, String password) {
+    log.info("Creating " + userDTO.toString());
+    try {
 
-    public AppUser update(long id, AppUserDTO user){
-        AppUser userFromDb = get(id);
-        log.info("Updating of " + userFromDb.toString() + " to " + user.toString());
-        userFromDb.modify(user);
-        return appUserRepository.save(userFromDb);
-    }
+      return appUserRepository.save(userDTO.toAppUser(password));
+    } catch (DataIntegrityViolationException e) {
 
-    public void delete(long id){
-        appUserRepository.delete(get(id));
-        log.info("Deleting user with id = " + id);
+      throw new AppUserWithThisLoginAlreadyExistException();
     }
+  }
+
+  public AppUser update(long id, AppUserDTO user) {
+    AppUser userFromDb = get(id);
+    log.info("Updating of " + userFromDb.toString() + " to " + user.toString());
+    userFromDb.modify(user);
+
+    return appUserRepository.save(userFromDb);
+  }
+
+  public AppUser get(long id) {
+    log.info("Fetching user with id = " + id);
+    final AppUser appUser = appUserRepository.findById(id)
+        .orElseThrow(() -> new AppUserNotFoundException(id));
+
+    if (appUser.isDeleted()) {
+
+      throw new AppUserNotFoundException(id);
+    } else {
+
+      return appUser;
+    }
+  }
+
+  public void delete(long id) {
+    AppUser userFromDb = get(id);
+    log.info("Deleting user with id = " + id);
+    userFromDb.delete();
+
+    appUserRepository.save(userFromDb);
+  }
 
 }
