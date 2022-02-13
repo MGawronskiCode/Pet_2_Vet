@@ -28,7 +28,7 @@ public class NoteController {
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping("/users/{userId}/notes")
+  @GetMapping("/user/notes")
   public List<NoteDTO> getAllUserNotes(@PathVariable long userId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
     if (loggedUserIsAdminOrNoteBelongsToHim(userId, loggedUser)) {
