@@ -23,7 +23,7 @@ public class Visit {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   private Pet pet;
 
   @OneToMany
