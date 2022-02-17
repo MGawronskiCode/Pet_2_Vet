@@ -31,7 +31,7 @@ class PetDTOTest {
     //    given
     PetDTO petDTO;
 //    when
-    petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1), new PetSpecieDTO());
+    petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1));
 //    then
     assertNotNull(petDTO);
 
@@ -57,14 +57,14 @@ class PetDTOTest {
     assertEquals("test", petDTO.getName());
     assertEquals(Sex.MALE, petDTO.getSex());
     assertEquals(LocalDate.of(2000, 1, 1), petDTO.getBirthday());
-    assertEquals(new PetSpecieDTO(), petDTO.getSpecie());
+//    assertEquals(new PetSpecieDTO(), petDTO.getSpecie());
 
   }
 
   @Test
   void should_create_correct_object_when_using_toPet_method() {
 //    given
-    PetDTO petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1), new PetSpecieDTO());
+    PetDTO petDTO = new PetDTO(1L, "test", Sex.MALE, LocalDate.of(2000, 1, 1));
 //    when
     Pet pet = petDTO.toPet();
 //    then
