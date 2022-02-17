@@ -25,7 +25,7 @@ public class PetDTO {
 
   private LocalDate birthday;
 
-  private PetSpecieDTO specie;
+//  private PetSpecieDTO specie;
 
   public static PetDTO of(Pet pet) {
     return PetDTO.builder()
@@ -33,7 +33,7 @@ public class PetDTO {
         .name(pet.getName())
         .sex(pet.getSex())
         .birthday(pet.getBirthday())
-        .specie(PetSpecieDTO.of(pet.getSpecie()))
+//        .specie(PetSpecieDTO.of(pet.getSpecie()))
         .build();
   }
 
@@ -43,7 +43,7 @@ public class PetDTO {
         .name(name)
         .sex(sex)
         .birthday(birthday)
-        .specie(specie.toPetSpecie())
+//        .specie(specie.toPetSpecie())
         .build();
   }
 }

@@ -75,7 +75,7 @@ class PetServiceTest {
     petDTO.setName("test");
     petDTO.setSex(null);
     petDTO.setBirthday(null);
-    petDTO.setSpecie(new PetSpecieDTO());
+//    petDTO.setSpecie(new PetSpecieDTO());
 
     return petDTO;
   }

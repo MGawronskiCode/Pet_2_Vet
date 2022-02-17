@@ -2,9 +2,12 @@ package pl.petlovers.Pet2Vet.visit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
+import pl.petlovers.Pet2Vet.appUser.AppUserService;
 import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.VisitForbiddenAccessException;
 import pl.petlovers.Pet2Vet.pet.Pet;
 import pl.petlovers.Pet2Vet.pet.PetService;
@@ -19,11 +22,13 @@ public class VisitController {
 
   private final VisitService visitService;
   private final PetService petService;
+  private final AppUserService appUserService;
 
   @Autowired
-  public VisitController(VisitService visitService, PetService petService) {
+  public VisitController(VisitService visitService, PetService petService, AppUserService appUserService) {
     this.visitService = visitService;
     this.petService = petService;
+    this.appUserService = appUserService;
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
@@ -56,7 +61,8 @@ public class VisitController {
   }
 
   private boolean petOfLoggedUser(AppUserDetails loggedUser, Pet pet) {
-    return loggedUser.getAppUser().getPets().contains(pet);
+    AppUser user = appUserService.get(loggedUser.getAppUser().getId());
+    return user.getPets().contains(pet);
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
@@ -102,13 +108,14 @@ public class VisitController {
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.OK)
   @DeleteMapping("/{petId}/visits/{visitId}")
-  public void delete(@PathVariable long petId, @PathVariable long visitId, @AuthenticationPrincipal AppUserDetails loggedUser) {
+  public ResponseEntity<Long> delete(@PathVariable long petId, @PathVariable long visitId, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
     if (loggedUserIsAdminOrVisitOfHisPet(petId, loggedUser)) {
 
       visitService.delete(visitId);
+      return new ResponseEntity<>(visitId, HttpStatus.OK);
     } else {
 
       throw new VisitForbiddenAccessException();
