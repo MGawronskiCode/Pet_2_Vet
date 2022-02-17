@@ -17,7 +17,7 @@ import java.util.List;
 public class VisitDTO {
 
   private Long id;
-  private List<File> files;
+//  private List<File> files;
   private String purpose;
   private LocalDateTime dateTime;
   private String place;
@@ -27,7 +27,7 @@ public class VisitDTO {
   public static VisitDTO of(Visit visit) {
     return VisitDTO.builder()
         .id(visit.getId())
-        .files(visit.getFiles())
+//        .files(visit.getFiles())
         .purpose(visit.getPurpose())
         .dateTime(visit.getDateTime())
         .place(visit.getPlace())
@@ -39,7 +39,7 @@ public class VisitDTO {
   public Visit toVisit() {
     return Visit.builder()
         .id(id)
-        .files(files)
+//        .files(files)
         .purpose(purpose)
         .dateTime(dateTime)
         .place(place)
