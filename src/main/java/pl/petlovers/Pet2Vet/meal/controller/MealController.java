@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import pl.petlovers.Pet2Vet.appUser.AppUser;
+import pl.petlovers.Pet2Vet.appUser.AppUserService;
 import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.MealForbiddenAccessException;
 import pl.petlovers.Pet2Vet.meal.MealService;
 import pl.petlovers.Pet2Vet.pet.Pet;
@@ -19,11 +21,13 @@ public class MealController {
 
   private final MealService mealService;
   private final PetService petService;
+  private final AppUserService appUserService;
 
   @Autowired
-  public MealController(MealService mealService, PetService petService) {
+  public MealController(MealService mealService, PetService petService, AppUserService appUserService) {
     this.mealService = mealService;
     this.petService = petService;
+    this.appUserService = appUserService;
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
@@ -51,8 +55,8 @@ public class MealController {
   private boolean loggedUserContainsPet(long petId, AppUserDetails loggedUser) {
 
     Pet pet = petService.get(petId);
-
-    return loggedUser.getAppUser().getPets().contains(pet);
+    AppUser user = appUserService.get(loggedUser.getAppUser().getId());
+    return user.getPets().contains(pet);
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})

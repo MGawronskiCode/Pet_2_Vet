@@ -23,6 +23,7 @@ public class PetDTO {
   @Enumerated
   private Sex sex;
 
+  // TODO: fix problem with updating. Changes the date to the selected date minus one day
   private LocalDate birthday;
 
 //  private PetSpecieDTO specie;
