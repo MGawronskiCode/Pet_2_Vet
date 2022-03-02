@@ -73,7 +73,7 @@ class AppUserTest {
   }
 
   @Test
-  void should_add_pet_to_user_pets_list_when_using_addpet_method_1() {
+  void should_add_pet_to_user_pets_list_when_using_addPet_method_1() {
 //    given
     AppUser user = getSampleAppUser();
     user.setPets(new ArrayList<>());
@@ -81,7 +81,7 @@ class AppUserTest {
 //    when
     user.addPetToPetsList(pet);
 //    then
-    assertNull(user.getPets());
+    assertNotNull(user.getPets());
     assertEquals(1, user.getPets().size());
   }
 
@@ -98,6 +98,54 @@ class AppUserTest {
 //    then
     assertNotNull(user.getPets());
     assertEquals(3, user.getPets().size());
+  }
+
+  @Test
+  void isDeleted_should_return_false_when_user_not_deleted() {
+//    given
+    AppUser user = getSampleAppUser();
+    boolean userDeleted;
+//    when
+    userDeleted = user.isDeleted();
+//    then
+    assertFalse(userDeleted);
+  }
+
+  @Test
+  void isDeleted_should_return_true_when_user_deleted() {
+//    given
+    AppUser user = getSampleAppUser();
+    boolean userDeleted;
+//    when
+    user.delete();
+    userDeleted = user.isDeleted();
+//    then
+    assertTrue(userDeleted);
+  }
+
+  @Test
+  void restore_should_not_do_any_changes_on_non_deleted_user() {
+//    given
+    AppUser user = getSampleAppUser();
+    boolean userDeleted;
+//    when
+    user.restore();
+    userDeleted = user.isDeleted();
+//    then
+    assertFalse(userDeleted);
+  }
+
+  @Test
+  void isDeleted_should_return_false_when_user_restored() {
+//    given
+    AppUser user = getSampleAppUser();
+    boolean userDeleted;
+//    when
+    user.delete();
+    user.restore();
+    userDeleted = user.isDeleted();
+//    then
+    assertFalse(userDeleted);
   }
 
 }
