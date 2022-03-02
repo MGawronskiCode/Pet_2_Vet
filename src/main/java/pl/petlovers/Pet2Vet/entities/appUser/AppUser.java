@@ -84,8 +84,10 @@ public class AppUser {
     if (StringUtils.isNoneBlank(user.getName())) {
       this.setName(user.getName());
     }
-    if (StringUtils.isNoneBlank(user.getSex().toString())) {
-      this.setSex(user.getSex());
+
+    final Sex userSex = user.getSex();
+    if (userSex != null && StringUtils.isNoneBlank(userSex.toString())) {
+      this.setSex(userSex);
     }
   }
 

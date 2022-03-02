@@ -2,6 +2,7 @@ package pl.petlovers.Pet2Vet.entities.appUser;
 
 import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.entities.Sex;
+import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.entities.note.Note;
 import pl.petlovers.Pet2Vet.entities.pet.Pet;
 import pl.petlovers.Pet2Vet.utills.security.users.Roles;
@@ -56,6 +57,97 @@ class AppUserTest {
     assertNotNull(user.getNotes());
     assertEquals(1, user.getNotes().size());
   }
+
+  @Test
+  void when_using_modify_called_with_dto_with_blank_name_and_null_sex_should_not_change_the_name() {
+//    given
+    AppUser user = getSampleAppUser();
+    AppUserDTO dto = mock(AppUserDTO.class);
+//    when
+    user.modify(dto);
+//    then
+    assertNull(dto.getSex());
+    assertEquals("name", user.getName());
+  }
+
+  @Test
+  void when_using_modify_called_with_dto_with_null_sex_and_blank_name_should_not_change_the_name() {
+//    given
+    AppUser user = getSampleAppUser();
+    AppUserDTO dto = mock(AppUserDTO.class);
+//    when
+    user.modify(dto);
+//    then
+    assertNull(dto.getSex());
+    assertEquals(Sex.MALE, user.getSex());
+  }
+
+  @Test
+  void when_using_modify_called_with_dto_with_non_blank_name_and_null_sex_should_not_change_the_sex() {
+//    given
+    AppUser user = getSampleAppUser();
+    AppUserDTO dto = mock(AppUserDTO.class);
+    dto.setName("name");
+//    when
+    user.modify(dto);
+//    then
+    assertNull(dto.getSex());
+    assertEquals(Sex.MALE, user.getSex());
+  }
+
+  @Test
+  void when_using_modify_called_with_dto_with_blank_name_and_not_null_sex_should_not_change_the_name() {
+//    given
+    AppUser user = getSampleAppUser();
+    AppUserDTO dto = mock(AppUserDTO.class);
+    dto.setSex(Sex.MALE);
+//    when
+    user.modify(dto);
+//    then
+    assertNull(dto.getName());
+    assertEquals("name", user.getName());
+  }
+
+  @Test
+  void when_using_modify_called_with_dto_with_changed_correct_name_and_null_sex_should_change_the_name_but_not_the_sex() {
+//    given
+    AppUser user = getSampleAppUser();
+    AppUserDTO dto = new AppUserDTO();
+    dto.setName("changed name");
+//    when
+    user.modify(dto);
+//    then
+    assertNull(dto.getSex());
+    assertEquals("changed name", user.getName());
+  }
+
+  @Test
+  void when_using_modify_called_with_dto_with_changed_null_name_and_changed_correct_sex_should_change_the_sex_but_not_the_name() {
+//    given
+    AppUser user = getSampleAppUser();
+    AppUserDTO dto = new AppUserDTO();
+    dto.setSex(Sex.FEMALE);
+//    when
+    user.modify(dto);
+//    then
+    assertNull(dto.getName());
+    assertEquals(Sex.FEMALE, user.getSex());
+  }
+
+  @Test
+  void when_using_modify_called_with_dto_with_correct_changed_name_and_sex_should_change_the_sex_the_name() {
+//    given
+    AppUser user = getSampleAppUser();
+    AppUserDTO dto = new AppUserDTO();
+    dto.setName("changed name");
+    dto.setSex(Sex.MALE);
+//    when
+    user.modify(dto);
+//    then
+    assertEquals("changed name", user.getName());
+    assertEquals(Sex.MALE, user.getSex());
+  }
+
 
   @Test
   void should_add_note_to_user_notes_list_when_using_addNote_method_2() {
