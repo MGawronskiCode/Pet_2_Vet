@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.httpBasic()
         .and().authorizeRequests()
-        .and().formLogin().permitAll()
+        .and().formLogin().loginPage("http://localhost:3000").permitAll() // loginPage("http://localhost:3000")
         .and().logout().permitAll()
         .and().csrf().disable();
   }
