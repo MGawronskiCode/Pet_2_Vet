@@ -78,6 +78,8 @@ public class AppUser {
     this.notes.add(note);
   }
 
+
+//  todo modify login, password, role
   public void modify(AppUserDTO user) {
     if (StringUtils.isNoneBlank(user.getName())) {
       this.setName(user.getName());

@@ -3,12 +3,12 @@ package pl.petlovers.Pet2Vet.entities.appUser;
 import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.entities.Sex;
 import pl.petlovers.Pet2Vet.entities.note.Note;
+import pl.petlovers.Pet2Vet.entities.pet.Pet;
 import pl.petlovers.Pet2Vet.utills.security.users.Roles;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class AppUserTest {
@@ -71,4 +71,33 @@ class AppUserTest {
     assertNotNull(user.getNotes());
     assertEquals(3, user.getNotes().size());
   }
+
+  @Test
+  void should_add_pet_to_user_pets_list_when_using_addpet_method_1() {
+//    given
+    AppUser user = getSampleAppUser();
+    user.setPets(new ArrayList<>());
+    Pet pet = mock(Pet.class);
+//    when
+    user.addPetToPetsList(pet);
+//    then
+    assertNull(user.getPets());
+    assertEquals(1, user.getPets().size());
+  }
+
+  @Test
+  void should_add_pet_to_user_pets_list_when_using_addPet_method_3() {
+//    given
+    AppUser user = getSampleAppUser();
+    user.setPets(new ArrayList<>());
+    Pet pet = mock(Pet.class);
+//    when
+    user.addPetToPetsList(pet);
+    user.addPetToPetsList(pet);
+    user.addPetToPetsList(pet);
+//    then
+    assertNotNull(user.getPets());
+    assertEquals(3, user.getPets().size());
+  }
+
 }
