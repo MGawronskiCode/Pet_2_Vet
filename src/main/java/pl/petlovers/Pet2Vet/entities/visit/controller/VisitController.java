@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet.visit.controller;
+package pl.petlovers.Pet2Vet.entities.visit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.appUser.AppUserService;
-import pl.petlovers.Pet2Vet.exceptions.forbidden_exceptions.VisitForbiddenAccessException;
-import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.pet.PetService;
-import pl.petlovers.Pet2Vet.security.users.AppUserDetails;
-import pl.petlovers.Pet2Vet.visit.VisitService;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUserService;
+import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.VisitForbiddenAccessException;
+import pl.petlovers.Pet2Vet.entities.pet.Pet;
+import pl.petlovers.Pet2Vet.entities.pet.PetService;
+import pl.petlovers.Pet2Vet.utills.security.users.AppUserDetails;
+import pl.petlovers.Pet2Vet.entities.visit.VisitService;
 
 import java.util.List;
 
