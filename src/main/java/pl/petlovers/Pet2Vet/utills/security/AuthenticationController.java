@@ -1,4 +1,4 @@
-package pl.petlovers.Pet2Vet;
+package pl.petlovers.Pet2Vet.utills.security;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -15,5 +15,5 @@ public class AuthenticationController {
     public HttpStatus checkAuthentication() {
         return HttpStatus.OK;
     }
-    
+
 }
