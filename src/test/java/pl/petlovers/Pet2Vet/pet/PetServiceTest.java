@@ -2,12 +2,14 @@ package pl.petlovers.Pet2Vet.pet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.appUser.AppUserService;
-import pl.petlovers.Pet2Vet.appUser.controller.AppUserDTO;
-import pl.petlovers.Pet2Vet.exceptions.not_found_exceptions.PetNotFoundException;
-import pl.petlovers.Pet2Vet.pet.controller.PetDTO;
-import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUserService;
+import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
+import pl.petlovers.Pet2Vet.entities.pet.Pet;
+import pl.petlovers.Pet2Vet.entities.pet.PetRepository;
+import pl.petlovers.Pet2Vet.entities.pet.PetService;
+import pl.petlovers.Pet2Vet.entities.pet.controller.PetDTO;
+import pl.petlovers.Pet2Vet.utills.exceptions.not_found_exceptions.PetNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +68,7 @@ class PetServiceTest {
     final PetDTO createdPetDTO = service.create(getNewPetData());
 //    then
     assertNotNull(createdPetDTO);
-    assertEquals("PetDTO(id=1, name=test, sex=null, birthday=null, specie=PetSpecieDTO(id=null, name=null))", createdPetDTO.toString());
+    assertEquals("PetDTO(id=1, name=test, sex=null, birthday=null)", createdPetDTO.toString());
   }
 
   private PetDTO getNewPetData() {
@@ -94,7 +96,7 @@ class PetServiceTest {
     final PetDTO createdPetDTO = service.create(1L, getNewPetData());
 //    then
     assertNotNull(createdPetDTO);
-    assertEquals("PetDTO(id=1, name=test, sex=null, birthday=null, specie=PetSpecieDTO(id=null, name=null))", createdPetDTO.toString());
+    assertEquals("PetDTO(id=1, name=test, sex=null, birthday=null)", createdPetDTO.toString());
   }
 
   @Test

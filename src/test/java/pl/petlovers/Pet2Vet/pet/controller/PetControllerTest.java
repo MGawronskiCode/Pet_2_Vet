@@ -1,12 +1,13 @@
 package pl.petlovers.Pet2Vet.pet.controller;
 
 import org.junit.jupiter.api.Test;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.pet.Pet;
-import pl.petlovers.Pet2Vet.pet.PetService;
-import pl.petlovers.Pet2Vet.security.users.AppUserDetails;
-import pl.petlovers.Pet2Vet.specie.PetSpecie;
-import pl.petlovers.Pet2Vet.specie.controller.PetSpecieDTO;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
+import pl.petlovers.Pet2Vet.entities.pet.Pet;
+import pl.petlovers.Pet2Vet.entities.pet.PetService;
+import pl.petlovers.Pet2Vet.entities.pet.controller.PetController;
+import pl.petlovers.Pet2Vet.entities.pet.controller.PetDTO;
+import pl.petlovers.Pet2Vet.utills.security.users.AppUserDetails;
+import pl.petlovers.Pet2Vet.entities.specie.PetSpecie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ class PetControllerTest {
   @Test
   void should_create_correct_object_when_using_constructor_with_PetService_argument() {
 //    given
-    PetController controller;
+    final PetController controller;
 //    when
     controller = new PetController(mock(PetService.class));
 //    then
@@ -48,15 +49,15 @@ class PetControllerTest {
 
   private List<Pet> getSamplePetList() {
 
-    List<Pet> pets = new ArrayList<>();
+    final List<Pet> pets = new ArrayList<>();
 
-    Pet pet1 = new Pet();
+    final Pet pet1 = new Pet();
     pet1.setId(1L);
     pet1.setName("test");
     pet1.setSpecie(new PetSpecie());
     pets.add(pet1);
 
-    Pet pet2 = new Pet();
+    final Pet pet2 = new Pet();
     pet2.setId(2L);
     pet2.setName("test2");
     pet2.setSpecie(new PetSpecie());
@@ -88,7 +89,7 @@ class PetControllerTest {
     final PetService petServiceMock = mock(PetService.class);
     when(petServiceMock.get(anyLong())).thenReturn(getSamplePet());
 
-    PetController controller = new PetController(petServiceMock);
+    final PetController controller = new PetController(petServiceMock);
 //    when
     final PetDTO petDTO = controller.get(1L, loggedUser);
 //    then
@@ -97,7 +98,7 @@ class PetControllerTest {
   }
 
   private Pet getSamplePet() {
-    Pet pet = new Pet();
+    final Pet pet = new Pet();
     pet.setId(1L);
     pet.setName("test");
     pet.setSpecie(new PetSpecie());
@@ -135,7 +136,7 @@ class PetControllerTest {
     when(petServiceMock.update(1L, PetDTO.of(getSamplePet()))).thenReturn(getSamplePet());
     final AppUserDetails appUserDetailsMock = mock(AppUserDetails.class);
     when(appUserDetailsMock.isAdmin()).thenReturn(true);
-    PetController controller = new PetController(petServiceMock);
+    final PetController controller = new PetController(petServiceMock);
 //    when
     final PetDTO updatedPet = controller.update(1L, PetDTO.of(getSamplePet()), appUserDetailsMock);
 //    then
@@ -149,7 +150,7 @@ class PetControllerTest {
     final PetService petServiceMock = mock(PetService.class);
     final AppUserDetails appUserDetailsMock = mock(AppUserDetails.class);
     when(appUserDetailsMock.isAdmin()).thenReturn(true);
-    PetController controller = new PetController(petServiceMock);
+    final PetController controller = new PetController(petServiceMock);
 //    then
     assertThrows(NullPointerException.class, () -> controller.cancel(1L, appUserDetailsMock));
   }

@@ -1,11 +1,12 @@
 package pl.petlovers.Pet2Vet.pet;
 
 import org.junit.jupiter.api.Test;
-import pl.petlovers.Pet2Vet.Sex;
-import pl.petlovers.Pet2Vet.appUser.AppUser;
-import pl.petlovers.Pet2Vet.meal.Meal;
-import pl.petlovers.Pet2Vet.note.Note;
-import pl.petlovers.Pet2Vet.visit.Visit;
+import pl.petlovers.Pet2Vet.entities.Sex;
+import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
+import pl.petlovers.Pet2Vet.entities.meal.Meal;
+import pl.petlovers.Pet2Vet.entities.note.Note;
+import pl.petlovers.Pet2Vet.entities.pet.Pet;
+import pl.petlovers.Pet2Vet.entities.visit.Visit;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ class PetTest {
     assertNull(pet.getMeals());
     assertNull(pet.getNotes());
     assertNull(pet.getAppUsers());
-    assertEquals(List.of(), pet.getVisits());
+    assertNull(pet.getVisits());
 
   }
 
@@ -55,7 +56,7 @@ class PetTest {
     assertNull(pet.getMeals());
     assertNull(pet.getNotes());
     assertNull(pet.getAppUsers());
-    assertEquals(List.of(), pet.getVisits());
+    assertNull(pet.getVisits());
 
     assertEquals("test", newPetData.getName());
     assertEquals(Sex.MALE, newPetData.getSex());
@@ -76,7 +77,7 @@ class PetTest {
     assertNull(pet.getVaccines());
     assertNull(pet.getNotes());
     assertNull(pet.getAppUsers());
-    assertEquals(List.of(), pet.getVisits());
+    assertNull(pet.getVisits());
 
     assertNotNull(pet.getMeals());
     assertEquals(1, pet.getMeals().size());
@@ -117,7 +118,7 @@ class PetTest {
     assertNull(pet.getVaccines());
     assertNull(pet.getMeals());
     assertNull(pet.getAppUsers());
-    assertEquals(List.of(), pet.getVisits());
+    assertNull(pet.getVisits());
 
     assertNotNull(pet.getNotes());
     assertEquals(1, pet.getNotes().size());
