@@ -62,7 +62,7 @@ public class AppUserController {
     if (tryingToCreateAdminAccount(appUserDTO)) {
       if (loggedUser.isAdmin()) {
 
-//        todo checking if password is not null and probably is longer than 4 characters
+//        todo checking if password is not null and maybe if is longer than 4 characters
         return AppUserDTO.of(appUserService.create(appUserDTO, password));
       } else {
 
