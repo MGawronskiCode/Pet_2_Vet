@@ -12,8 +12,8 @@ class AppUserDTOTest {
   @Test
   void should_create_correct_DTO_when_using_of_method_with_fully_completed_AppUser() {
 //    given
-    AppUser sampleUser = new AppUser("name", MALE, "login", "password", ROLE_OWNER);
-    AppUserDTO userDTO;
+    final AppUser sampleUser = new AppUser("name", MALE, "login", "password", ROLE_OWNER);
+    final AppUserDTO userDTO;
 //    when
     userDTO = AppUserDTO.of(sampleUser);
 //    then
@@ -26,9 +26,9 @@ class AppUserDTOTest {
   @Test
   void should_create_correct_DTO_when_using_of_method_with_partly_completed_AppUser() {
 //    given
-    AppUser sampleUser = new AppUser();
+    final AppUser sampleUser = new AppUser();
     sampleUser.setName("name");
-    AppUserDTO userDTO;
+    final AppUserDTO userDTO;
 //    when
     userDTO = AppUserDTO.of(sampleUser);
 //    then
@@ -41,8 +41,8 @@ class AppUserDTOTest {
   @Test
   void should_create_correct_DTO_when_using_of_method_with_empty_AppUser() {
 //    given
-    AppUser sampleUser = new AppUser();
-    AppUserDTO userDTO;
+    final AppUser sampleUser = new AppUser();
+    final AppUserDTO userDTO;
 //    when
     userDTO = AppUserDTO.of(sampleUser);
 //    then
@@ -55,9 +55,9 @@ class AppUserDTOTest {
   @Test
   void should_create_correct_AppUser_when_using_toAppUser_method_on_fully_completed_DTO_with_correct_password() {
 //    given
-    AppUserDTO userDTO = new AppUserDTO(1L, "name", MALE, "login", ROLE_OWNER);
-    String password = "password";
-    AppUser user;
+    final AppUserDTO userDTO = new AppUserDTO(1L, "name", MALE, "login", ROLE_OWNER);
+    final String password = "password";
+    final AppUser user;
 //    when
     user = userDTO.toAppUser(password);
 //    then
@@ -73,10 +73,10 @@ class AppUserDTOTest {
   @Test
   void should_create_correct_AppUser_when_using_toAppUser_method_on_partly_completed_DTO_with_correct_password() {
 //    given
-    AppUserDTO userDTO = new AppUserDTO();
+    final AppUserDTO userDTO = new AppUserDTO();
     userDTO.setName("name");
-    String password = "password";
-    AppUser user;
+    final String password = "password";
+    final AppUser user;
 //    when
     user = userDTO.toAppUser(password);
 //    then
@@ -88,9 +88,9 @@ class AppUserDTOTest {
   @Test
   void should_create_correct_AppUser_when_using_toAppUser_method_on_empty_DTO_with_correct_password() {
 //    given
-    AppUserDTO userDTO = new AppUserDTO();
-    String password = "password";
-    AppUser user;
+    final AppUserDTO userDTO = new AppUserDTO();
+    final String password = "password";
+    final AppUser user;
 //    when
     user = userDTO.toAppUser(password);
 //    then

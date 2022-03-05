@@ -17,7 +17,7 @@ class AppUserTest {
   @Test
   void should_create_object_when_using_no_args_constructor() {
 //    given
-    AppUser user;
+    final AppUser user;
 //    when
     user = new AppUser();
 //    then
@@ -27,7 +27,7 @@ class AppUserTest {
   @Test
   void should_create_correct_object_when_using_all_args_constructor() {
 //    given
-    AppUser user;
+    final AppUser user;
 //    when
     user = getSampleAppUser();
 //    then
@@ -48,9 +48,9 @@ class AppUserTest {
   @Test
   void should_add_note_to_user_notes_list_when_using_addNote_method_1() {
 //    given
-    AppUser user = getSampleAppUser();
+    final AppUser user = getSampleAppUser();
     user.setNotes(new ArrayList<>());
-    Note note = mock(Note.class);
+    final Note note = mock(Note.class);
 //    when
     user.addNote(note);
 //    then
@@ -61,8 +61,8 @@ class AppUserTest {
   @Test
   void when_using_modify_called_with_dto_with_blank_name_and_null_sex_should_not_change_the_name() {
 //    given
-    AppUser user = getSampleAppUser();
-    AppUserDTO dto = mock(AppUserDTO.class);
+    final AppUser user = getSampleAppUser();
+    final AppUserDTO dto = mock(AppUserDTO.class);
 //    when
     user.modify(dto);
 //    then
@@ -73,8 +73,8 @@ class AppUserTest {
   @Test
   void when_using_modify_called_with_dto_with_null_sex_and_blank_name_should_not_change_the_name() {
 //    given
-    AppUser user = getSampleAppUser();
-    AppUserDTO dto = mock(AppUserDTO.class);
+    final AppUser user = getSampleAppUser();
+    final AppUserDTO dto = mock(AppUserDTO.class);
 //    when
     user.modify(dto);
 //    then
@@ -85,8 +85,8 @@ class AppUserTest {
   @Test
   void when_using_modify_called_with_dto_with_non_blank_name_and_null_sex_should_not_change_the_sex() {
 //    given
-    AppUser user = getSampleAppUser();
-    AppUserDTO dto = mock(AppUserDTO.class);
+    final AppUser user = getSampleAppUser();
+    final AppUserDTO dto = mock(AppUserDTO.class);
     dto.setName("name");
 //    when
     user.modify(dto);
@@ -98,8 +98,8 @@ class AppUserTest {
   @Test
   void when_using_modify_called_with_dto_with_blank_name_and_not_null_sex_should_not_change_the_name() {
 //    given
-    AppUser user = getSampleAppUser();
-    AppUserDTO dto = mock(AppUserDTO.class);
+    final AppUser user = getSampleAppUser();
+    final AppUserDTO dto = mock(AppUserDTO.class);
     dto.setSex(Sex.MALE);
 //    when
     user.modify(dto);
@@ -111,8 +111,8 @@ class AppUserTest {
   @Test
   void when_using_modify_called_with_dto_with_changed_correct_name_and_null_sex_should_change_the_name_but_not_the_sex() {
 //    given
-    AppUser user = getSampleAppUser();
-    AppUserDTO dto = new AppUserDTO();
+    final AppUser user = getSampleAppUser();
+    final AppUserDTO dto = new AppUserDTO();
     dto.setName("changed name");
 //    when
     user.modify(dto);
@@ -124,8 +124,8 @@ class AppUserTest {
   @Test
   void when_using_modify_called_with_dto_with_changed_null_name_and_changed_correct_sex_should_change_the_sex_but_not_the_name() {
 //    given
-    AppUser user = getSampleAppUser();
-    AppUserDTO dto = new AppUserDTO();
+    final AppUser user = getSampleAppUser();
+    final AppUserDTO dto = new AppUserDTO();
     dto.setSex(Sex.FEMALE);
 //    when
     user.modify(dto);
@@ -137,8 +137,8 @@ class AppUserTest {
   @Test
   void when_using_modify_called_with_dto_with_correct_changed_name_and_sex_should_change_the_sex_the_name() {
 //    given
-    AppUser user = getSampleAppUser();
-    AppUserDTO dto = new AppUserDTO();
+    final AppUser user = getSampleAppUser();
+    final AppUserDTO dto = new AppUserDTO();
     dto.setName("changed name");
     dto.setSex(Sex.MALE);
 //    when
