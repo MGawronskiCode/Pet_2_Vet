@@ -3,8 +3,7 @@ package pl.petlovers.Pet2Vet.entities.appUser.controller;
 import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static pl.petlovers.Pet2Vet.entities.Sex.MALE;
 import static pl.petlovers.Pet2Vet.utills.security.users.Roles.ROLE_OWNER;
 
@@ -51,6 +50,52 @@ class AppUserDTOTest {
     assertNull(userDTO.getSex());
     assertNull(userDTO.getLogin());
     assertNull(userDTO.getRole());
+  }
+
+  @Test
+  void should_create_correct_AppUser_when_using_toAppUser_method_on_fully_completed_DTO_with_correct_password() {
+//    given
+    AppUserDTO userDTO = new AppUserDTO(1L, "name", MALE, "login", ROLE_OWNER);
+    String password = "password";
+    AppUser user;
+//    when
+    user = userDTO.toAppUser(password);
+//    then
+    assertNotNull(user.getPassword());
+    assertNotEquals(password, user.getPassword());
+    assertEquals(1L, user.getId());
+    assertEquals("name", userDTO.getName());
+    assertEquals(MALE, user.getSex());
+    assertEquals("login", user.getLogin());
+    assertEquals(ROLE_OWNER, user.getRole());
+  }
+
+  @Test
+  void should_create_correct_AppUser_when_using_toAppUser_method_on_partly_completed_DTO_with_correct_password() {
+//    given
+    AppUserDTO userDTO = new AppUserDTO();
+    userDTO.setName("name");
+    String password = "password";
+    AppUser user;
+//    when
+    user = userDTO.toAppUser(password);
+//    then
+    assertNotNull(user.getPassword());
+    assertNotEquals(password, user.getPassword());
+    assertEquals("name", userDTO.getName());
+  }
+
+  @Test
+  void should_create_correct_AppUser_when_using_toAppUser_method_on_empty_DTO_with_correct_password() {
+//    given
+    AppUserDTO userDTO = new AppUserDTO();
+    String password = "password";
+    AppUser user;
+//    when
+    user = userDTO.toAppUser(password);
+//    then
+    assertNotNull(user.getPassword());
+    assertNotEquals(password, user.getPassword());
   }
 
 }
