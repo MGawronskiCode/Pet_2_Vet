@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUserService;
 import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserForbiddenAccessException;
+import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.CreatingAdminAccountNotByAdminForbidden;
 import pl.petlovers.Pet2Vet.utills.security.users.AppUserDetails;
 
 import java.util.ArrayList;
@@ -155,4 +156,27 @@ class AppUserControllerTest {
     assertThrows(AppUserForbiddenAccessException.class, () -> controller.get(wantedUserId, loggedAppUserDetails));
   }
 
+  @Test
+  void should_throw_CreatingAdminAccountNotByAdminForbidden_exception_when_trying_to_create_admin_account_by_non_admin_account() {
+//    given
+    final AppUser loggedAppUser = new AppUser();
+    loggedAppUser.setRole(ROLE_OWNER);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUser appUserToCreate = new AppUser();
+    appUserToCreate.setRole(ROLE_ADMIN);
+    final AppUserDTO userToCreate = AppUserDTO.of(appUserToCreate);
+    final String password = "password";
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    then
+    assertThrows(CreatingAdminAccountNotByAdminForbidden.class, () -> controller.create(userToCreate, password, loggedAppUserDetails));
+  }
+
+  @Test
+  void tryingToCreateAdminAccount_AdminLogged() {}
+
+  @Test
+  void tryingToCreateNonAdminAccount() {}
 }
