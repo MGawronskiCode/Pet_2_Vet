@@ -3,15 +3,16 @@ package pl.petlovers.Pet2Vet.entities.appUser.controller;
 import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUserService;
+import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserForbiddenAccessException;
 import pl.petlovers.Pet2Vet.utills.security.users.AppUserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static pl.petlovers.Pet2Vet.utills.security.users.Roles.ROLE_ADMIN;
 import static pl.petlovers.Pet2Vet.utills.security.users.Roles.ROLE_OWNER;
 
 class AppUserControllerTest {
@@ -63,7 +64,7 @@ class AppUserControllerTest {
   }
 
   @Test
-  void should_return_correct_DTO_when_using_get_method_when_non_admin_logged_but_request_for_own_account() {
+  void should_return_correct_DTO_when_using_get_method_with_non_admin_logged_but_request_for_own_account() {
 //    given
     final long wantedUserId = 1L;
     final String wantedUserLogin = "login";
@@ -87,7 +88,7 @@ class AppUserControllerTest {
   }
 
   @Test
-  void should_return_correct_DTO_when_using_get_method_when_admin_logged_but_request_for_not_own_account() {
+  void should_return_correct_DTO_when_using_get_method_with_admin_logged_but_request_for_not_own_account() {
 //    given
     final long wantedUserId = 1L;
     final String wantedUserLogin = "login";
@@ -96,8 +97,8 @@ class AppUserControllerTest {
     wantedUser.setLogin(wantedUserLogin);
 
     final AppUser loggedAppUser = new AppUser();
-    loggedAppUser.setId(wantedUserId);
-    loggedAppUser.setRole(ROLE_OWNER);
+    loggedAppUser.setId(2L);
+    loggedAppUser.setRole(ROLE_ADMIN);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUserService appUserServiceMock = mock(AppUserService.class);
@@ -111,9 +112,47 @@ class AppUserControllerTest {
   }
 
   @Test
-  void ownAccAndAdmin() {}
+  void should_return_correct_DTO_when_using_get_method_with_admin_logged_and_request_for_his_own_account() {
+    //    given
+    final long wantedUserId = 1L;
+    final String wantedUserLogin = "login";
+    final AppUser wantedUser = new AppUser();
+    wantedUser.setId(wantedUserId);
+    wantedUser.setLogin(wantedUserLogin);
+
+    final AppUser loggedAppUser = new AppUser();
+    loggedAppUser.setId(wantedUserId);
+    loggedAppUser.setRole(ROLE_ADMIN);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUserService appUserServiceMock = mock(AppUserService.class);
+    when(appUserServiceMock.get(wantedUserId)).thenReturn(wantedUser);
+    final AppUserController controller = new AppUserController(appUserServiceMock);
+//    when
+    final AppUserDTO userDTO = controller.get(wantedUserId, loggedAppUserDetails);
+//    then
+    assertEquals(wantedUserId, userDTO.getId());
+    assertEquals(wantedUserLogin, userDTO.getLogin());
+  }
 
   @Test
-  void notOwnAccAndNotAdmin() {}
+  void should_throw_AppUserForbiddenException_when_using_get_method_with_non_admin_logged_and_request_for_other_account() {
+    //    given
+    final long wantedUserId = 1L;
+    final String wantedUserLogin = "login";
+    final AppUser wantedUser = new AppUser();
+    wantedUser.setId(wantedUserId);
+    wantedUser.setLogin(wantedUserLogin);
+
+    final AppUser loggedAppUser = new AppUser();
+    loggedAppUser.setId(2L);
+    loggedAppUser.setRole(ROLE_OWNER);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUserService appUserServiceMock = mock(AppUserService.class);
+    final AppUserController controller = new AppUserController(appUserServiceMock);
+//    then
+    assertThrows(AppUserForbiddenAccessException.class, () -> controller.get(wantedUserId, loggedAppUserDetails));
+  }
 
 }
