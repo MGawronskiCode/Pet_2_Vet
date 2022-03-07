@@ -245,7 +245,7 @@ class AppUserControllerTest {
   }
 
   @Test
-  void tryingToChangeOwnAccountByAdmin() {
+  void should_correctly_update_account_when_trying_to_change_own_account_by_admin() {
 //    given
     final AppUser loggedAppUser = new AppUser();
     long loggedUserId = 2L;
@@ -274,7 +274,7 @@ class AppUserControllerTest {
   }
 
   @Test
-  void tryingToChangeOwnAccountByNotAdmin() {
+  void should_correctly_update_account_when_trying_to_change_own_account_by_not_admin() {
     //    given
     final AppUser loggedAppUser = new AppUser();
     long loggedUserId = 2L;
@@ -303,7 +303,7 @@ class AppUserControllerTest {
   }
 
   @Test
-  void tryingToChangeNotOwnAccountByAdmin() {
+  void should_correctly_update_account_when_trying_to_change_not_own_account_not_admin() {
     //    given
     final AppUser loggedAppUser = new AppUser();
     long loggedUserId = 1L;
@@ -332,7 +332,7 @@ class AppUserControllerTest {
   }
 
   @Test
-  void tryingToChangeNotOwnAccountByNotAdmin() {
+  void should_throw_AppUserForbiddenAccessException_when_trying_to_change_not_own_account_by_not_admin() {
 //    given
     final AppUser loggedAppUser = new AppUser();
     long loggedUserId = 1L;
