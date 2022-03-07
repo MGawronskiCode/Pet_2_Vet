@@ -13,6 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static pl.petlovers.Pet2Vet.entities.appUser.Sex.MALE;
 import static pl.petlovers.Pet2Vet.utills.security.users.Roles.ADMIN;
 import static pl.petlovers.Pet2Vet.utills.security.users.Roles.PET_OWNER;
 
@@ -250,7 +251,34 @@ class AppUserControllerTest {
   void tryingToChangeOwnAccountByNotAdmin() {}
 
   @Test
-  void tryingToChangeNotOwnAccountByAdmin() {}
+  void tryingToChangeNotOwnAccountByAdmin() {
+    //    given
+    final AppUser loggedAppUser = new AppUser();
+    long loggedUserId = 1L;
+    loggedAppUser.setId(loggedUserId);
+    loggedAppUser.setRole(ADMIN);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUser appUserToUpdate = new AppUser("name", MALE, "login", "password", PET_OWNER);
+    long appUserToUpdateId = 2L;
+    appUserToUpdate.setId(appUserToUpdateId);
+    appUserToUpdate.setRole(PET_OWNER);
+    final AppUserDTO userToUpdate = AppUserDTO.of(appUserToUpdate);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    when(serviceMock.update(appUserToUpdateId, userToUpdate)).thenReturn(appUserToUpdate);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    when
+    final AppUserDTO appUserDTOAfterUpdate = controller.update(appUserToUpdateId, userToUpdate, loggedAppUserDetails);
+//    then
+    assertNotEquals(loggedUserId, appUserToUpdateId);
+    assertEquals(ADMIN, loggedAppUser.getRole());
+    assertEquals("name", appUserDTOAfterUpdate.getName());
+    assertEquals(MALE, appUserDTOAfterUpdate.getSex());
+    assertEquals("login", appUserDTOAfterUpdate.getLogin());
+    assertEquals(PET_OWNER, appUserDTOAfterUpdate.getRole());
+
+  }
 
   @Test
   void tryingToChangeNotOwnAccountByNotAdmin() {
