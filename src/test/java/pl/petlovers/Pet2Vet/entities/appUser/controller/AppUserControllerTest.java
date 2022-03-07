@@ -245,10 +245,37 @@ class AppUserControllerTest {
   }
 
   @Test
-  void tryingToChangeOwnAccountByAdmin() {}
+  void tryingToChangeOwnAccountByAdmin() {
+  }
 
   @Test
-  void tryingToChangeOwnAccountByNotAdmin() {}
+  void tryingToChangeOwnAccountByNotAdmin() {
+    //    given
+    final AppUser loggedAppUser = new AppUser();
+    long loggedUserId = 2L;
+    loggedAppUser.setId(loggedUserId);
+    loggedAppUser.setRole(PET_OWNER);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUser appUserToUpdate = new AppUser("name", MALE, "login", "password", PET_OWNER);
+    long appUserToUpdateId = 2L;
+    appUserToUpdate.setId(appUserToUpdateId);
+    appUserToUpdate.setRole(PET_OWNER);
+    final AppUserDTO userToUpdate = AppUserDTO.of(appUserToUpdate);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    when(serviceMock.update(appUserToUpdateId, userToUpdate)).thenReturn(appUserToUpdate);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    when
+    final AppUserDTO appUserDTOAfterUpdate = controller.update(appUserToUpdateId, userToUpdate, loggedAppUserDetails);
+//    then
+    assertEquals(loggedUserId, appUserToUpdateId);
+    assertEquals(PET_OWNER, loggedAppUser.getRole());
+    assertEquals("name", appUserDTOAfterUpdate.getName());
+    assertEquals(MALE, appUserDTOAfterUpdate.getSex());
+    assertEquals("login", appUserDTOAfterUpdate.getLogin());
+    assertEquals(PET_OWNER, appUserDTOAfterUpdate.getRole());
+  }
 
   @Test
   void tryingToChangeNotOwnAccountByAdmin() {
@@ -277,7 +304,6 @@ class AppUserControllerTest {
     assertEquals(MALE, appUserDTOAfterUpdate.getSex());
     assertEquals("login", appUserDTOAfterUpdate.getLogin());
     assertEquals(PET_OWNER, appUserDTOAfterUpdate.getRole());
-
   }
 
   @Test
