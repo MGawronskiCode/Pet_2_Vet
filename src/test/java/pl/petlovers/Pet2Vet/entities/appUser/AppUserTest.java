@@ -1,7 +1,6 @@
 package pl.petlovers.Pet2Vet.entities.appUser;
 
 import org.junit.jupiter.api.Test;
-import pl.petlovers.Pet2Vet.entities.Sex;
 import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.entities.note.Note;
 import pl.petlovers.Pet2Vet.entities.pet.Pet;
@@ -35,12 +34,12 @@ class AppUserTest {
     assertEquals(Sex.MALE, user.getSex());
     assertEquals("login", user.getLogin());
     assertEquals("password", user.getPassword());
-    assertEquals(Roles.ROLE_ADMIN, user.getRole());
+    assertEquals(Roles.ADMIN, user.getRole());
   }
 
   private AppUser getSampleAppUser() {
     return new AppUser(
-        "name", Sex.MALE, "login", "password", Roles.ROLE_ADMIN
+        "name", Sex.MALE, "login", "password", Roles.ADMIN
     );
   }
 

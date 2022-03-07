@@ -13,8 +13,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static pl.petlovers.Pet2Vet.utills.security.users.Roles.ROLE_ADMIN;
-import static pl.petlovers.Pet2Vet.utills.security.users.Roles.ROLE_OWNER;
+import static pl.petlovers.Pet2Vet.utills.security.users.Roles.ADMIN;
+import static pl.petlovers.Pet2Vet.utills.security.users.Roles.PET_OWNER;
 
 class AppUserControllerTest {
 
@@ -75,7 +75,7 @@ class AppUserControllerTest {
 
     final AppUser loggedAppUser = new AppUser();
     loggedAppUser.setId(wantedUserId);
-    loggedAppUser.setRole(ROLE_OWNER);
+    loggedAppUser.setRole(PET_OWNER);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUserService appUserServiceMock = mock(AppUserService.class);
@@ -99,7 +99,7 @@ class AppUserControllerTest {
 
     final AppUser loggedAppUser = new AppUser();
     loggedAppUser.setId(2L);
-    loggedAppUser.setRole(ROLE_ADMIN);
+    loggedAppUser.setRole(ADMIN);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUserService appUserServiceMock = mock(AppUserService.class);
@@ -123,7 +123,7 @@ class AppUserControllerTest {
 
     final AppUser loggedAppUser = new AppUser();
     loggedAppUser.setId(wantedUserId);
-    loggedAppUser.setRole(ROLE_ADMIN);
+    loggedAppUser.setRole(ADMIN);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUserService appUserServiceMock = mock(AppUserService.class);
@@ -147,7 +147,7 @@ class AppUserControllerTest {
 
     final AppUser loggedAppUser = new AppUser();
     loggedAppUser.setId(2L);
-    loggedAppUser.setRole(ROLE_OWNER);
+    loggedAppUser.setRole(PET_OWNER);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUserService appUserServiceMock = mock(AppUserService.class);
@@ -160,11 +160,11 @@ class AppUserControllerTest {
   void should_throw_CreatingAdminAccountNotByAdminForbidden_exception_when_trying_to_create_admin_account_by_non_admin_account() {
 //    given
     final AppUser loggedAppUser = new AppUser();
-    loggedAppUser.setRole(ROLE_OWNER);
+    loggedAppUser.setRole(PET_OWNER);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUser appUserToCreate = new AppUser();
-    appUserToCreate.setRole(ROLE_ADMIN);
+    appUserToCreate.setRole(ADMIN);
     final AppUserDTO userToCreate = AppUserDTO.of(appUserToCreate);
     final String password = "password";
 
@@ -175,8 +175,71 @@ class AppUserControllerTest {
   }
 
   @Test
-  void tryingToCreateAdminAccount_AdminLogged() {}
+  void should_create_correct_account_when_admin_tries_to_create_admin_account(){
+    //    given
+    final AppUser loggedAppUser = new AppUser();
+    loggedAppUser.setRole(ADMIN);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final String password = "password";
+    final AppUser appUserToCreate = new AppUser();
+    appUserToCreate.setLogin("login");
+    appUserToCreate.setRole(ADMIN);
+    final AppUserDTO userToCreate = AppUserDTO.of(appUserToCreate);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    when(serviceMock.create(userToCreate, password)).thenReturn(appUserToCreate);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    when
+    final AppUserDTO appUserDTO = controller.create(userToCreate, password, loggedAppUserDetails);
+//    then
+    assertEquals("login", appUserDTO.getLogin());
+    assertEquals(ADMIN, appUserDTO.getRole());
+  }
 
   @Test
-  void tryingToCreateNonAdminAccount() {}
+  void should_create_correct_account_when_admin_tries_to_create_non_admin_account(){
+    //    given
+    final AppUser loggedAppUser = new AppUser();
+    loggedAppUser.setRole(ADMIN);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final String password = "password";
+    final AppUser appUserToCreate = new AppUser();
+    appUserToCreate.setLogin("login");
+    appUserToCreate.setRole(PET_OWNER);
+    final AppUserDTO userToCreate = AppUserDTO.of(appUserToCreate);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    when(serviceMock.create(userToCreate, password)).thenReturn(appUserToCreate);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    when
+    final AppUserDTO appUserDTO = controller.create(userToCreate, password, loggedAppUserDetails);
+//    then
+    assertEquals("login", appUserDTO.getLogin());
+    assertEquals(PET_OWNER, appUserDTO.getRole());
+  }
+
+  @Test
+  void should_create_correct_account_when_non_admin_tries_to_create_non_admin_account(){
+    //    given
+    final AppUser loggedAppUser = new AppUser();
+    loggedAppUser.setRole(PET_OWNER);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final String password = "password";
+    final AppUser appUserToCreate = new AppUser();
+    appUserToCreate.setLogin("login");
+    appUserToCreate.setRole(PET_OWNER);
+    final AppUserDTO userToCreate = AppUserDTO.of(appUserToCreate);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    when(serviceMock.create(userToCreate, password)).thenReturn(appUserToCreate);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    when
+    final AppUserDTO appUserDTO = controller.create(userToCreate, password, loggedAppUserDetails);
+//    then
+    assertEquals("login", appUserDTO.getLogin());
+    assertEquals(PET_OWNER, appUserDTO.getRole());
+  }
 }

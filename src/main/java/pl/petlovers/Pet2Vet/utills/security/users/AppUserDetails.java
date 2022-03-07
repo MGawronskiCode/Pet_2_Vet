@@ -61,7 +61,7 @@ public class AppUserDetails implements UserDetails {
   }
 
   public boolean isAdmin() {
-    return this.appUser.getRole() == Roles.ROLE_ADMIN;
+    return this.appUser.getRole() == Roles.ADMIN;
   }
 
   public long getId() {
