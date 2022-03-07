@@ -242,4 +242,36 @@ class AppUserControllerTest {
     assertEquals("login", appUserDTO.getLogin());
     assertEquals(PET_OWNER, appUserDTO.getRole());
   }
+
+  @Test
+  void tryingToChangeOwnAccountByAdmin() {}
+
+  @Test
+  void tryingToChangeOwnAccountByNotAdmin() {}
+
+  @Test
+  void tryingToChangeNotOwnAccountByAdmin() {}
+
+  @Test
+  void tryingToChangeNotOwnAccountByNotAdmin() {
+//    given
+    final AppUser loggedAppUser = new AppUser();
+    long loggedUserId = 1L;
+    loggedAppUser.setId(loggedUserId);
+    loggedAppUser.setRole(PET_OWNER);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUser appUserToUpdate = new AppUser();
+    long appUserToUpdateId = 2L;
+    appUserToUpdate.setId(appUserToUpdateId);
+    appUserToUpdate.setRole(PET_OWNER);
+    final AppUserDTO userToUpdate = AppUserDTO.of(appUserToUpdate);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    then
+    assertNotEquals(loggedUserId, appUserToUpdateId);
+    assertNotEquals(ADMIN, loggedAppUser.getRole());
+    assertThrows(AppUserForbiddenAccessException.class, () -> controller.update(appUserToUpdateId, userToUpdate, loggedAppUserDetails));
+  }
 }
