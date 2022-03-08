@@ -377,7 +377,26 @@ class AppUserControllerTest {
   }
 
   @Test
-  void should_delete_account_when_trying_to_delete_own_account_by_admin() {}
+  void should_delete_account_when_trying_to_delete_own_account_by_admin() {
+    //    given
+    final AppUser loggedAppUser = new AppUser();
+    final long loggedUserId = 1L;
+    loggedAppUser.setId(loggedUserId);
+    loggedAppUser.setRole(ADMIN);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUser appUserToDelete = new AppUser();
+    final long appUserToDeleteId = 1L;
+    appUserToDelete.setId(appUserToDeleteId);
+    appUserToDelete.setRole(PET_OWNER);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    then
+    assertEquals(loggedUserId, appUserToDeleteId);
+    assertEquals(ADMIN, loggedAppUser.getRole());
+    assertDoesNotThrow(() -> controller.delete(appUserToDeleteId, loggedAppUserDetails));
+  }
 
   @Test
   void should_delete_account_when_trying_to_delete_not_own_account_by_admin() {}
