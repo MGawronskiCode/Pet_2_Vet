@@ -355,6 +355,34 @@ class AppUserControllerTest {
   }
 
   @Test
+  void should_delete_account_when_trying_to_delete_own_account_by_not_admin() {
+    //    given
+    final AppUser loggedAppUser = new AppUser();
+    final long loggedUserId = 1L;
+    loggedAppUser.setId(loggedUserId);
+    loggedAppUser.setRole(PET_OWNER);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUser appUserToDelete = new AppUser();
+    final long appUserToDeleteId = 1L;
+    appUserToDelete.setId(appUserToDeleteId);
+    appUserToDelete.setRole(PET_OWNER);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    then
+    assertEquals(loggedUserId, appUserToDeleteId);
+    assertNotEquals(ADMIN, loggedAppUser.getRole());
+    assertDoesNotThrow(() -> controller.delete(appUserToDeleteId, loggedAppUserDetails));
+  }
+
+  @Test
+  void should_delete_account_when_trying_to_delete_own_account_by_admin() {}
+
+  @Test
+  void should_delete_account_when_trying_to_delete_not_own_account_by_admin() {}
+
+  @Test
   void should_throw_AppUserForbiddenAccessException_when_trying_to_delete_not_own_account_by_not_admin() {
 //    given
     final AppUser loggedAppUser = new AppUser();
@@ -367,7 +395,6 @@ class AppUserControllerTest {
     final long appUserToDeleteId = 2L;
     appUserToDelete.setId(appUserToDeleteId);
     appUserToDelete.setRole(PET_OWNER);
-    final AppUserDTO userToUpdate = AppUserDTO.of(appUserToDelete);
 
     final AppUserService serviceMock = mock(AppUserService.class);
     final AppUserController controller = new AppUserController(serviceMock);
