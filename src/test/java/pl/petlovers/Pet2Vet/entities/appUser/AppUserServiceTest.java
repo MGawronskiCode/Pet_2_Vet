@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static pl.petlovers.Pet2Vet.entities.appUser.Sex.FEMALE;
 import static pl.petlovers.Pet2Vet.entities.appUser.Sex.MALE;
 import static pl.petlovers.Pet2Vet.utills.security.users.Roles.*;
@@ -22,6 +24,23 @@ class AppUserServiceTest {
     service = new AppUserService(repository);
 //    then
     assertNotNull(service);
+  }
+
+
+  @Test
+  void should_return_correct_list_when_using_getAll_method() {
+//    given
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.findAll()).thenReturn(getSampleAppUserList());
+    final AppUserService service = new AppUserService(repository);
+//    when
+    final List<AppUser> allUsers = service.getAll();
+//    then
+    assertEquals(4, allUsers.size());
+    assertEquals("name1", allUsers.get(0).getName());
+    assertEquals("name2", allUsers.get(1).getName());
+    assertEquals("name3", allUsers.get(2).getName());
+    assertEquals("name4", allUsers.get(3).getName());
   }
 
   private List<AppUser> getSampleAppUserList() {
@@ -40,12 +59,6 @@ class AppUserServiceTest {
     list.add(user5);
 
     return list;
-  }
-
-
-  @Test
-  void test() {
-
   }
 
 
