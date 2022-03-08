@@ -248,13 +248,13 @@ class AppUserControllerTest {
   void should_correctly_update_account_when_trying_to_change_own_account_by_admin() {
 //    given
     final AppUser loggedAppUser = new AppUser();
-    long loggedUserId = 2L;
+    final long loggedUserId = 2L;
     loggedAppUser.setId(loggedUserId);
     loggedAppUser.setRole(ADMIN);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUser appUserToUpdate = new AppUser("name", MALE, "login", "password", PET_OWNER);
-    long appUserToUpdateId = 2L;
+    final long appUserToUpdateId = 2L;
     appUserToUpdate.setId(appUserToUpdateId);
     appUserToUpdate.setRole(PET_OWNER);
     final AppUserDTO userToUpdate = AppUserDTO.of(appUserToUpdate);
@@ -277,13 +277,13 @@ class AppUserControllerTest {
   void should_correctly_update_account_when_trying_to_change_own_account_by_not_admin() {
     //    given
     final AppUser loggedAppUser = new AppUser();
-    long loggedUserId = 2L;
+    final long loggedUserId = 2L;
     loggedAppUser.setId(loggedUserId);
     loggedAppUser.setRole(PET_OWNER);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUser appUserToUpdate = new AppUser("name", MALE, "login", "password", PET_OWNER);
-    long appUserToUpdateId = 2L;
+    final long appUserToUpdateId = 2L;
     appUserToUpdate.setId(appUserToUpdateId);
     appUserToUpdate.setRole(PET_OWNER);
     final AppUserDTO userToUpdate = AppUserDTO.of(appUserToUpdate);
@@ -306,13 +306,13 @@ class AppUserControllerTest {
   void should_correctly_update_account_when_trying_to_change_not_own_account_not_admin() {
     //    given
     final AppUser loggedAppUser = new AppUser();
-    long loggedUserId = 1L;
+    final long loggedUserId = 1L;
     loggedAppUser.setId(loggedUserId);
     loggedAppUser.setRole(ADMIN);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUser appUserToUpdate = new AppUser("name", MALE, "login", "password", PET_OWNER);
-    long appUserToUpdateId = 2L;
+    final long appUserToUpdateId = 2L;
     appUserToUpdate.setId(appUserToUpdateId);
     appUserToUpdate.setRole(PET_OWNER);
     final AppUserDTO userToUpdate = AppUserDTO.of(appUserToUpdate);
@@ -335,13 +335,13 @@ class AppUserControllerTest {
   void should_throw_AppUserForbiddenAccessException_when_trying_to_change_not_own_account_by_not_admin() {
 //    given
     final AppUser loggedAppUser = new AppUser();
-    long loggedUserId = 1L;
+    final long loggedUserId = 1L;
     loggedAppUser.setId(loggedUserId);
     loggedAppUser.setRole(PET_OWNER);
     final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
 
     final AppUser appUserToUpdate = new AppUser();
-    long appUserToUpdateId = 2L;
+    final long appUserToUpdateId = 2L;
     appUserToUpdate.setId(appUserToUpdateId);
     appUserToUpdate.setRole(PET_OWNER);
     final AppUserDTO userToUpdate = AppUserDTO.of(appUserToUpdate);
@@ -353,4 +353,28 @@ class AppUserControllerTest {
     assertNotEquals(ADMIN, loggedAppUser.getRole());
     assertThrows(AppUserForbiddenAccessException.class, () -> controller.update(appUserToUpdateId, userToUpdate, loggedAppUserDetails));
   }
+
+  @Test
+  void should_throw_AppUserForbiddenAccessException_when_trying_to_delete_not_own_account_by_not_admin() {
+//    given
+    final AppUser loggedAppUser = new AppUser();
+    final long loggedUserId = 1L;
+    loggedAppUser.setId(loggedUserId);
+    loggedAppUser.setRole(PET_OWNER);
+    final AppUserDetails loggedAppUserDetails = new AppUserDetails(loggedAppUser);
+
+    final AppUser appUserToDelete = new AppUser();
+    final long appUserToDeleteId = 2L;
+    appUserToDelete.setId(appUserToDeleteId);
+    appUserToDelete.setRole(PET_OWNER);
+    final AppUserDTO userToUpdate = AppUserDTO.of(appUserToDelete);
+
+    final AppUserService serviceMock = mock(AppUserService.class);
+    final AppUserController controller = new AppUserController(serviceMock);
+//    then
+    assertNotEquals(loggedUserId, appUserToDeleteId);
+    assertNotEquals(ADMIN, loggedAppUser.getRole());
+    assertThrows(AppUserForbiddenAccessException.class, () -> controller.delete(appUserToDeleteId, loggedAppUserDetails));
+  }
+
 }
