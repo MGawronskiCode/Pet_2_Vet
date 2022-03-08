@@ -2,7 +2,7 @@ package pl.petlovers.Pet2Vet.entities.pet;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import pl.petlovers.Pet2Vet.entities.Sex;
+import pl.petlovers.Pet2Vet.entities.appUser.Sex;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
 import pl.petlovers.Pet2Vet.entities.meal.Meal;
 import pl.petlovers.Pet2Vet.entities.note.Note;
@@ -100,6 +100,11 @@ public class Pet {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
     Pet pet = (Pet) o;
     return id != null && Objects.equals(id, pet.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
   }
 
   @Override

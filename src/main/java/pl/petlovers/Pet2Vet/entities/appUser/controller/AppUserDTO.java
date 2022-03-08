@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import pl.petlovers.Pet2Vet.entities.Sex;
+import pl.petlovers.Pet2Vet.entities.appUser.Sex;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
 import pl.petlovers.Pet2Vet.utills.security.users.Roles;
 

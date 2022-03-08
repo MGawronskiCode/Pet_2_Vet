@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.petlovers.Pet2Vet.entities.Sex;
-import pl.petlovers.Pet2Vet.entities.specie.controller.PetSpecieDTO;
+import pl.petlovers.Pet2Vet.entities.appUser.Sex;
 import pl.petlovers.Pet2Vet.entities.pet.Pet;
 
 import javax.persistence.Enumerated;

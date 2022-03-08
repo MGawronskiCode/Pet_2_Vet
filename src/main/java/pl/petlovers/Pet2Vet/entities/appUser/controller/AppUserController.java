@@ -74,7 +74,7 @@ public class AppUserController {
   }
 
   private boolean tryingToCreateAdminAccount(AppUserDTO appUserDTO) {
-    return appUserDTO.getRole() == Roles.ROLE_ADMIN;
+    return appUserDTO.getRole() == Roles.ADMIN;
   }
 
   //    todo change login or password

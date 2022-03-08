@@ -1,11 +1,10 @@
-package pl.petlovers.Pet2Vet.pet;
+package pl.petlovers.Pet2Vet.entities.pet;
 
 import org.junit.jupiter.api.Test;
-import pl.petlovers.Pet2Vet.entities.Sex;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
+import pl.petlovers.Pet2Vet.entities.appUser.Sex;
 import pl.petlovers.Pet2Vet.entities.meal.Meal;
 import pl.petlovers.Pet2Vet.entities.note.Note;
-import pl.petlovers.Pet2Vet.entities.pet.Pet;
 import pl.petlovers.Pet2Vet.entities.visit.Visit;
 
 import java.time.LocalDate;

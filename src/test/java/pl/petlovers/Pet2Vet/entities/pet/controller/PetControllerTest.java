@@ -1,11 +1,9 @@
-package pl.petlovers.Pet2Vet.pet.controller;
+package pl.petlovers.Pet2Vet.entities.pet.controller;
 
 import org.junit.jupiter.api.Test;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUser;
 import pl.petlovers.Pet2Vet.entities.pet.Pet;
 import pl.petlovers.Pet2Vet.entities.pet.PetService;
-import pl.petlovers.Pet2Vet.entities.pet.controller.PetController;
-import pl.petlovers.Pet2Vet.entities.pet.controller.PetDTO;
 import pl.petlovers.Pet2Vet.utills.security.users.AppUserDetails;
 import pl.petlovers.Pet2Vet.entities.specie.PetSpecie;
 

@@ -4,7 +4,6 @@ package pl.petlovers.Pet2Vet.entities.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import pl.petlovers.Pet2Vet.entities.Sex;
 import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.entities.note.Note;
 import pl.petlovers.Pet2Vet.entities.pet.Pet;
