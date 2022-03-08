@@ -33,9 +33,10 @@ public class AppUserService {
   public AppUser create(AppUserDTO userDTO, String password) {
     log.info("Creating " + userDTO.toString());
     try {
+//      todo checking, if user with this id already exist - if yes, allow to create new only by admin (creating a new with the same id deletes previous account, inform admin about it)
 
       return appUserRepository.save(userDTO.toAppUser(password));
-    } catch (DataIntegrityViolationException e) {
+    } catch (DataIntegrityViolationException appUserWithThisLoginAlreadyExistsException) {
 
       throw new AppUserWithThisLoginAlreadyExistException();
     }

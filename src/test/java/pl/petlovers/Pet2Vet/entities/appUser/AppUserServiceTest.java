@@ -1,12 +1,15 @@
 package pl.petlovers.Pet2Vet.entities.appUser;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.dao.DataIntegrityViolationException;
+import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
+import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pl.petlovers.Pet2Vet.entities.appUser.Sex.FEMALE;
@@ -42,6 +45,20 @@ class AppUserServiceTest {
     assertEquals("name3", allUsers.get(2).getName());
     assertEquals("name4", allUsers.get(3).getName());
   }
+
+  @Test
+  void should_throw_AppUserWithThisLoginAlreadyExistException_when_trying_to_create_account_with_already_existing_login() {
+//    given
+    final AppUserDTO userDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final String password = "password";
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.save(any())).thenThrow(DataIntegrityViolationException.class);
+    final AppUserService service = new AppUserService(repository);
+//    then
+    assertThrows(AppUserWithThisLoginAlreadyExistException.class, () -> service.create(userDTO, password));
+  }
+
 
   private List<AppUser> getSampleAppUserList() {
     List<AppUser> list = new ArrayList<>();
