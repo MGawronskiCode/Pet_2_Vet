@@ -47,16 +47,35 @@ class AppUserServiceTest {
   }
 
   @Test
+  void test() {
+//    given
+    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final String password = "password";
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.save(any())).thenReturn(userToCreateDTO.toAppUser(password));
+    final AppUserService service = new AppUserService(repository);
+//    when
+    final AppUser appUser = service.create(userToCreateDTO, password);
+//    then
+    assertEquals(1L, appUser.getId());
+    assertEquals("name", appUser.getName());
+    assertEquals(MALE, appUser.getSex());
+    assertEquals("login", appUser.getLogin());
+    assertEquals(ADMIN, appUser.getRole());
+  }
+
+  @Test
   void should_throw_AppUserWithThisLoginAlreadyExistException_when_trying_to_create_account_with_already_existing_login() {
 //    given
-    final AppUserDTO userDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
     final String password = "password";
 
     final AppUserRepository repository = mock(AppUserRepository.class);
     when(repository.save(any())).thenThrow(DataIntegrityViolationException.class);
     final AppUserService service = new AppUserService(repository);
 //    then
-    assertThrows(AppUserWithThisLoginAlreadyExistException.class, () -> service.create(userDTO, password));
+    assertThrows(AppUserWithThisLoginAlreadyExistException.class, () -> service.create(userToCreateDTO, password));
   }
 
 
@@ -77,6 +96,7 @@ class AppUserServiceTest {
 
     return list;
   }
+
 
 
 }
