@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
+import pl.petlovers.Pet2Vet.utills.exceptions.not_found_exceptions.AppUserNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +116,18 @@ class AppUserServiceTest {
     assertEquals(newUserData.getName(), userAfterUpdate.getName());
     assertEquals(newUserData.getSex(), userAfterUpdate.getSex());
     assertEquals(newUserData.getRole(), userAfterUpdate.getRole());
+  }
+
+  @Test
+  void should_throw_AppUserNotFoundException_when_trying_to_update_non_existing_user() {
+//    given
+    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.findById(anyLong())).thenThrow(AppUserNotFoundException.class);
+    final AppUserService service = new AppUserService(repository);
+//    then
+    assertThrows(AppUserNotFoundException.class, () -> service.update(2L, newUserData));
   }
 
 }
