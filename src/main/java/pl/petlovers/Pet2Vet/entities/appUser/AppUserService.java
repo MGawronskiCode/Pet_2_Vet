@@ -30,24 +30,24 @@ public class AppUserService {
         .toList();
   }
 
-  public AppUser create(AppUserDTO userDTO, String password) {
-    log.info("Creating " + userDTO.toString());
+  public AppUser create(AppUserDTO newUserData, String password) {
+    log.info("Creating " + newUserData.toString());
     try {
 //      todo checking, if user with this id already exist - if yes, allow to create new only by admin (creating a new with the same id deletes previous account, inform admin about it)
 
-      return appUserRepository.save(userDTO.toAppUser(password));
+      return appUserRepository.save(newUserData.toAppUser(password));
     } catch (DataIntegrityViolationException appUserWithThisLoginAlreadyExistsException) {
 
       throw new AppUserWithThisLoginAlreadyExistException();
     }
   }
 
-  public AppUser update(long id, AppUserDTO user) {
-    AppUser userFromDb = get(id);
-    log.info("Updating of " + userFromDb.toString() + " to " + user.toString());
-    userFromDb.modify(user);
+  public AppUser update(long id, AppUserDTO userNewData) {
+    AppUser oldUserData = get(id);
+    log.info("Updating of " + oldUserData.toString() + " to " + userNewData.toString());
+    oldUserData.modify(userNewData);
 
-    return appUserRepository.save(userFromDb);
+    return appUserRepository.save(oldUserData);
   }
 
   public AppUser get(long id) {

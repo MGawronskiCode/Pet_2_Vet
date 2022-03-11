@@ -7,9 +7,11 @@ import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserWithTh
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pl.petlovers.Pet2Vet.entities.appUser.Sex.FEMALE;
@@ -47,7 +49,7 @@ class AppUserServiceTest {
   }
 
   @Test
-  void test() {
+  void should_create_correct_account_if_its_login_doesnt_exist_in_db_when_using_create_method() {
 //    given
     final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
     final String password = "password";
@@ -78,7 +80,6 @@ class AppUserServiceTest {
     assertThrows(AppUserWithThisLoginAlreadyExistException.class, () -> service.create(userToCreateDTO, password));
   }
 
-
   private List<AppUser> getSampleAppUserList() {
     List<AppUser> list = new ArrayList<>();
     AppUser user1 = new AppUser("name1", MALE, "login1", "password1", ADMIN);
@@ -97,6 +98,23 @@ class AppUserServiceTest {
     return list;
   }
 
+  @Test
+  void should_update_account_when_using_update_method_correctly() {
+//    given
+    final AppUserDTO userToUpdateDTO = new AppUserDTO(2L, "name2", FEMALE, "login", ADMIN);
+    final String password = "password";
+    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
 
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.save(any())).thenReturn(newUserData.toAppUser(password));
+    when(repository.findById(anyLong())).thenReturn(Optional.of(userToUpdateDTO.toAppUser(password)));
+    final AppUserService service = new AppUserService(repository);
+//    when
+    final AppUser userAfterUpdate = service.update(2L, newUserData);
+//    then
+    assertEquals(newUserData.getName(), userAfterUpdate.getName());
+    assertEquals(newUserData.getSex(), userAfterUpdate.getSex());
+    assertEquals(newUserData.getRole(), userAfterUpdate.getRole());
+  }
 
 }

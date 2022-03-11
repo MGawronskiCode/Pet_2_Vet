@@ -105,4 +105,17 @@ public class AppUser {
   public void restore() {
     this.isDeleted = false;
   }
+
+  @Override
+  public String toString() {
+    return "AppUser{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", sex=" + sex +
+        ", login='" + login + '\'' +
+        ", password='" + password + '\'' +
+        ", role=" + role +
+        ", isDeleted=" + isDeleted +
+        '}';
+  }
 }
