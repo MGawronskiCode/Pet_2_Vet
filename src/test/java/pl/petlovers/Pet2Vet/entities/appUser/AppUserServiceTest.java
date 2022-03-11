@@ -4,12 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
+import pl.petlovers.Pet2Vet.utills.exceptions.not_found_exceptions.AppUserNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pl.petlovers.Pet2Vet.entities.appUser.Sex.FEMALE;
@@ -47,18 +50,36 @@ class AppUserServiceTest {
   }
 
   @Test
+  void should_create_correct_account_if_its_login_doesnt_exist_in_db_when_using_create_method() {
+//    given
+    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final String password = "password";
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.save(any())).thenReturn(userToCreateDTO.toAppUser(password));
+    final AppUserService service = new AppUserService(repository);
+//    when
+    final AppUser appUser = service.create(userToCreateDTO, password);
+//    then
+    assertEquals(1L, appUser.getId());
+    assertEquals("name", appUser.getName());
+    assertEquals(MALE, appUser.getSex());
+    assertEquals("login", appUser.getLogin());
+    assertEquals(ADMIN, appUser.getRole());
+  }
+
+  @Test
   void should_throw_AppUserWithThisLoginAlreadyExistException_when_trying_to_create_account_with_already_existing_login() {
 //    given
-    final AppUserDTO userDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
     final String password = "password";
 
     final AppUserRepository repository = mock(AppUserRepository.class);
     when(repository.save(any())).thenThrow(DataIntegrityViolationException.class);
     final AppUserService service = new AppUserService(repository);
 //    then
-    assertThrows(AppUserWithThisLoginAlreadyExistException.class, () -> service.create(userDTO, password));
+    assertThrows(AppUserWithThisLoginAlreadyExistException.class, () -> service.create(userToCreateDTO, password));
   }
-
 
   private List<AppUser> getSampleAppUserList() {
     List<AppUser> list = new ArrayList<>();
@@ -78,5 +99,35 @@ class AppUserServiceTest {
     return list;
   }
 
+  @Test
+  void should_update_account_when_using_update_method_correctly() {
+//    given
+    final AppUserDTO userToUpdateDTO = new AppUserDTO(2L, "name2", FEMALE, "login", ADMIN);
+    final String password = "password";
+    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.save(any())).thenReturn(newUserData.toAppUser(password));
+    when(repository.findById(anyLong())).thenReturn(Optional.of(userToUpdateDTO.toAppUser(password)));
+    final AppUserService service = new AppUserService(repository);
+//    when
+    final AppUser userAfterUpdate = service.update(2L, newUserData);
+//    then
+    assertEquals(newUserData.getName(), userAfterUpdate.getName());
+    assertEquals(newUserData.getSex(), userAfterUpdate.getSex());
+    assertEquals(newUserData.getRole(), userAfterUpdate.getRole());
+  }
+
+  @Test
+  void should_throw_AppUserNotFoundException_when_trying_to_update_non_existing_user() {
+//    given
+    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.findById(anyLong())).thenThrow(AppUserNotFoundException.class);
+    final AppUserService service = new AppUserService(repository);
+//    then
+    assertThrows(AppUserNotFoundException.class, () -> service.update(2L, newUserData));
+  }
 
 }
