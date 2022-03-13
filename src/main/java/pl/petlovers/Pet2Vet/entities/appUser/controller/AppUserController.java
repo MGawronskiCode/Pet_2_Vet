@@ -74,10 +74,10 @@ public class AppUserController {
   }
 
   private boolean tryingToCreateAdminAccount(AppUserDTO appUserDTO) {
-    return appUserDTO.getRole() == Roles.ADMIN;
+    return appUserDTO.getRole() == Roles.ROLE_ADMIN;
   }
 
-  //    todo change login or password
+//    todo change login or password
 //    todo change role only by admin
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -87,6 +87,20 @@ public class AppUserController {
     if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
 
       return AppUserDTO.of(appUserService.update(userId, appUserDTO));
+    } else {
+
+      throw new AppUserForbiddenAccessException();
+    }
+  }
+
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  @PutMapping("/password/{userId}")
+  public AppUserDTO updatePassword(@PathVariable long userId, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
+
+    if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
+
+      return AppUserDTO.of(appUserService.updatePassword(userId, password));
     } else {
 
       throw new AppUserForbiddenAccessException();
