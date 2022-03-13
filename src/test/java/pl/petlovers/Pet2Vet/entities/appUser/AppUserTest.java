@@ -34,12 +34,12 @@ class AppUserTest {
     assertEquals(Sex.MALE, user.getSex());
     assertEquals("login", user.getLogin());
     assertEquals("password", user.getPassword());
-    assertEquals(Roles.ADMIN, user.getRole());
+    assertEquals(Roles.ROLE_ADMIN, user.getRole());
   }
 
   private AppUser getSampleAppUser() {
     return new AppUser(
-        "name", Sex.MALE, "login", "password", Roles.ADMIN
+        "name", Sex.MALE, "login", "password", Roles.ROLE_ADMIN
     );
   }
 

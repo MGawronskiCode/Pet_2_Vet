@@ -52,7 +52,7 @@ class AppUserServiceTest {
   @Test
   void should_create_correct_account_if_its_login_doesnt_exist_in_db_when_using_create_method() {
 //    given
-    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ROLE_ADMIN);
     final String password = "password";
 
     final AppUserRepository repository = mock(AppUserRepository.class);
@@ -65,13 +65,13 @@ class AppUserServiceTest {
     assertEquals("name", appUser.getName());
     assertEquals(MALE, appUser.getSex());
     assertEquals("login", appUser.getLogin());
-    assertEquals(ADMIN, appUser.getRole());
+    assertEquals(ROLE_ADMIN, appUser.getRole());
   }
 
   @Test
   void should_throw_AppUserWithThisLoginAlreadyExistException_when_trying_to_create_account_with_already_existing_login() {
 //    given
-    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final AppUserDTO userToCreateDTO = new AppUserDTO(1L, "name", MALE, "login", ROLE_ADMIN);
     final String password = "password";
 
     final AppUserRepository repository = mock(AppUserRepository.class);
@@ -83,11 +83,11 @@ class AppUserServiceTest {
 
   private List<AppUser> getSampleAppUserList() {
     List<AppUser> list = new ArrayList<>();
-    AppUser user1 = new AppUser("name1", MALE, "login1", "password1", ADMIN);
-    AppUser user2 = new AppUser("name2", MALE, "login2", "password2", PET_OWNER);
-    AppUser user3 = new AppUser("name3", FEMALE, "login3", "password3", PET_OWNER);
-    AppUser user4 = new AppUser("name4", FEMALE, "login4", "password4", PET_KEEPER);
-    AppUser user5 = new AppUser("name5", FEMALE, "login5", "password5", VET);
+    AppUser user1 = new AppUser("name1", MALE, "login1", "password1", ROLE_ADMIN);
+    AppUser user2 = new AppUser("name2", MALE, "login2", "password2", ROLE_OWNER);
+    AppUser user3 = new AppUser("name3", FEMALE, "login3", "password3", ROLE_OWNER);
+    AppUser user4 = new AppUser("name4", FEMALE, "login4", "password4", ROLE_KEEPER);
+    AppUser user5 = new AppUser("name5", FEMALE, "login5", "password5", ROLE_VET);
     user5.delete();
 
     list.add(user1);
@@ -102,9 +102,9 @@ class AppUserServiceTest {
   @Test
   void should_update_account_when_using_update_method_correctly() {
 //    given
-    final AppUserDTO userToUpdateDTO = new AppUserDTO(2L, "name2", FEMALE, "login", ADMIN);
+    final AppUserDTO userToUpdateDTO = new AppUserDTO(2L, "name2", FEMALE, "login", ROLE_ADMIN);
     final String password = "password";
-    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ROLE_ADMIN);
 
     final AppUserRepository repository = mock(AppUserRepository.class);
     when(repository.save(any())).thenReturn(newUserData.toAppUser(password));
@@ -121,7 +121,7 @@ class AppUserServiceTest {
   @Test
   void should_throw_AppUserNotFoundException_when_trying_to_update_non_existing_user() {
 //    given
-    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ADMIN);
+    final AppUserDTO newUserData = new AppUserDTO(1L, "name", MALE, "login", ROLE_ADMIN);
 
     final AppUserRepository repository = mock(AppUserRepository.class);
     when(repository.findById(anyLong())).thenThrow(AppUserNotFoundException.class);
