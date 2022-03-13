@@ -4,6 +4,7 @@ package pl.petlovers.Pet2Vet.entities.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.entities.note.Note;
 import pl.petlovers.Pet2Vet.entities.pet.Pet;
@@ -92,7 +93,7 @@ public class AppUser {
 
   public void modifyPassword(String password) {
     if (StringUtils.isNoneBlank(password)) {
-      this.setPassword(password);
+      this.setPassword(new BCryptPasswordEncoder().encode(password));
     }
   }
 
