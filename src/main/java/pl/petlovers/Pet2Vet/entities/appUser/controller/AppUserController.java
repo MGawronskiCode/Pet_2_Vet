@@ -95,7 +95,7 @@ public class AppUserController {
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @PutMapping("/password/{userId}")
+  @PutMapping("/{userId}/password")
   public AppUserDTO updatePassword(@PathVariable long userId, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
     if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {

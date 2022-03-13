@@ -78,7 +78,7 @@ public class AppUser {
   }
 
 
-//  todo modify login, password, role
+//  todo modify login, role
   public void modify(AppUserDTO user) {
     if (StringUtils.isNoneBlank(user.getName())) {
       this.setName(user.getName());
@@ -91,6 +91,9 @@ public class AppUser {
   }
 
   public void modifyPassword(String password) {
+    if (StringUtils.isNoneBlank(password)) {
+      this.setPassword(password);
+    }
   }
 
   public void addPetToPetsList(Pet pet) {
