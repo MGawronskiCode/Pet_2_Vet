@@ -92,6 +92,14 @@ public class AppUserService {
     return appUserRepository.save(oldUserData);
   }
 
+  public AppUser updateLogin(long userId, String login) {
+    AppUser oldUserData = get(userId);
+    log.info("Updating login of " + oldUserData.toString());
+    oldUserData.modifyLogin(login);
+
+    return appUserRepository.save(oldUserData);
+  }
+
   public void delete(long id) {
     AppUser userFromDb = get(id);
     log.info("Deleting user with id = " + id);

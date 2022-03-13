@@ -68,8 +68,6 @@ public class AppUserController {
     return appUserDTO.getRole() == Roles.ROLE_ADMIN;
   }
 
-
-//    todo change login
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/{userId}")
@@ -86,6 +84,20 @@ public class AppUserController {
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
+  @PutMapping("/{userId}/login")
+  public AppUserDTO changeLogin(@PathVariable long userId, @RequestHeader String login, @AuthenticationPrincipal AppUserDetails loggedUser) {
+
+    if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
+
+      return AppUserDTO.of(appUserService.updateLogin(userId, login));
+    } else {
+
+      throw new AppUserForbiddenAccessException();
+    }
+  }
+
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
+  @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/{userId}/password")
   public AppUserDTO changePassword(@PathVariable long userId, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
@@ -97,6 +109,7 @@ public class AppUserController {
       throw new AppUserForbiddenAccessException();
     }
   }
+
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{userId}")

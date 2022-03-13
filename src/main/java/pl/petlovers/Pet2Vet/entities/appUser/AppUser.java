@@ -110,6 +110,12 @@ public class AppUser {
     }
   }
 
+  public void modifyLogin(String login) {
+    if (StringUtils.isNoneBlank(login)) {
+      this.setLogin(login);
+    }
+  }
+
   public void addPetToPetsList(Pet pet) {
     this.pets.add(pet);
   }
