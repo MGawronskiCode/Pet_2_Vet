@@ -57,17 +57,23 @@ public class AppUserService {
     }
   }
 
-
   public AppUser update(long id, AppUserDTO userNewData, boolean adminUpdates) {
     AppUser userOldData = get(id);
-    if ((userOldData.getRole() == userNewData.getRole()) || adminUpdates) {
+
+    if (roleUnchanged(userNewData, userOldData) || adminUpdates) {
       log.info("Updating of " + userOldData + " to " + userNewData);
       userOldData.modify(userNewData);
+
+      return appUserRepository.save(userOldData);
     } else {
+
       throw new ChangeRoleAccessForbiddenException();
     }
 
-    return appUserRepository.save(userOldData);
+  }
+
+  private boolean roleUnchanged(AppUserDTO userNewData, AppUser userOldData) {
+    return userOldData.getRole() == userNewData.getRole();
   }
 
   public AppUser updatePassword(long userId, String password) {
