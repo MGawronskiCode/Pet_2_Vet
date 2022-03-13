@@ -70,24 +70,18 @@ public class AppUserController {
 
 
 //    todo change login
-//    todo change role only by admin
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/{userId}")
   public AppUserDTO update(@PathVariable long userId, @RequestBody AppUserDTO appUserDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    if (loggedUser.isAdmin()){}
-    if (!loggedUser.isAdmin() && changeOwnAccount()){}
+    boolean adminLogged = loggedUser.isAdmin();
 
+    if (!changeOwnAccount(userId, loggedUser) && !adminLogged) {
+      throw new AppUserForbiddenAccessException();
+    }
 
-    throw new AppUserForbiddenAccessException();
-//    if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
-//
-//      return AppUserDTO.of(appUserService.update(userId, appUserDTO));
-//    } else {
-//
-//      throw new AppUserForbiddenAccessException();
-//    }
+    return AppUserDTO.of(appUserService.update(userId, appUserDTO, adminLogged));
   }
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
