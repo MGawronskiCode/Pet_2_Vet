@@ -81,13 +81,23 @@ public class AppUser {
 
 //  todo modify login, role
   public void modify(AppUserDTO user) {
-    if (StringUtils.isNoneBlank(user.getName())) {
-      this.setName(user.getName());
-    }
+    modifyName(user);
+    modifySex(user);
 
+
+
+  }
+
+  private void modifySex(AppUserDTO user) {
     final Sex userSex = user.getSex();
     if (userSex != null && StringUtils.isNoneBlank(userSex.toString())) {
       this.setSex(userSex);
+    }
+  }
+
+  private void modifyName(AppUserDTO user) {
+    if (StringUtils.isNoneBlank(user.getName())) {
+      this.setName(user.getName());
     }
   }
 

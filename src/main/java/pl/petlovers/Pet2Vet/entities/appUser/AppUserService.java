@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserWithThisLoginAlreadyExistException;
+import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.ChangeRoleAccessForbiddenException;
 import pl.petlovers.Pet2Vet.utills.exceptions.not_found_exceptions.AppUserNotFoundException;
 
 import java.util.List;
@@ -42,22 +43,6 @@ public class AppUserService {
     }
   }
 
-  public AppUser update(long id, AppUserDTO userNewData) {
-    AppUser oldUserData = get(id);
-    log.info("Updating of " + oldUserData.toString() + " to " + userNewData.toString());
-    oldUserData.modify(userNewData);
-
-    return appUserRepository.save(oldUserData);
-  }
-
-  public AppUser updatePassword(long userId, String password) {
-    AppUser oldUserData = get(userId);
-    log.info("Updating password of " + oldUserData.toString());
-    oldUserData.modifyPassword(password);
-
-    return appUserRepository.save(oldUserData);
-  }
-
   public AppUser get(long id) {
     log.info("Fetching user with id = " + id);
     final AppUser appUser = appUserRepository.findById(id)
@@ -70,6 +55,27 @@ public class AppUserService {
 
       return appUser;
     }
+  }
+
+
+  public AppUser update(long id, AppUserDTO userNewData, boolean adminUpdates) {
+    AppUser userOldData = get(id);
+    if ((userOldData.getRole() == userNewData.getRole()) || adminUpdates) {
+      log.info("Updating of " + userOldData + " to " + userNewData);
+      userOldData.modify(userNewData);
+    } else {
+      throw new ChangeRoleAccessForbiddenException();
+    }
+
+    return appUserRepository.save(userOldData);
+  }
+
+  public AppUser updatePassword(long userId, String password) {
+    AppUser oldUserData = get(userId);
+    log.info("Updating password of " + oldUserData.toString());
+    oldUserData.modifyPassword(password);
+
+    return appUserRepository.save(oldUserData);
   }
 
   public void delete(long id) {
