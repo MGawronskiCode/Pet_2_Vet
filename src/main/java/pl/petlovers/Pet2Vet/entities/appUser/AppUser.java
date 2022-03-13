@@ -90,6 +90,9 @@ public class AppUser {
     }
   }
 
+  public void modifyPassword(String password) {
+  }
+
   public void addPetToPetsList(Pet pet) {
     this.pets.add(pet);
   }

@@ -50,6 +50,14 @@ public class AppUserService {
     return appUserRepository.save(oldUserData);
   }
 
+  public AppUser updatePassword(long userId, String password) {
+    AppUser oldUserData = get(userId);
+    log.info("Updating password of " + oldUserData.toString());
+    oldUserData.modifyPassword(password);
+
+    return appUserRepository.save(oldUserData);
+  }
+
   public AppUser get(long id) {
     log.info("Fetching user with id = " + id);
     final AppUser appUser = appUserRepository.findById(id)
@@ -71,5 +79,4 @@ public class AppUserService {
 
     appUserRepository.save(userFromDb);
   }
-
 }
