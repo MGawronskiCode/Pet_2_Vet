@@ -59,15 +59,8 @@ public class AppUserController {
   @PostMapping
   public AppUserDTO create(@RequestBody AppUserDTO appUserDTO, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    if (tryingToCreateAdminAccount(appUserDTO)) {
-      if (loggedUser.isAdmin()) {
-
-//        todo checking if password is not null and maybe if is longer than 4 characters
-        return AppUserDTO.of(appUserService.create(appUserDTO, password));
-      } else {
-
-        throw new CreatingAdminAccountNotByAdminForbidden();
-      }
+    if ((tryingToCreateAdminAccount(appUserDTO) && !loggedUser.isAdmin())) {
+      throw new CreatingAdminAccountNotByAdminForbidden();
     }
 
     return AppUserDTO.of(appUserService.create(appUserDTO, password));
@@ -77,7 +70,7 @@ public class AppUserController {
     return appUserDTO.getRole() == Roles.ROLE_ADMIN;
   }
 
-//    todo change login or password
+//    todo change login
 //    todo change role only by admin
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
