@@ -78,7 +78,6 @@ public class AppUser {
     this.notes.add(note);
   }
 
-//  todo modify login
   public void modify(AppUserDTO user) {
     modifyName(user);
     modifySex(user);
