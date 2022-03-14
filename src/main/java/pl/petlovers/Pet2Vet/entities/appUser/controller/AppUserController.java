@@ -6,6 +6,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.petlovers.Pet2Vet.entities.appUser.AppUserService;
+import pl.petlovers.Pet2Vet.utills.PasswordValidator;
 import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.CreatingAdminAccountNotByAdminForbidden;
 import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.AppUserForbiddenAccessException;
 import pl.petlovers.Pet2Vet.utills.security.users.AppUserDetails;
@@ -58,11 +59,11 @@ public class AppUserController {
       throw new CreatingAdminAccountNotByAdminForbidden();
     }
 
+    PasswordValidator.validPassword(password);
     // todo  create and check the password requirements
 
     return AppUserDTO.of(appUserService.create(appUserDTO, password));
   }
-
 
   private boolean tryingToCreateAdminAccount(AppUserDTO appUserDTO) {
     return appUserDTO.getRole() == Roles.ROLE_ADMIN;
