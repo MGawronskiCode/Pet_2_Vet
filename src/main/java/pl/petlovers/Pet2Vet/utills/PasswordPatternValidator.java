@@ -4,9 +4,9 @@ import pl.petlovers.Pet2Vet.utills.exceptions.PasswordNonValidPatternException;
 
 import static java.lang.Character.isDigit;
 
-public class PasswordValidator {
+public class PasswordPatternValidator {
 
-  private PasswordValidator() {}
+  private PasswordPatternValidator() {}
 
   public static void validatePassword(String password) {
     if (!(notNull(password) && sufficientlyLongPassword(password) && containsDigit(password))) {
