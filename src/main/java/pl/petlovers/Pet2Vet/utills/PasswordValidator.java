@@ -8,13 +8,11 @@ public class PasswordValidator {
 
   private PasswordValidator() {}
 
-  public static boolean validPassword(String password) {
+  public static void validatePassword(String password) {
+    if (!(notNull(password) && sufficientlyLongPassword(password) && containsDigit(password))) {
 
-    if ((notNull(password) && sufficientlyLongPassword(password) && containsDigit(password))) {
-      return true;
+      throw new PasswordNonValidPatternException();
     }
-
-    throw new PasswordNonValidPatternException();
   }
 
   private static boolean notNull(String password) {

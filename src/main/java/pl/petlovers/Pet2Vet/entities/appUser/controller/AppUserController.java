@@ -59,8 +59,7 @@ public class AppUserController {
       throw new CreatingAdminAccountNotByAdminForbidden();
     }
 
-    PasswordValidator.validPassword(password);
-    // todo  create and check the password requirements
+    PasswordValidator.validatePassword(password);
 
     return AppUserDTO.of(appUserService.create(appUserDTO, password));
   }
