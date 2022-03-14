@@ -109,6 +109,14 @@ public class ExceptionsHandler {
   }
 
   @ResponseBody
+  @ExceptionHandler(PasswordNonValidPatternException.class)
+  @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+  String invalidPasswordPattern(PasswordNonValidPatternException exception) {
+    log.error(ERROR + exception.toString());
+    return exception.toString();
+  }
+
+  @ResponseBody
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.FORBIDDEN)
   String otherException(Exception exception) {
