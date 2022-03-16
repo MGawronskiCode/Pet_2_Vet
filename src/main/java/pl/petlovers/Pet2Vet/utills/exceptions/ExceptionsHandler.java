@@ -14,7 +14,7 @@ import pl.petlovers.Pet2Vet.utills.exceptions.forbidden_exceptions.ForbiddenAcce
 import pl.petlovers.Pet2Vet.utills.exceptions.not_found_exceptions.NotFoundInDatabaseException;
 import pl.petlovers.Pet2Vet.utills.exceptions.unautorized_exceptions.UnauthorizedAttemptException;
 
-//todo wszystkie komunikaty w jednym języku
+//todo all messages in one language
 
 @Slf4j
 @ControllerAdvice
@@ -104,6 +104,14 @@ public class ExceptionsHandler {
   @ExceptionHandler(InvalidDataAccessApiUsageException.class)
   @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
   String invalidDataAccessApiUsageException(InvalidDataAccessApiUsageException exception) {
+    log.error(ERROR + exception.toString());
+    return exception.toString();
+  }
+
+  @ResponseBody
+  @ExceptionHandler(PasswordNonValidPatternException.class)
+  @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+  String invalidPasswordPattern(PasswordNonValidPatternException exception) {
     log.error(ERROR + exception.toString());
     return exception.toString();
   }
