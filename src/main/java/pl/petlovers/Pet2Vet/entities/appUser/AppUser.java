@@ -4,6 +4,7 @@ package pl.petlovers.Pet2Vet.entities.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.petlovers.Pet2Vet.entities.appUser.controller.AppUserDTO;
 import pl.petlovers.Pet2Vet.entities.note.Note;
 import pl.petlovers.Pet2Vet.entities.pet.Pet;
@@ -77,20 +78,41 @@ public class AppUser {
     this.notes.add(note);
   }
 
-
-//  todo modify login, password, role
   public void modify(AppUserDTO user) {
+    modifyName(user);
+    modifySex(user);
+    modifyRole(user);
+  }
+
+  private void modifyName(AppUserDTO user) {
     if (StringUtils.isNoneBlank(user.getName())) {
       this.setName(user.getName());
     }
+  }
 
+  private void modifySex(AppUserDTO user) {
     final Sex userSex = user.getSex();
     if (userSex != null && StringUtils.isNoneBlank(userSex.toString())) {
       this.setSex(userSex);
     }
   }
 
+  private void modifyRole(AppUserDTO user) {
+    if (user.getRole() != null) {
+      this.setRole(user.getRole());
+    }
+  }
+
   public void modifyPassword(String password) {
+    if (StringUtils.isNoneBlank(password)) {
+      this.setPassword(new BCryptPasswordEncoder().encode(password));
+    }
+  }
+
+  public void modifyLogin(String login) {
+    if (StringUtils.isNoneBlank(login)) {
+      this.setLogin(login);
+    }
   }
 
   public void addPetToPetsList(Pet pet) {

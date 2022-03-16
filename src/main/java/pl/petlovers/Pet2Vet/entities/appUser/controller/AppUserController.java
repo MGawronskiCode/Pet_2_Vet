@@ -50,43 +50,46 @@ public class AppUserController {
     }
   }
 
-  private boolean changeOwnAccountOrAdminLogged(long userToChangeId, AppUserDetails loggedUser) {
-
-    return loggedUser.getId() == userToChangeId || loggedUser.isAdmin();
-  }
-
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public AppUserDTO create(@RequestBody AppUserDTO appUserDTO, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
-    if (tryingToCreateAdminAccount(appUserDTO)) {
-      if (loggedUser.isAdmin()) {
-
-//        todo checking if password is not null and maybe if is longer than 4 characters
-        return AppUserDTO.of(appUserService.create(appUserDTO, password));
-      } else {
-
-        throw new CreatingAdminAccountNotByAdminForbidden();
-      }
+    if ((tryingToCreateAdminAccount(appUserDTO) && !loggedUser.isAdmin())) {
+      throw new CreatingAdminAccountNotByAdminForbidden();
     }
+
+    // todo  create and check the password requirements
 
     return AppUserDTO.of(appUserService.create(appUserDTO, password));
   }
+
 
   private boolean tryingToCreateAdminAccount(AppUserDTO appUserDTO) {
     return appUserDTO.getRole() == Roles.ROLE_ADMIN;
   }
 
-//    todo change login or password
-//    todo change role only by admin
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PutMapping("/{userId}")
   public AppUserDTO update(@PathVariable long userId, @RequestBody AppUserDTO appUserDTO, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
+    boolean adminLogged = loggedUser.isAdmin();
+
+    if (!changeOwnAccount(userId, loggedUser) && !adminLogged) {
+      throw new AppUserForbiddenAccessException();
+    }
+
+    return AppUserDTO.of(appUserService.update(userId, appUserDTO, adminLogged));
+  }
+
+  @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  @PutMapping("/{userId}/login")
+  public AppUserDTO changeLogin(@PathVariable long userId, @RequestHeader String login, @AuthenticationPrincipal AppUserDetails loggedUser) {
+
     if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
 
-      return AppUserDTO.of(appUserService.update(userId, appUserDTO));
+      return AppUserDTO.of(appUserService.updateLogin(userId, login));
     } else {
 
       throw new AppUserForbiddenAccessException();
@@ -95,8 +98,8 @@ public class AppUserController {
 
   @Secured({"ROLE_ADMIN", "ROLE_OWNER", "ROLE_VET", "ROLE_KEEPER"})
   @ResponseStatus(HttpStatus.ACCEPTED)
-  @PutMapping("/password/{userId}")
-  public AppUserDTO updatePassword(@PathVariable long userId, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
+  @PutMapping("/{userId}/password")
+  public AppUserDTO changePassword(@PathVariable long userId, @RequestHeader String password, @AuthenticationPrincipal AppUserDetails loggedUser) {
 
     if (changeOwnAccountOrAdminLogged(userId, loggedUser)) {
 
@@ -119,6 +122,16 @@ public class AppUserController {
 
       throw new AppUserForbiddenAccessException();
     }
+  }
+
+  private boolean changeOwnAccountOrAdminLogged(long userToChangeId, AppUserDetails loggedUser) {
+
+    return changeOwnAccount(userToChangeId, loggedUser) || loggedUser.isAdmin();
+  }
+
+  private boolean changeOwnAccount(long userToChangeId, AppUserDetails loggedUser) {
+
+    return loggedUser.getId() == userToChangeId;
   }
 
 }
