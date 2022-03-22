@@ -150,7 +150,6 @@ class AppUserServiceTest {
     assertEquals(newPassword, appUserAfterUpdate.getPassword());
   }
 
-//  todo update login tests
 @Test
 void shouldCorrectlyChangeLoginWhenUsingUpdateLoginMethod() {
 //    given
@@ -171,5 +170,18 @@ void shouldCorrectlyChangeLoginWhenUsingUpdateLoginMethod() {
 }
 
 //  todo delete tests
+@Test
+void shouldCorrectlyDeleteUserWhenUsingDeleteMethod() {
+//    given
+  final AppUser userToUpdate = new AppUser("name", Sex.MALE, "login", "password", ROLE_OWNER);
 
+  final AppUserRepository repository = mock(AppUserRepository.class);
+  when(repository.findById(anyLong())).thenReturn(Optional.of(userToUpdate));
+  when(repository.save(userToUpdate)).thenReturn(userToUpdate);
+  final AppUserService service = new AppUserService(repository);
+//    when
+  service.delete(1L);
+//    then
+  assertTrue(userToUpdate.isDeleted());
+}
 }
