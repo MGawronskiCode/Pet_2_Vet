@@ -130,4 +130,28 @@ class AppUserServiceTest {
     assertThrows(AppUserNotFoundException.class, () -> service.update(2L, newUserData));
   }
 
+//  todo update password tests - how to test password (new similar class without bcrypt?)
+  @Test
+  void test() {
+//    given
+    final String oldPassword = "oldPassword";
+    final String newPassword = "newPassword";
+    final AppUser userToUpdate = new AppUser("name", Sex.MALE, "login", oldPassword, ROLE_OWNER);
+    final long userToUpdateId = 1L;
+    userToUpdate.setId(userToUpdateId);
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.findById(userToUpdateId)).thenReturn(Optional.of(userToUpdate));
+    when(repository.save(userToUpdate)).thenReturn(userToUpdate);
+    final AppUserService service = new AppUserService(repository);
+//    when
+    final AppUser appUserAfterUpdate = service.updatePassword(userToUpdateId, newPassword);
+//    then
+    assertEquals(newPassword, appUserAfterUpdate.getPassword());
+  }
+
+//  todo update login tests
+
+//  todo delete tests
+
 }
