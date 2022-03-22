@@ -132,10 +132,10 @@ class AppUserServiceTest {
 
 //  todo update password tests - how to test password (new similar class without bcrypt?)
   @Test
-  void test() {
+  void shouldCorrectlyChangePasswordWhenUsingUpdatePasswordMethod() {
 //    given
-    final String oldPassword = "oldPassword";
-    final String newPassword = "newPassword";
+    final String oldPassword = "oldPassword1";
+    final String newPassword = "newPassword1";
     final AppUser userToUpdate = new AppUser("name", Sex.MALE, "login", oldPassword, ROLE_OWNER);
     final long userToUpdateId = 1L;
     userToUpdate.setId(userToUpdateId);
@@ -151,6 +151,24 @@ class AppUserServiceTest {
   }
 
 //  todo update login tests
+@Test
+void shouldCorrectlyChangeLoginWhenUsingUpdateLoginMethod() {
+//    given
+  final String oldLogin = "oldLogin";
+  final String newLogin = "newLogin";
+  final AppUser userToUpdate = new AppUser("name", Sex.MALE, oldLogin, "password", ROLE_OWNER);
+  final long userToUpdateId = 1L;
+  userToUpdate.setId(userToUpdateId);
+
+  final AppUserRepository repository = mock(AppUserRepository.class);
+  when(repository.findById(userToUpdateId)).thenReturn(Optional.of(userToUpdate));
+  when(repository.save(userToUpdate)).thenReturn(userToUpdate);
+  final AppUserService service = new AppUserService(repository);
+//    when
+  final AppUser appUserAfterUpdate = service.updateLogin(userToUpdateId, newLogin);
+//    then
+  assertEquals(newLogin, appUserAfterUpdate.getLogin());
+}
 
 //  todo delete tests
 
