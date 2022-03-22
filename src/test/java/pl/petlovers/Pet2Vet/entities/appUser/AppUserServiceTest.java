@@ -130,4 +130,58 @@ class AppUserServiceTest {
     assertThrows(AppUserNotFoundException.class, () -> service.update(2L, newUserData));
   }
 
+//  todo update password tests - how to test password (new similar class without bcrypt?)
+  @Test
+  void shouldCorrectlyChangePasswordWhenUsingUpdatePasswordMethod() {
+//    given
+    final String oldPassword = "oldPassword1";
+    final String newPassword = "newPassword1";
+    final AppUser userToUpdate = new AppUser("name", Sex.MALE, "login", oldPassword, ROLE_OWNER);
+    final long userToUpdateId = 1L;
+    userToUpdate.setId(userToUpdateId);
+
+    final AppUserRepository repository = mock(AppUserRepository.class);
+    when(repository.findById(userToUpdateId)).thenReturn(Optional.of(userToUpdate));
+    when(repository.save(userToUpdate)).thenReturn(userToUpdate);
+    final AppUserService service = new AppUserService(repository);
+//    when
+    final AppUser appUserAfterUpdate = service.updatePassword(userToUpdateId, newPassword);
+//    then
+    assertEquals(newPassword, appUserAfterUpdate.getPassword());
+  }
+
+@Test
+void shouldCorrectlyChangeLoginWhenUsingUpdateLoginMethod() {
+//    given
+  final String oldLogin = "oldLogin";
+  final String newLogin = "newLogin";
+  final AppUser userToUpdate = new AppUser("name", Sex.MALE, oldLogin, "password", ROLE_OWNER);
+  final long userToUpdateId = 1L;
+  userToUpdate.setId(userToUpdateId);
+
+  final AppUserRepository repository = mock(AppUserRepository.class);
+  when(repository.findById(userToUpdateId)).thenReturn(Optional.of(userToUpdate));
+  when(repository.save(userToUpdate)).thenReturn(userToUpdate);
+  final AppUserService service = new AppUserService(repository);
+//    when
+  final AppUser appUserAfterUpdate = service.updateLogin(userToUpdateId, newLogin);
+//    then
+  assertEquals(newLogin, appUserAfterUpdate.getLogin());
+}
+
+//  todo delete tests
+@Test
+void shouldCorrectlyDeleteUserWhenUsingDeleteMethod() {
+//    given
+  final AppUser userToUpdate = new AppUser("name", Sex.MALE, "login", "password", ROLE_OWNER);
+
+  final AppUserRepository repository = mock(AppUserRepository.class);
+  when(repository.findById(anyLong())).thenReturn(Optional.of(userToUpdate));
+  when(repository.save(userToUpdate)).thenReturn(userToUpdate);
+  final AppUserService service = new AppUserService(repository);
+//    when
+  service.delete(1L);
+//    then
+  assertTrue(userToUpdate.isDeleted());
+}
 }
